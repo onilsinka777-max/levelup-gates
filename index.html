@@ -1266,6 +1266,7 @@ async function intro(){
   const ct=$("cineText"); document.body.classList.add("hidden-ui");
   await typeLine(ct,"Система пробудилась."); await typeLine(ct,"Не в игре. В твоём городе."); ct.innerHTML=""; $("cine").style.opacity=0;
   await new Promise(r=>{ const chk=()=>mapReady?r():setTimeout(chk,100); chk(); });
+  $("fade").style.opacity=0; // окно геолокации живёт в #ui (z 20) — под чёрной шторкой (z 80) его не видно
   const ask=await new Promise(res=>modal({id:"geo",title:"Геолокация",icon:"◎",body:`<div class="holo-text"><p>Врата открываются у реальных мест рядом с тобой. Для этого нужна геолокация.</p><p class="dim">Координаты остаются на телефоне. Никто не видит, где ты, если ты сам не разрешишь.</p></div>
     <div class="actions"><button class="btn ghost small" id="gNo">Без неё (тест у метро «Ленинский пр.»)</button><button class="btn primary" id="gYes">Разрешить</button></div>`,
     onMount:el=>{ el.querySelector("#gYes").onclick=()=>{ closeModal("geo"); res(true); }; el.querySelector("#gNo").onclick=()=>{ closeModal("geo"); res(false); }; }}));
