@@ -383,6 +383,7 @@ body.testmode .joyzone{display:block}
 <div class="dock" id="dock">
   <button class="btn small ic on" id="bMe" title="Ко мне">◎</button>
   <button class="btn small ic" id="bList" title="Врата рядом">☰</button>
+  <button class="btn small ic" id="bCompass" title="Компас: карта поворачивается за телефоном">🧭</button>
   <button class="btn small ic ghost" id="bMute" title="Звук">♪</button>
   <button class="btn small ic ghost" id="bMenu" title="Система">≡</button>
 </div>
@@ -647,20 +648,40 @@ const STYLE={
     { id:"rail", type:"line", source:OMT, "source-layer":"transportation", filter:road(["rail","transit"]), paint:{ "line-color":"#4b4f8f", "line-width":1.2, "line-dasharray":[3,2] } },
     { id:"road-minor", type:"line", source:OMT, "source-layer":"transportation", filter:road(["minor","service","track","path"]), layout:{ "line-cap":"round","line-join":"round" },
       paint:{ "line-color":["match",["get","class"],["path","track"],"#3a4b8a","#2c3a78"], "line-width":["interpolate",["exponential",1.6],["zoom"],13,.4,17,3,19,9], "line-opacity":.9 } },
+    { id:"footway", type:"line", source:OMT, "source-layer":"transportation", minzoom:15, filter:["all",["==",["get","class"],"path"]],
+      paint:{ "line-color":"#5b6cc8", "line-width":["interpolate",["linear"],["zoom"],15,.6,19,2.2], "line-dasharray":[1,1.5], "line-opacity":.8 } },
     { id:"road-mid-glow", type:"line", source:OMT, "source-layer":"transportation", filter:road(["secondary","tertiary"]), layout:{ "line-cap":"round","line-join":"round" },
-      paint:{ "line-color":"#39d7ff", "line-width":["interpolate",["exponential",1.6],["zoom"],12,2,17,14,19,34], "line-blur":["interpolate",["linear"],["zoom"],12,2,18,10], "line-opacity":.28 } },
+      paint:{ "line-color":"#39d7ff", "line-width":["interpolate",["exponential",1.6],["zoom"],12,2,17,14,19,34], "line-blur":["interpolate",["linear"],["zoom"],12,2,18,10], "line-opacity":.45 } },
     { id:"road-mid", type:"line", source:OMT, "source-layer":"transportation", filter:road(["secondary","tertiary"]), layout:{ "line-cap":"round","line-join":"round" },
       paint:{ "line-color":"#9bf0ff", "line-width":["interpolate",["exponential",1.6],["zoom"],12,.8,17,3,19,8] } },
     { id:"road-major-glow", type:"line", source:OMT, "source-layer":"transportation", filter:road(["primary","trunk","motorway"]), layout:{ "line-cap":"round","line-join":"round" },
-      paint:{ "line-color":"#ff4fd8", "line-width":["interpolate",["exponential",1.6],["zoom"],10,3,17,22,19,50], "line-blur":["interpolate",["linear"],["zoom"],10,3,18,14], "line-opacity":.33 } },
+      paint:{ "line-color":"#ff4fd8", "line-width":["interpolate",["exponential",1.6],["zoom"],10,3,17,22,19,50], "line-blur":["interpolate",["linear"],["zoom"],10,3,18,14], "line-opacity":.6 } },
     { id:"road-major", type:"line", source:OMT, "source-layer":"transportation", filter:road(["primary","trunk","motorway"]), layout:{ "line-cap":"round","line-join":"round" },
       paint:{ "line-color":"#ffc2f4", "line-width":["interpolate",["exponential",1.6],["zoom"],10,1,17,4,19,11] } },
-    { id:"building", type:"fill-extrusion", source:OMT, "source-layer":"building", minzoom:13,
-      paint:{ "fill-extrusion-color":["interpolate",["linear"],["coalesce",["get","render_height"],10],0,"#1d2150",15,"#252660",40,"#342a78",100,"#4a2f8f"],
-        "fill-extrusion-height":["coalesce",["get","render_height"],10], "fill-extrusion-base":["coalesce",["get","render_min_height"],0], "fill-extrusion-opacity":.88, "fill-extrusion-vertical-gradient":true } },
+    { id:"building", type:"fill-extrusion", source:OMT, "source-layer":"building", minzoom:13, maxzoom:15.2,
+      paint:{ "fill-extrusion-color":["interpolate",["linear"],["coalesce",["get","render_height"],10],0,"#171a44",15,"#1f2156",40,"#2c266c",100,"#3f2b86"],
+        "fill-extrusion-height":["coalesce",["get","render_height"],10], "fill-extrusion-base":["coalesce",["get","render_min_height"],0], "fill-extrusion-opacity":.9, "fill-extrusion-vertical-gradient":true } },
+    { id:"building-win", type:"fill-extrusion", source:OMT, "source-layer":"building", minzoom:15,
+      paint:{ "fill-extrusion-pattern":["match",["%",["to-number",["coalesce",["get","render_height"],10]],3],0,"win-a",1,"win-b","win-c"],
+        "fill-extrusion-height":["coalesce",["get","render_height"],10], "fill-extrusion-base":["coalesce",["get","render_min_height"],0], "fill-extrusion-opacity":.95 } },
+    { id:"building-roof", type:"fill-extrusion", source:OMT, "source-layer":"building", minzoom:15,
+      paint:{ "fill-extrusion-color":["interpolate",["linear"],["coalesce",["get","render_height"],10],0,"#111336",40,"#171843",100,"#211c55"],
+        "fill-extrusion-height":["+",["coalesce",["get","render_height"],10],.4], "fill-extrusion-base":["coalesce",["get","render_height"],10], "fill-extrusion-opacity":.95 } },
+    { id:"housenum", type:"symbol", source:OMT, "source-layer":"housenumber", minzoom:17.2,
+      layout:{ "text-field":["get","housenumber"], "text-font":["Noto Sans Regular"], "text-size":10 }, paint:{ "text-color":"#8e9ae0", "text-halo-color":"#0c0e2a", "text-halo-width":1.2 } },
     { id:"road-name", type:"symbol", source:OMT, "source-layer":"transportation_name", minzoom:14.5,
-      layout:{ "symbol-placement":"line", "text-field":["get","name"], "text-font":["Noto Sans Regular"], "text-size":11, "text-letter-spacing":.08 },
-      paint:{ "text-color":"#a9b8ff", "text-halo-color":"#0c0e2a", "text-halo-width":1.4 } },
+      layout:{ "symbol-placement":"line", "text-field":["get","name"], "text-font":["Noto Sans Regular"], "text-size":["interpolate",["linear"],["zoom"],15,11,19,15], "text-letter-spacing":.08 },
+      paint:{ "text-color":"#d4dcff", "text-halo-color":"#0c0e2a", "text-halo-width":1.6 } },
+    { id:"poi-name", type:"symbol", source:OMT, "source-layer":"poi", minzoom:16,
+      filter:["all",["has","name"],["!",["in",["get","class"],["literal",["bus","railway","parking","car","fuel","atm"]]]]],
+      layout:{ "text-field":["get","name"], "text-font":["Noto Sans Regular"], "text-size":["interpolate",["linear"],["zoom"],16,10,19,13], "symbol-sort-key":["coalesce",["get","rank"],99], "text-max-width":8, "text-padding":6 },
+      paint:{ "text-color":["match",["get","class"],["cafe","restaurant","fast_food","bar","bakery","ice_cream"],"#ff8fd0",["shop","grocery","clothing_store","shoe_shop","mall"],"#7fdcff",["sports_centre","pitch","stadium","fitness_centre"],"#ff7d8c",["library","school","college","university","books"],"#c9a6ff",["park","garden"],"#6dffb0","#b3bcff"],
+        "text-halo-color":"#0c0e2a", "text-halo-width":1.4, "text-halo-blur":.5 } },
+    { id:"metro", type:"symbol", source:OMT, "source-layer":"poi", minzoom:13, filter:["all",["==",["get","class"],"railway"],["==",["get","subclass"],"subway"]],
+      layout:{ "text-field":["concat","Ⓜ ",["get","name"]], "text-font":["Noto Sans Regular"], "text-size":14, "text-allow-overlap":true },
+      paint:{ "text-color":"#ffffff", "text-halo-color":"#ff3a6a", "text-halo-width":2.2, "text-halo-blur":1 } },
+    { id:"water-name", type:"symbol", source:OMT, "source-layer":"water_name", minzoom:13,
+      layout:{ "text-field":["get","name"], "text-font":["Noto Sans Regular"], "text-size":12, "text-letter-spacing":.2 }, paint:{ "text-color":"#6fb6ff", "text-halo-color":"#0b2550", "text-halo-width":1.2 } },
     { id:"place", type:"symbol", source:OMT, "source-layer":"place", filter:["in",["get","class"],["literal",["suburb","quarter","neighbourhood"]]],
       layout:{ "text-field":["upcase",["get","name"]], "text-font":["Noto Sans Regular"], "text-size":12, "text-letter-spacing":.25 },
       paint:{ "text-color":"#d8c9ff", "text-halo-color":"#0c0e2a", "text-halo-width":1.5, "text-opacity":.8 } },
@@ -768,6 +789,14 @@ function mockStyle(c){ const d=mockData(c); return { version:8, glyphs:STYLE.gly
     {id:"road-major",type:"line",source:"mroads",filter:["==",["get","class"],"primary"],paint:{"line-color":"#ffc2f4","line-width":["interpolate",["exponential",1.6],["zoom"],10,1,17,4,19,11]}},
     {id:"building",type:"fill-extrusion",source:"mblds",paint:{"fill-extrusion-color":["interpolate",["linear"],["get","h"],0,"#1d2150",15,"#252660",40,"#342a78"],"fill-extrusion-height":["get","h"],"fill-extrusion-opacity":.88,"fill-extrusion-vertical-gradient":true}} ] }; }
 
+/* window facade textures (neon lit windows) */
+function winImage(seed,warm){ const W=64,H=64, c=document.createElement("canvas"); c.width=W; c.height=H; const g=c.getContext("2d"); const rng=seeded(seed);
+  g.fillStyle="#1b1d4c"; g.fillRect(0,0,W,H); g.fillStyle="#232562"; g.fillRect(0,0,W,2);
+  const cols=["#ffd79a","#ffc27a","#9fe8ff","#6fe6ff","#ff9ad8","#c9a6ff","#fff2c9"];
+  for(let y=0;y<4;y++) for(let x=0;x<4;x++){ const lit=rng()<(warm?.42:.3); g.fillStyle=lit?cols[Math.floor(rng()*cols.length)]:"#101233"; if(lit){ g.shadowColor=g.fillStyle; g.shadowBlur=4; } else g.shadowBlur=0; g.fillRect(x*16+4,y*16+4,8,9); }
+  return g.getImageData(0,0,W,H); }
+function addWindowImages(){ [["win-a",11,true],["win-b",29,false],["win-c",53,true]].forEach(([n,s,w])=>{ if(!map.hasImage(n)) map.addImage(n,winImage(s,w),{pixelRatio:2}); }); }
+
 /* ================= GATES: generation, cards, quests ================= */
 let gates=[];
 const RANK_ORDER=["E","D","C","B","A","S"];
@@ -780,12 +809,16 @@ const QUESTS={
 };
 const FLAVOR={ STR:"Разлом силы. Внутри Тень лени — её пробивает только тело.", MIND:"Разлом разума. Тень отвлечения прячется в шуме — её видит только сфокусированный.", SOUL:"Разлом духа. Тень тревоги. Её гасит спокойствие.", WILL:"Разлом воли. Тень «потом». Проигрывает тем, кто делает сейчас." };
 
-function classifyPoi(p){ const c=(p.class||"")+"", s=(p.subclass||"")+"";
+const KIDS=/детск|школ|гимназ|лицей|сад №|ясли/i;
+function classifyPoi(p){ const c=(p.class||"")+"", s=(p.subclass||"")+"", n=(p.name||"")+"";
+  if(c==="shop"||KIDS.test(n)||c==="playground"||s==="playground"||c==="community_centre"||s==="community_centre") return null;
   const has=(...k)=>k.includes(c)||k.includes(s);
-  if(has("pitch","sports_centre","fitness_centre","fitness_station","stadium","track","swimming_pool","ice_rink","sports")) return "STR";
-  if(has("library","coworking_space","community_centre","arts_centre","college","university","books","cafe")) return "MIND";
+  if(has("pitch","sports_centre","fitness_centre","fitness_station","stadium","track","swimming_pool","ice_rink")) return "STR";
+  if(has("library","coworking_space","arts_centre","college","university","cafe")||(c==="library"&&s==="books")) return "MIND";
   if(has("park","garden","nature_reserve")) return "SOUL";
   return null; }
+const PLACE_NAME={ soccer:"Футбольное поле", basketball:"Баскетбольная площадка", multi:"Спортплощадка", pitch:"Спортплощадка", sports_centre:"Спортзал", fitness_centre:"Фитнес-центр", fitness_station:"Воркаут-площадка", stadium:"Стадион", library:"Библиотека", cafe:"Кафе", park:"Сквер", garden:"Сад" };
+function placeName(p){ if(p.name) return p.name; const s=((p.subclass||"")+"").split(";")[0]; return PLACE_NAME[s]||PLACE_NAME[p.class]||""; }
 function centroid(geom){ let pts=[]; if(geom.type==="Point") return {lng:geom.coordinates[0],lat:geom.coordinates[1]};
   if(geom.type==="Polygon") pts=geom.coordinates[0]; else if(geom.type==="MultiPolygon") pts=geom.coordinates[0][0]; else if(geom.type==="LineString") pts=geom.coordinates;
   if(!pts.length) return null; let x=0,y=0; pts.forEach(p=>{x+=p[0];y+=p[1];}); return {lng:x/pts.length,lat:y/pts.length}; }
@@ -794,21 +827,21 @@ function polyArea(geom){ const r=geom.type==="Polygon"?geom.coordinates[0]:geom.
 async function overpassNear(c){ const q=`[out:json][timeout:12];(nwr(around:900,${c.lat},${c.lng})["leisure"~"^(park|pitch|fitness_station|sports_centre|fitness_centre|garden|track)$"];nwr(around:900,${c.lat},${c.lng})["amenity"~"^(library|cafe|community_centre)$"];);out center 60;`;
   const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),9000);
   try{ const r=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",body:"data="+encodeURIComponent(q),signal:ctl.signal}); const j=await r.json(); clearTimeout(t);
-    return j.elements.map(e=>{ const tg=e.tags||{}; const lat=e.lat??e.center?.lat, lng=e.lon??e.center?.lon; const sub=tg.leisure||tg.amenity; return {lat,lng,name:tg.name||"",type:classifyPoi({class:sub,subclass:sub}),area:0}; }).filter(x=>x.type&&x.lat); }
+    return j.elements.map(e=>{ const tg=e.tags||{}; const lat=e.lat??e.center?.lat, lng=e.lon??e.center?.lon; const sub=tg.leisure||tg.amenity; return {lat,lng,name:placeName({name:tg.name,class:sub,subclass:sub}),named:!!tg.name,type:classifyPoi({class:sub,subclass:sub,name:tg.name}),area:0}; }).filter(x=>x.type&&x.lat); }
   catch(e){ clearTimeout(t); return []; } }
 
 async function generateGates(center){
   const day=todayKey(), rng=seeded(hashStr(day+":"+Math.round(center.lat*200)+":"+Math.round(center.lng*200)));
   let cand=[];
-  try{ (MOCK?map.querySourceFeatures("mpoi"):map.querySourceFeatures(OMT,{sourceLayer:"poi"})).forEach(f=>{ const t=classifyPoi(f.properties); if(!t) return; const c=centroid(f.geometry); if(!c) return; cand.push({...c,name:f.properties.name||f.properties["name:ru"]||"",type:t,area:0}); });
-       (MOCK?map.querySourceFeatures("mparks"):map.querySourceFeatures(OMT,{sourceLayer:"park"})).forEach(f=>{ const c=centroid(f.geometry); if(!c) return; cand.push({...c,name:f.properties.name||"",type:"SOUL",area:polyArea(f.geometry)}); }); }catch(e){}
+  try{ (MOCK?map.querySourceFeatures("mpoi"):map.querySourceFeatures(OMT,{sourceLayer:"poi"})).forEach(f=>{ const t=classifyPoi(f.properties); if(!t) return; const c=centroid(f.geometry); if(!c) return; cand.push({...c,name:placeName({...f.properties,name:f.properties.name||f.properties["name:ru"]}),type:t,area:0,named:!!f.properties.name}); });
+       (MOCK?map.querySourceFeatures("mparks"):map.querySourceFeatures(OMT,{sourceLayer:"park"})).forEach(f=>{ const c=centroid(f.geometry); if(!c) return; if(KIDS.test(f.properties.name||"")) return; cand.push({...c,name:f.properties.name||"Сквер",type:"SOUL",area:polyArea(f.geometry),named:!!f.properties.name}); }); }catch(e){}
   cand=cand.filter(c=>distM(center,c)<1100);
-  if(cand.filter(c=>c.name).length<4){ const ov=await overpassNear(center); cand=cand.concat(ov); }
+  if(cand.length<5){ const ov=await overpassNear(center); cand=cand.concat(ov); }
   // dedupe
-  const out=[]; cand.sort((a,b)=>(b.name?1:0)-(a.name?1:0)||b.area-a.area);
-  for(const c of cand){ if(out.some(o=>distM(o,c)<90 || (c.name && o.name===c.name))) continue; out.push(c); }
+  const out=[]; cand.sort((a,b)=>(b.named?1:0)-(a.named?1:0)||b.area-a.area);
+  for(const c of cand){ if(out.some(o=>distM(o,c)<90 || (c.named && o.name===c.name && distM(o,c)<400))) continue; out.push(c); }
   // S gate: the biggest named park
-  const big=out.filter(c=>c.type==="SOUL"&&c.name).sort((a,b)=>b.area-a.area)[0];
+  const big=out.filter(c=>c.type==="SOUL"&&c.named).sort((a,b)=>b.area-a.area)[0];
   // seeded pick
   const pool=out.map(c=>({c,r:rng()})).sort((a,b)=>a.r-b.r).map(x=>x.c);
   const pick=[]; const byType={STR:0,MIND:0,SOUL:0};
@@ -1182,6 +1215,17 @@ function helpWindow(){ modal({id:"menu",title:"Как играть",icon:"?",clo
   <p class="dim">Смотри по сторонам, а не в экран. Ночью Врата в парках спят.</p></div>`}); }
 function updateTestUI(){ document.body.classList.toggle("testmode",testMode); }
 
+/* compass: rotate the map with the phone like in Pokémon GO */
+let compassOn=false, compassHeading=null;
+function onOrient(e){ let h=null; if(typeof e.webkitCompassHeading==="number") h=e.webkitCompassHeading; else if(e.absolute&&typeof e.alpha==="number") h=360-e.alpha; if(h!==null) compassHeading=h; }
+async function toggleCompass(){
+  if(compassOn){ compassOn=false; $("bCompass").classList.remove("on"); removeEventListener("deviceorientationabsolute",onOrient); removeEventListener("deviceorientation",onOrient); toast("Компас выключен"); return; }
+  try{ if(typeof DeviceOrientationEvent!=="undefined" && typeof DeviceOrientationEvent.requestPermission==="function"){ const r=await DeviceOrientationEvent.requestPermission(); if(r!=="granted"){ toast("Компас: доступ не дан"); return; } } }catch(e){}
+  addEventListener("deviceorientationabsolute",onOrient); addEventListener("deviceorientation",onOrient); compassOn=true; $("bCompass").classList.add("on"); setFollow(true);
+  setTimeout(()=>{ if(compassHeading===null){ toast("Компас не найден на этом устройстве. На телефоне работает"); compassOn=false; $("bCompass").classList.remove("on"); } else toast("Компас включён: поворачивайся — карта за тобой","#5fe3ff"); },1500); }
+$("bCompass").onclick=toggleCompass;
+function compassStep(dt){ if(!compassOn||compassHeading===null||!map) return; const cur=map.getBearing(); let d=((compassHeading-cur+540)%360)-180; if(Math.abs(d)>.5) map.setBearing(cur+d*Math.min(1,dt*4)); }
+
 /* joystick for test mode on phones */
 const jz=$("joyZone");
 jz.addEventListener("pointerdown",e=>{ if(!testMode) return; joy.id=e.pointerId; joy.ox=e.clientX; joy.oy=e.clientY; const j=$("joy"); j.style.display="block"; j.style.left=e.clientX+"px"; j.style.top=e.clientY+"px"; jz.setPointerCapture(e.pointerId); });
@@ -1194,7 +1238,8 @@ $("bList").onclick=()=>{ if(!anyBlocking("list")) listWindow(); }; $("bMenu").on
 $("objective").onclick=()=>{ if(objState.target && objState.target.lat) gateCard(objState.target); else listWindow(); };
 function initMap(){
   initThree(); setOrigin(TEST_START);
-  map=new maplibregl.Map({ container:"map", style:MOCK?mockStyle(TEST_START):STYLE, center:[TEST_START.lng,TEST_START.lat], zoom:2.3, pitch:0, bearing:0, maxPitch:72, antialias:true, attributionControl:{compact:true} });
+  map=new maplibregl.Map({ container:"map", style:MOCK?mockStyle(TEST_START):STYLE, center:[TEST_START.lng,TEST_START.lat], zoom:2.3, pitch:0, bearing:0, maxPitch:78, antialias:true, attributionControl:{compact:true} });
+  map.on("styleimagemissing",e=>{ if(/^win-/.test(e.id)) addWindowImages(); });
   map.on("load",()=>{
     try{ map.setSky({"sky-color":"#1b1446","horizon-color":"#7a2f78","fog-color":"#141038","sky-horizon-blend":.6,"horizon-fog-blend":.7,"fog-ground-blend":.4,"atmosphere-blend":0}); }catch(e){}
     try{ map.setLight({anchor:"viewport",color:"#c9b8ff",intensity:.35,position:[1.3,210,40]}); }catch(e){}
@@ -1213,6 +1258,7 @@ function initMap(){
   });
   setTimeout(()=>{ if(!mapReady){ modal({id:"maperr",title:"Карта",icon:"!",body:`<div class="holo-text"><p>Карта не загрузилась. Похоже, нет интернета или сервер карт недоступен.</p><p class="dim">Можно открыть схему-заглушку, чтобы проверить игру.</p></div><div class="actions"><button class="btn ghost small" id="me1">Ещё раз</button><button class="btn primary" id="me2">Схема</button></div>`,onMount:el=>{ el.querySelector("#me1").onclick=()=>location.reload(); el.querySelector("#me2").onclick=()=>{ location.search=(location.search?location.search+"&":"?")+"mock"; }; }}); } },20000);
   map.on("dragstart",()=>{ follow=false; $("bMe").classList.remove("on"); });
+  map.on("rotatestart",e=>{ if(e.originalEvent&&compassOn){ compassOn=false; $("bCompass").classList.remove("on"); } });
   map.on("click",e=>{ let best=null,bd=48; for(const g of gates){ const p=map.project([g.lng,g.lat]); const up=(g.rank==="S"?60:30)*(map.getZoom()/17); const d=Math.min(Math.hypot(p.x-e.point.x,p.y-e.point.y),Math.hypot(p.x-e.point.x,p.y-up-e.point.y)); if(d<bd){ bd=d; best=g; } } if(best && !anyBlocking()) gateCard(best); });
 }
 let mapReady=false;
@@ -1237,7 +1283,7 @@ async function intro(){
 }
 let started=false, last=performance.now(), T=0, secAcc=0, dashAcc=0;
 function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; T+=dt;
-  if(mapReady){ stepPlayer(dt); updateThree(dt,T); if(follow && started && !dOn) map.jumpTo({center:[player.pos.lng,player.pos.lat]}); if(started){ updateLabels(); } }
+  if(mapReady){ stepPlayer(dt); compassStep(dt); updateThree(dt,T); if(follow && started && !dOn) map.jumpTo({center:[player.pos.lng,player.pos.lat]}); if(started){ updateLabels(); } }
   secAcc+=dt; if(secAcc>.5&&started){ secAcc=0; proximity(); }
   dashAcc+=dt; if(dashAcc>.08){ dashAcc=0; if(mapReady) animRoute(); }
   if(Math.floor(T)%10===0) updateSysbar();
