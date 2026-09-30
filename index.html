@@ -40,7 +40,7 @@ button{font-family:inherit;color:inherit}
 .rotate b{font-size:20px;letter-spacing:.08em}.rotate span{color:var(--dim);font-size:14px}
 .rotate .phone{width:46px;height:78px;border:2.5px solid var(--cyan);border-radius:9px;box-shadow:0 0 16px var(--cyan);animation:rot 2.2s ease-in-out infinite;margin-bottom:14px}
 @keyframes rot{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
-@media (orientation:portrait) and (pointer:coarse){ .rotate{display:flex} }
+/* portrait is the main format now; landscape still works (desktop, tablets) */
 
 /* ---------- buttons ---------- */
 .btn{appearance:none;border:0;cursor:pointer;font:700 12px "Exo 2",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding:11px 18px;background:rgba(6,16,34,.85);outline:1px solid rgba(95,227,255,.5);outline-offset:-1px;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:background .15s,transform .1s}
@@ -467,8 +467,8 @@ body.touch .dungeon.fight .dpad{display:flex}
 textarea.field{resize:none;font-size:15px;line-height:1.35;font-weight:500}
 .actions.left{justify-content:flex-start}
 .chk{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--dim);margin-top:8px}.chk input{accent-color:#5fe3ff;width:16px;height:16px}
-.steps{display:grid;gap:7px;margin-top:10px}.steps>div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.35}
-.steps i{flex:0 0 22px;height:22px;display:grid;place-items:center;font:800 12px "Exo 2";font-style:normal;color:#06101c;background:var(--accent,#5fe3ff);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
+.isteps{display:grid;gap:7px;margin-top:10px}.isteps>div{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.35}
+.isteps i{flex:0 0 22px;height:22px;display:grid;place-items:center;font:800 12px "Exo 2";font-style:normal;color:#06101c;background:var(--accent,#5fe3ff);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
 .share-wrap{display:flex;gap:16px;align-items:center}.share-wrap img{height:min(52vh,340px);aspect-ratio:9/16;object-fit:cover;border:1px solid rgba(140,180,255,.35);box-shadow:0 0 30px rgba(95,140,255,.25);user-select:auto;-webkit-user-select:auto;-webkit-touch-callout:default;pointer-events:auto}
 @media (max-aspect-ratio:1/1){ .share-wrap{flex-direction:column} .share-wrap img{height:46vh} }
 .preload #ui{z-index:120}
@@ -485,6 +485,89 @@ textarea.field{resize:none;font-size:15px;line-height:1.35;font-weight:500}
 @keyframes cring{50%{box-shadow:0 0 0 2000px rgba(0,0,0,.42),0 0 38px #5fe3ff;transform:translate(-50%,-50%) scale(1.06)}}
 .coach.s1 .cm{transform:translate(-50%,-100%)}
 .coach.s0 .cm{left:63%;top:47%}
+/* ================= PORTRAIT: the main format (phone held in one hand, like a webtoon panel) ================= */
+.pill.wkp{display:none}
+@media (orientation:portrait){
+  .me{top:calc(10px + var(--st))}.me .lvl{width:36px;height:36px;font-size:16px}.me .xp{width:86px}
+  .me b{display:block;font-size:13px;max-width:34vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me small{font-size:10.5px}
+  .res{top:calc(12px + var(--st));gap:5px}.res .chip{padding:5px 8px;font-size:12.5px}#chipWeek{display:none}
+  .goal{top:calc(56px + var(--st));max-width:86vw}.goal b{font-size:17px}
+  #hubHud .story{top:calc(96px + var(--st));max-width:58vw;padding:6px 10px}
+  .ctxc{top:calc(98px + var(--st));left:auto;right:calc(12px + var(--sr));transform:none}
+  .feedT{top:calc(166px + var(--st));max-width:86vw}
+  .hubbtns{left:calc(10px + var(--sl));right:calc(10px + var(--sr));bottom:calc(10px + var(--sb));gap:8px}
+  .hubbtns .pill{flex:1;justify-content:center;padding:10px 8px;font-size:13px}.pill.wkp{display:inline-flex}.pill.wkp b{font-weight:800}
+  .rcard{left:calc(10px + var(--sl));right:calc(10px + var(--sr));width:auto;bottom:calc(64px + var(--sb));padding:12px 14px 13px}
+  .rcard .nm{font-size:22px}.rcard .rr{font-size:12.5px}.rcard .go .rbtn{flex:1}
+  .rpager{bottom:calc(76px + var(--sb) + var(--ch,190px))}
+  .rrank{bottom:calc(88px + var(--sb) + var(--ch,190px));right:calc(14px + var(--sr))}.rrank b{font-size:64px}
+  .redge{top:24%;bottom:48%;width:34px}
+  .load-title{font-size:34px;letter-spacing:.34em;padding-left:.34em}.load-portal{width:84vw;height:84vw}
+  .share-wrap{flex-direction:column}.share-wrap img{height:44vh}
+  .coach.s0 .cm{left:50%;top:40%}
+}
+@media (orientation:portrait){
+  .holo,.holo.wide,.holo.chal{width:calc(100vw - 20px);max-width:560px}.holo.small{width:min(88vw,380px)}
+  .holo-inner{padding:14px 15px}
+  .cols{grid-template-columns:1fr;gap:10px}
+  .how3{grid-template-columns:1fr;gap:8px}.how3>div{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:10px;text-align:left;align-items:center;padding:10px 12px}
+  .how3 i{grid-row:1/3;margin:0;font-size:26px}.how3 small{margin-top:1px}
+  .holo.sysmsg{left:calc(10px + var(--sl));right:calc(10px + var(--sr));width:auto;bottom:calc(16px + var(--sb))}
+  .camov{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .cam-side{display:grid;grid-template-columns:1fr auto;grid-template-areas:"info count" "btns btns";gap:8px 14px;border-left:0;border-top:1px solid rgba(95,227,255,.25);padding:12px calc(14px + var(--sr)) calc(10px + var(--sb)) calc(14px + var(--sl))}
+  .cam-side>div:first-child{grid-area:info}.cam-count{grid-area:count;min-width:108px;align-self:center}.cam-count b{font-size:60px}
+  .cam-btns{grid-area:btns;flex-direction:row;flex-wrap:wrap}.cam-btns .btn{width:auto;flex:1}.cam-priv{width:100%}
+  .cam-view .cam-ok{top:calc(10px + var(--st))}
+  .cine .cport,.cine .cport.r,.cine .cport.sys{left:0;right:0;margin:0 auto;top:calc(9vh + 30px);bottom:auto;height:48vh}
+  .cine.on .cport:not(.hide){opacity:1!important}
+  .cine .cbox,.cine[data-who="kai"] .cbox,.cine[data-who="arch"] .cbox,.cine.asking .cbox{left:10px!important;right:10px!important}
+  .copts{grid-template-columns:1fr}
+  .scroll-t{max-height:52vh}
+}
+@media (orientation:portrait){
+  .goal small{display:none}.goal{top:calc(60px + var(--st))}
+  .cine .chead{text-align:left;padding-left:16px;letter-spacing:.3em}
+  .redge.l{background:linear-gradient(90deg,color-mix(in srgb,var(--ec) 22%,transparent),transparent)}.redge.r{background:linear-gradient(270deg,color-mix(in srgb,var(--ec) 22%,transparent),transparent)}
+}
+/* ================= PROLOGUE «Точка Б» ================= */
+.pro{position:fixed;inset:0;z-index:55;pointer-events:none;opacity:0;transition:opacity .6s;user-select:none}
+.pro.on{opacity:1;pointer-events:auto}.pro.hide{opacity:0!important;pointer-events:none!important}.pro.out{opacity:0;pointer-events:none}
+.pro-bg{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.1s}.pro.black .pro-bg{opacity:1}
+.pro::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.65));}
+.pro-crack{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .15s;pointer-events:none}
+.pro-crack path{fill:none;stroke:#fff;stroke-width:.35;vector-effect:non-scaling-stroke;stroke-width:2px;filter:drop-shadow(0 0 3px rgba(255,255,255,.8));stroke-dasharray:600;stroke-dashoffset:600}
+.pro.cracked .pro-crack{opacity:.85}.pro.cracked .pro-crack path{animation:crk .5s ease-out forwards}@keyframes crk{to{stroke-dashoffset:0}}
+.pro-slash{position:absolute;left:-10%;right:-10%;top:40%;height:5px;background:#fff;box-shadow:0 0 30px #fff,0 0 80px #ffe2a0;transform:rotate(-24deg) scaleX(0);opacity:0;pointer-events:none}
+.pro-slash.go{animation:pslash .55s cubic-bezier(.1,.9,.2,1) forwards}@keyframes pslash{0%{transform:rotate(-24deg) scaleX(0);opacity:1}35%{transform:rotate(-24deg) scaleX(1);opacity:1;height:7px}100%{transform:rotate(-24deg) scaleX(1);opacity:0;height:1px}}
+.pro-cap{position:absolute;left:18px;right:18px;bottom:calc(16vh + var(--sb));text-align:center;font:600 19px/1.45 "Exo 2",system-ui;color:#eaf4ff;text-shadow:0 2px 10px #000,0 0 18px rgba(0,0,0,.9);opacity:0;transition:opacity .35s;pointer-events:none}
+.pro-cap.on{opacity:1}.pro-cap.big{font:italic 900 34px/1.1 "Exo 2",Impact,system-ui;letter-spacing:.04em}
+.pro-cap.lord{font-style:italic;color:#ff9fb2;text-shadow:0 0 16px rgba(255,40,80,.7),0 2px 8px #000;letter-spacing:.02em}
+.pro.black .pro-cap:not(.lord){color:#bfe6ff;text-shadow:0 0 16px rgba(95,200,255,.55)}
+.pro-big{position:absolute;left:0;right:0;top:30%;text-align:center;opacity:0;transform:scale(.9);transition:opacity .4s,transform .4s;pointer-events:none;font:italic 900 clamp(38px,11vw,64px)/1 "Exo 2",Impact,system-ui;color:#fff;letter-spacing:.06em;-webkit-text-stroke:2px #05060d;paint-order:stroke fill;text-shadow:0 0 24px rgba(255,255,255,.5)}
+.pro-big.on{opacity:1;transform:none}.pro-big small{display:block;margin-top:10px;font:700 12px "Exo 2",system-ui;letter-spacing:.4em;text-transform:uppercase;-webkit-text-stroke:0;color:#cfe3f7;font-style:normal}
+.pro-big.q{top:20%;font-size:clamp(30px,9vw,46px);font-style:normal;letter-spacing:.02em}
+.pro-big.pulse{top:auto;bottom:24%;font-size:34px;letter-spacing:.3em;animation:ppulse 1.1s ease-in-out infinite}.pro-big.pulse small{letter-spacing:.3em}@keyframes ppulse{50%{opacity:.55;transform:scale(.96)}}
+.pro-big.lvl{top:36%;color:#dff2ff;text-shadow:0 0 30px #5fb8ff,0 0 60px #1f7cff}.pro-big.up{color:#fff6d8;text-shadow:0 0 30px #ffd166,0 0 70px #ff9a3c}
+.pro-opts{position:absolute;left:14px;right:14px;top:34%;display:flex;flex-direction:column;gap:10px;opacity:0;pointer-events:none;transition:opacity .3s}
+.pro-opts.on{opacity:1;pointer-events:auto}.pro-opts.cta{top:auto;bottom:calc(5vh + var(--sb))}
+.pro-opts button{appearance:none;display:flex;align-items:center;gap:14px;text-align:left;padding:14px 16px;cursor:pointer;color:#fff;background:linear-gradient(90deg,color-mix(in srgb,var(--pc,#5fe3ff) 22%,rgba(4,8,20,.9)),rgba(4,8,20,.88));
+  border:1px solid color-mix(in srgb,var(--pc,#5fe3ff) 70%,transparent);box-shadow:0 0 18px color-mix(in srgb,var(--pc,#5fe3ff) 25%,transparent);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);animation:popt .45s var(--d,0s) both}
+@keyframes popt{from{opacity:0;transform:translateY(14px)}}
+.pro-opts button i{font-style:normal;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--pc,#5fe3ff);background:color-mix(in srgb,var(--pc,#5fe3ff) 15%,transparent)}.pro-opts button i .ico{width:24px;height:24px;color:var(--pc,#5fe3ff)}
+.pro-opts button b{display:block;font:800 19px "Exo 2",system-ui,sans-serif;letter-spacing:.04em}.pro-opts button small{display:block;font-size:13px;color:#b9c9e0;margin-top:2px}
+.pro-opts button:active{transform:scale(.98)}
+.pro-opts .go{--pc:#5fe3ff;justify-content:center}.pro-opts .go .ico{width:26px;height:26px}.pro-opts .alt{--pc:#6a7a99;padding:10px 16px;justify-content:center;text-align:center}.pro-opts .alt b{font-size:15px}
+.pro-cta{text-align:center;margin-bottom:6px;text-shadow:0 2px 8px #000}.pro-cta small{font:800 11px "Exo 2",system-ui;letter-spacing:.3em;text-transform:uppercase;color:#7fe9ff}.pro-cta b{display:block;font:italic 900 32px/1.1 "Exo 2",system-ui;margin:6px 0}.pro-cta p{font-size:14px;color:#cfe3f7;line-height:1.4}
+.pro-panel{position:absolute;left:14px;top:calc(14px + var(--st));width:min(74vw,300px);padding:12px 14px;background:rgba(4,8,20,.8);border:1px solid color-mix(in srgb,var(--pc) 60%,transparent);box-shadow:0 0 24px color-mix(in srgb,var(--pc) 30%,transparent);opacity:0;transform:translateX(-14px);transition:opacity .5s,transform .5s,filter 1.2s;pointer-events:none}
+.pro-panel.on{opacity:1;transform:none}.pro-panel small{font:800 10px "Exo 2",system-ui;letter-spacing:.3em;color:var(--pc);text-transform:uppercase}
+.pro-panel .rk{display:block;font:800 17px "Exo 2",system-ui;margin:4px 0 8px;letter-spacing:.04em}.pro-panel .rk em{font-style:italic;font-size:26px;color:var(--pc);text-shadow:0 0 14px var(--pc);margin-left:4px}
+.pro-panel .kv{display:flex;justify-content:space-between;font-size:14px;padding:3px 0;border-top:1px solid rgba(255,255,255,.07)}.pro-panel .kv span{color:#9fb3cf}.pro-panel .kv b{font-weight:800;font-variant-numeric:tabular-nums}
+.pro-panel p{margin-top:8px;font-size:13px;font-style:italic;color:#e8f0ff;line-height:1.35}
+.pro-panel.fall{filter:grayscale(1) brightness(.8)}.pro-panel.fall .kv b{color:#ff8aa0}
+.pro-skip{position:absolute;right:12px;top:calc(12px + var(--st));appearance:none;border:0;background:rgba(0,0,0,.35);color:rgba(255,255,255,.6);font:700 12px "Exo 2",system-ui;letter-spacing:.12em;padding:8px 12px;cursor:pointer;z-index:2}
+@media (orientation:landscape){ .pro-opts{left:25vw;right:25vw;top:22%} .pro-opts.cta{bottom:4vh} .pro-cap{bottom:12vh;left:15vw;right:15vw} .pro-big{top:24%} .pro-big.pulse{bottom:16%} }
+@media (orientation:portrait){ .goal b{white-space:nowrap} }
+@media (orientation:landscape){ .pro-big.q{top:5%;font-size:30px} .pro-opts{top:19%;gap:7px} .pro-opts button{padding:9px 14px} .pro-opts button i{width:32px;height:32px} .pro-opts button b{font-size:16px} }
 
 </style>
 </head>
@@ -501,7 +584,7 @@ textarea.field{resize:none;font-size:15px;line-height:1.35;font-weight:500}
   <button class="story" id="hubStory"></button>
   <div class="specials" id="hubSpec"></div>
   <div class="feedT" id="feedT"></div>
-  <div class="hubbtns"><button class="pill" id="bArmy"><i>⚔</i>Армия</button><button class="pill" id="bPath"><i>◈</i>Путь</button><button class="pill" id="bCity" style="display:none"><i>⌖</i>В город</button></div>
+  <div class="hubbtns"><button class="pill" id="bArmy"><i>⚔</i>Армия</button><button class="pill" id="bPath"><i>◈</i>Путь</button><button class="pill wkp" id="bWeek"><i>☾</i><b id="hudWeek2">100%</b></button><button class="pill" id="bCity" style="display:none"><i>⌖</i>В город</button></div>
   <div class="rcard" id="riftCard"></div><div class="rrank" id="riftRank"></div><div class="rpager" id="riftPager"></div><button class="redge l" id="riftL" aria-label="Предыдущие Врата">‹</button><button class="redge r" id="riftR" aria-label="Следующие Врата">›</button>
 </div>
 <div class="layer" id="gateLbls"></div><div id="twinSay" class="twsay"></div>
@@ -2998,7 +3081,7 @@ let wakeLock=null; async function keepAwake(on){ try{ if(on&&navigator.wakeLock)
 /* resolves {ok, cam} ; falls back to the honest timer when the camera can't be used */
 function camCheck(g){ return new Promise(async res=>{ const D=DEEDS[g.deed]; const kind=D.cam; const t0=performance.now(); const BR={calm:[["вдох",4],["выдох",4]],box:[["вдох",4],["пауза",4],["выдох",4],["пауза",4]],"478":[["вдох",4],["держи",7],["выдох",8]]}[D.pat||"calm"]; const brLen=BR.reduce((a,b)=>a+b[1],0); const timed=g.unit==="мин"||g.unit==="сек"; const goal=g.unit==="мин"?g.amt*60:g.amt;
   const ov=document.createElement("div"); ov.className="camov"; ov.innerHTML=`<div class="cam-view"><video playsinline muted></video><canvas></canvas><div class="cam-ok" id="camOk"></div>${kind==="breath"?`<div class="breath" id="brC"><span id="brT">вдох</span></div>`:""}<div class="cam-msg" id="camMsg">Включаю камеру…</div></div>
-    <div class="cam-side"><div><small>Система · проверка</small><h3>${dIco(g)} ${g.name}</h3><div class="tip" id="camTip">${CAM_TIP[kind]||""}</div>${g.limit?`<div class="limit" id="camLim">⏱ уложись в ${fmtS(g.limit)}</div>`:""}</div>
+    <div class="cam-side"><div><small>Система · проверка</small><h3>${dIco(g)} ${g.name}</h3><div class="tip" id="camTip">${CAM_TIP[kind]||""}${innerHeight>innerWidth&&/pushup|plank|climber|bridge/.test(kind)?". Удобнее повернуть телефон горизонтально":""}</div>${g.limit?`<div class="limit" id="camLim">⏱ уложись в ${fmtS(g.limit)}</div>`:""}</div>
       <div class="cam-count"><b id="camN">${timed?"0:00":0}</b><span>из ${timed?fmtS(goal):g.amt+" "+g.unit}</span><div class="bar"><i id="camBar"></i></div></div>
       <div class="cam-btns"><button class="btn ghost small" id="camHon">Без камеры — на честное слово</button><button class="btn ghost small" id="camX">Отмена</button><div class="cam-priv">🔒 видео не уходит с телефона</div></div></div>`;
   document.body.appendChild(ov); const video=ov.querySelector("video"), cv=ov.querySelector("canvas"), gx=cv.getContext("2d"); let stream=null, stop=false, done=false; keepAwake(true);
@@ -4573,15 +4656,15 @@ function hubTap(x,y){ if(anyBlocking()||hubBusy) return; _hn.set(x/innerWidth*2-
 /* ---------- per frame ---------- */
 const _hv=new THREE.Vector3(), _dv=new THREE.Vector3();
 function updateHub(dt,t){ const c=HUB.cam, R=HUB.rift; HUB.par+=(HUB.parT-HUB.par)*Math.min(1,dt*8);
-  c.position.set(Math.sin(t*.15)*.25-HUB.par*2,1.45+Math.sin(t*.23)*.05,11); c.lookAt(-2.2-HUB.par*3,6.2,-10);
-  if(HUB.dive){ const D2=HUB.dive; D2.t+=dt; const k=Math.min(1,D2.t/1.05), e=k*k*(3-2*k); c.position.lerp(_dv.set(0,RY-.4,RZ+2.5),e); c.lookAt(-2.2*(1-e),6.2+(RY-6.2)*e,-10+(RZ-10+10)*e*0); c.fov=HUB.fov0-18*e; c.updateProjectionMatrix(); R.pm.uniforms.uNear.value=Math.max(R.pm.uniforms.uNear.value,e*2); }
+  const LK=HUB.lk||{x:-2.2,y:6.2}; c.position.set(Math.sin(t*.15)*.25-HUB.par*2,1.45+Math.sin(t*.23)*.05,11); c.lookAt(LK.x-HUB.par*3,LK.y,-10); if(HUB.shake>0){ HUB.shake=Math.max(0,HUB.shake-dt*1.8); c.position.x+=(Math.random()-.5)*HUB.shake*.5; c.position.y+=(Math.random()-.5)*HUB.shake*.35; }
+  if(HUB.dive){ const D2=HUB.dive; D2.t+=dt; const k=Math.min(1,D2.t/1.05), e=k*k*(3-2*k); c.position.lerp(_dv.set(0,RY-.4,RZ+2.5),e); c.lookAt((HUB.lk?HUB.lk.x:-2.2)*(1-e),6.2+(RY-6.2)*e,-10+(RZ-10+10)*e*0); c.fov=HUB.fov0-18*e; c.updateProjectionMatrix(); R.pm.uniforms.uNear.value=Math.max(R.pm.uniforms.uNear.value,e*2); }
   const sp=R.tgt>R.open?3.6:10; R.open+=(R.tgt-R.open)*Math.min(1,dt*sp); if(R.pending&&R.open<.04){ riftApply(R.pending,false); R.open=0; sfx.gate(); }
   const op=R.open; [R.pm,R.rm].forEach(m=>{ m.uniforms.uOpen.value=op; m.uniforms.uPulse.value=Math.max(0,Math.sin(t*1.7))*.3; m.uniforms.uNear.value=Math.max(0,m.uniforms.uNear.value-dt*.4); });
   const closed=R.g&&R.g.cleared&&!R.pending; R.seal.material.opacity+=((closed?.55:0)-R.seal.material.opacity)*Math.min(1,dt*3); R.seal.rotation.z+=dt*.15;
   HUB.back.material.opacity=(.14+.24*op)*(1+.12*Math.sin(t*1.7)); HUB.sparkM.uniforms.uOn.value=.25+.75*op;
   HUB.rocks.forEach((m,i)=>{ const u=m.userData; u.a+=dt*.15*(1+u.s*4)*(.4+op); m.position.set(Math.cos(u.a)*u.r*.9,u.y+Math.sin(t*.5+i)*.3,RZ+Math.sin(u.a)*u.r*.35+1); m.rotation.x+=u.rs.x*dt*.6; m.rotation.y+=u.rs.y*dt*.6; });
   if(HUB.post){ _hv.set(0,RY,RZ).project(c); const cx=(_hv.x+1)/2, cy=(_hv.y+1)/2; HUB.post.uniforms.uCtr.value.set(cx,cy); _hv.set(0,RY+RS*.3,RZ).project(c); HUB.post.uniforms.uRad.value=Math.abs((_hv.y+1)/2-cy)*.95*Math.max(.05,op); HUB.post.uniforms.uOn.value=op; HUB.post.uniforms.uTime.value=t; }
-  const rk=["E","D","C","B","A","S"].indexOf(RANK_NAME(P.level)); HUB.aura.material.opacity=rk*.09*(.8+.2*Math.sin(t*2.3)); HUB.aura.scale.set(1.8+rk*.25,3+rk*.5,1);
+  const rk=["E","D","C","B","A","S"].indexOf(RANK_NAME(P.level)); const ak=HUB.proAura!=null?HUB.proAura/.09:rk; HUB.aura.material.opacity+=(ak*.09*(.8+.2*Math.sin(t*2.3))-HUB.aura.material.opacity)*Math.min(1,dt*4); HUB.aura.scale.set(1.8+ak*.25,3+ak*.5,1); proTick(dt,t);
   updateTwin(dt,t); updateWeekShadow(dt,t); updateArmyRoof(t); hubCard(false); }
 function hubLabels(){}
 /* ---------- the System card of the chosen Gate ---------- */
@@ -4597,7 +4680,7 @@ function hubCard(force){ const el=$("riftCard"); if(!el) return; const R=HUB.rif
     <div class="rr">${g.cleared?`сделано сегодня · новые Врата — завтра`:g.done?`дело сделано ✓ · внутри Тень · за победу <b>◉ ${rw.coins}</b>`:`за дело <b>+${rw.xp}</b> опыта${S.n?` · ${S.n}`:""}${why?` · <span class="q">«${why}»</span>`:""}`}</div>
     ${modsHTML(g)&&!g.done?`<div class="mods">${modsHTML(g)}</div>`:""}
     <div class="go">${g.cleared?`<button class="rbtn g" id="rcInfo">✓ ЗАКРЫТЫ</button>`:`<button class="rbtn" id="rcGo">${g.done?"⚔ В БОЙ":"ВОЙТИ"}</button>`}${i>=0&&!g.done&&P.day.rerolls>0?`<button class="rbtn g" id="rcSwap">ЗАМЕНИТЬ</button>`:""}</div>`;
-  el.classList.add("on"); const go=el.querySelector("#rcGo"); if(go) go.onclick=()=>{ if(!anyBlocking()&&!hubBusy&&!R.pending) openGate(g); };
+  el.classList.add("on"); requestAnimationFrame(()=>$("hubHud").style.setProperty("--ch",el.offsetHeight+"px")); const go=el.querySelector("#rcGo"); if(go) go.onclick=()=>{ if(!anyBlocking()&&!hubBusy&&!R.pending) openGate(g); };
   const sw=el.querySelector("#rcSwap"); if(sw) sw.onclick=()=>{ if(anyBlocking()||hubBusy) return; if(rerollGate(i)){ HUB.list=hubList(); hubSelect(i,true); toast("Заменил. Осталось замен: "+P.day.rerolls); } };
   const inf=el.querySelector("#rcInfo"); if(inf) inf.onclick=()=>openGate(g);
   const rk=$("riftRank"); rk.innerHTML=`<b>${g.rank||"E"}</b><small>РАНГ ВРАТ</small>`; rk.classList.add("on");
@@ -4609,8 +4692,8 @@ function nextGate(){ if(!P.day) return null; const sg=storyGateToday(); return P
 /* ---------- HUD ---------- */
 function hubHud(){ hud(); const left=gatesLeft(), mins=minutesLeft(); const sg=storyGateToday();
   $("hubGoal").innerHTML=!P.onboarded?"":left?`<small>Сегодня</small><b>${left===3?"Три дела":left===2?"Осталось 2 дела":"Осталось одно дело"} · ~${mins} мин</b>`:sg&&!sg.cleared?`<small>Сюжет</small><b>Открылись ${sg.name}</b>`:P.day&&P.day.gates.some(g=>!g.cleared)?`<small>Дела сделаны ✓</small><b>Тени ждут внутри</b>`:`<small>Сегодня</small><b>Все Врата закрыты ✓</b>`;
-  const cx=CTX[ctxNow()]; $("chipCtx").innerHTML=`${ico(cx.ic)} ${cx.s} <u>сменить</u>`; storyChip(); const W=week(); $("hudWeek").textContent=W.won?"✓":W.hp<=0?"бой!":Math.round(W.hp/W.max*100)+"%"; $("hubSpec").innerHTML=""; hubCard(true); }
-window.__hubResize=(w,h)=>{ if(HUB.cam){ HUB.cam.aspect=w/h; HUB.cam.fov=w/h>1.9?50:w/h<1.2?68:56; HUB.cam.updateProjectionMatrix(); } if(HUB.post) HUB.post.uniforms.res.value.set(w,h); };
+  const cx=CTX[ctxNow()]; $("chipCtx").innerHTML=`${ico(cx.ic)} ${cx.s} <u>сменить</u>`; storyChip(); const W=week(); $("hudWeek").textContent=$("hudWeek2").textContent=W.won?"✓":W.hp<=0?"бой!":Math.round(W.hp/W.max*100)+"%"; $("hubSpec").innerHTML=""; hubCard(true); }
+window.__hubResize=(w,h)=>{ const a=w/h; HUB.lk=a<.8?{x:-.25,y:5.9}:{x:-2.2,y:6.2}; if(HUB.cam){ HUB.cam.aspect=a; HUB.cam.fov=a>1.9?50:a<.8?72:a<1.2?68:56; HUB.cam.updateProjectionMatrix(); } if(HUB.post) HUB.post.uniforms.res.value.set(w,h); };
 
 /* ===== flow.js ===== */
 /* ================= ONE GATE, START TO END: see it → do the deed → it opens → fight the Shadow → loot ================= */
@@ -4706,42 +4789,38 @@ function wireChips(el,max=99){ el.querySelectorAll(".chips").forEach(box=>{ cons
   if(!b.classList.contains("on")&&box.querySelectorAll(".chipbtn.on").length>=max){ toast(`Можно выбрать до ${max}`); return; } b.classList.toggle("on"); }); }); }
 const selOf=box=>[...box.querySelectorAll(".chipbtn.on")].map(b=>b.dataset.k);
 /* the whole interview; `edit` skips the intro and the name */
-async function interview(edit){ const T=7; let s=edit?1:0; const d={ name:P.name, spheres:[...P.spheres], why:{...P.why}, no:[...P.no], mins:P.mins, lvl:P.lvl, tone:P.tone };
-  while(s<T){ let r;
-    if(s===0) r=await stepWin({step:1,total:T,title:"Система",body:`<div class="holo-text"><p>Как тебя зовут, Охотник?</p></div><div style="margin-top:10px"><input class="field" id="obName" maxlength="18" placeholder="Имя или ник" value="${d.name||""}" autocomplete="off"></div>`,
+async function interview(edit,quick){ const ORD=quick?[0,1,4]:[0,1,2,3,4,5,6], T=ORD.length; let pos=edit?1:0, s=ORD[pos]; const d={ name:P.name, spheres:[...P.spheres], why:{...P.why}, no:[...P.no], mins:P.mins, lvl:P.lvl, tone:P.tone };
+  while(pos<T){ s=ORD[pos]; const st=pos+1; let r;
+    if(s===0) r=await stepWin({step:st,total:T,title:"Система",body:`<div class="holo-text"><p>Как тебя зовут, Охотник?</p></div><div style="margin-top:10px"><input class="field" id="obName" maxlength="18" placeholder="Имя или ник" value="${d.name||""}" autocomplete="off"></div>`,
       validate:el=>el.querySelector("#obName").value.trim().length>0, onMount:el=>{ const i=el.querySelector("#obName"); setTimeout(()=>{ if(!isTouch) i.focus(); },300); i.addEventListener("input",()=>d.name=i.value.trim()); i.addEventListener("keydown",e=>{ if(e.key==="Enter"&&i.value.trim()) el.querySelector("#obNext").click(); }); }});
-    if(s===1) r=await stepWin({step:2,total:T,title:"Что прокачиваем?",back:!edit||s>1,cls:"wide",body:`<div class="holo-text"><p>Что ты хочешь прокачать в жизни? Выбери <b>1–3</b>. Из этого я соберу твои Врата.</p></div><div style="margin-top:10px">${chipsHTML(Object.entries(SPHERES).map(([k,S])=>[k,ico(SPH_ICO[k]),S.n,S.d,S.col]),{sel:d.spheres,big:true})}</div>`,
+    if(s===1) r=await stepWin({step:st,total:T,title:"Что прокачиваем?",back:!edit,cls:"wide",body:`<div class="holo-text"><p>Что ты хочешь прокачать в жизни? Выбери <b>1–3</b>. Из этого я соберу твои Врата.</p></div><div style="margin-top:10px">${chipsHTML(Object.entries(SPHERES).map(([k,S])=>[k,ico(SPH_ICO[k]),S.n,S.d,S.col]),{sel:d.spheres,big:true})}</div>`,
       validate:el=>selOf(el.querySelector(".chips")).length>0, onMount:el=>{ wireChips(el,3); el.addEventListener("click",()=>d.spheres=selOf(el.querySelector(".chips"))); }});
-    if(s===2) r=await stepWin({step:3,total:T,title:"Зачем тебе это?",back:true,cls:"wide",body:`<div class="holo-text"><p>Скажи своими словами — я буду напоминать тебе <b>твою</b> причину, а не свою.</p></div>
+    if(s===2) r=await stepWin({step:st,total:T,title:"Зачем тебе это?",back:true,cls:"wide",body:`<div class="holo-text"><p>Скажи своими словами — я буду напоминать тебе <b>твою</b> причину, а не свою.</p></div>
         <div style="margin-top:8px">${d.spheres.map(k=>{ const S=SPHERES[k]; return `<div class="why-row" data-sp="${k}"><b>${ico(SPH_ICO[k])} ${S.n}</b>${chipsHTML(S.why.map(w=>[w,"",w]),{multi:false,sel:[d.why[k]]})}</div>`; }).join("")}</div><div class="dim" style="margin-top:6px">Можно пропустить.</div>`,
       onMount:el=>{ wireChips(el); el.addEventListener("click",()=>el.querySelectorAll(".why-row").forEach(r=>{ const v=selOf(r)[0]; if(v) d.why[r.dataset.sp]=v; else delete d.why[r.dataset.sp]; })); }});
     if(s===3){ const rel=NOPE.filter(([k])=>k==="camera"||k==="out"||(DEEDS[k]&&d.spheres.includes(DEEDS[k].sp)));
-      r=await stepWin({step:4,total:T,title:"Чего не хочешь?",back:true,cls:"wide",body:`<div class="holo-text"><p>Что точно <b>не про тебя</b>? Я не буду это предлагать. Передумаешь — поменяешь в меню.</p></div><div style="margin-top:10px">${chipsHTML(rel.map(([k,t])=>[k,"",t]),{sel:d.no,no:true})}</div><div class="dim" style="margin-top:6px">Ничего не мешает — жми «Дальше».</div>`,
+      r=await stepWin({step:st,total:T,title:"Чего не хочешь?",back:true,cls:"wide",body:`<div class="holo-text"><p>Что точно <b>не про тебя</b>? Я не буду это предлагать. Передумаешь — поменяешь в меню.</p></div><div style="margin-top:10px">${chipsHTML(rel.map(([k,t])=>[k,"",t]),{sel:d.no,no:true})}</div><div class="dim" style="margin-top:6px">Ничего не мешает — жми «Дальше».</div>`,
         onMount:el=>{ wireChips(el); el.addEventListener("click",()=>d.no=selOf(el.querySelector(".chips"))); }}); }
-    if(s===4) r=await stepWin({step:5,total:T,title:"Сколько времени?",back:true,cls:"wide",body:`<div class="holo-text"><p>Сколько минут в день ты <b>честно</b> готов на реальные дела?</p></div>
+    if(s===4) r=await stepWin({step:st,total:T,title:"Сколько времени?",back:true,cls:"wide",next:quick?"Готово":"Дальше",body:`<div class="holo-text"><p>Сколько минут в день ты <b>честно</b> готов на реальные дела?</p></div>
         <div style="margin-top:8px" id="obMin">${chipsHTML([["5","⏱","5 минут","начать с малого"],["15","⏱","15 минут","нормальный ритм"],["30","⏱","30 минут","серьёзно"]],{multi:false,sel:[String(d.mins)],big:true})}</div>`,
       validate:el=>selOf(el.querySelector("#obMin"))[0], onMount:el=>{ wireChips(el); el.addEventListener("click",()=>{ const m=selOf(el.querySelector("#obMin"))[0]; if(m) d.mins=+m; }); }});
-    if(s===5) r=await stepWin({step:6,total:T,title:"Сложность",back:true,cls:"wide",body:`<div class="holo-text"><p>С какого уровня начнём? Дальше Врата будут <b>расти вместе с тобой</b>: каждое повторение дела чуть сложнее, каждый 7-й раз — лёгкий день. Когда станет легко — Система предложит уровень выше.</p></div>
+    if(s===5) r=await stepWin({step:st,total:T,title:"Сложность",back:true,cls:"wide",body:`<div class="holo-text"><p>С какого уровня начнём? Дальше Врата будут <b>расти вместе с тобой</b>: каждое повторение дела чуть сложнее, каждый 7-й раз — лёгкий день. Когда станет легко — Система предложит уровень выше.</p></div>
         <div class="tiers" style="margin-top:8px" id="obLvl">${TIERS.map(t=>`<button class="chipbtn ${d.lvl===t.k?"on":""}" data-k="${t.k}"><span><b>${t.n}</b><small>${t.d}</small><em>${t.ex}</em></span></button>`).join("")}</div>`,
       validate:el=>!!el.querySelector("#obLvl .chipbtn.on"), onMount:el=>{ el.querySelectorAll("#obLvl .chipbtn").forEach(b=>b.onclick=()=>{ sfx.select(); el.querySelectorAll("#obLvl .chipbtn").forEach(x=>x.classList.toggle("on",x===b)); d.lvl=b.dataset.k; }); }});
-    if(s===6) r=await stepWin({step:7,total:T,title:"Как мне с тобой говорить?",back:true,cls:"wide",next:edit?"Сохранить":"Готово",body:`<div style="margin-top:4px">${chipsHTML([["strict","◎","Строго","«Врата открыты. Время пошло. Не подведи.»"],["mentor","◐","Как наставник","«Ты молодец, что пришёл. Начнём с малого?»"]],{multi:false,sel:[d.tone],big:true})}</div>`,
+    if(s===6) r=await stepWin({step:st,total:T,title:"Как мне с тобой говорить?",back:true,cls:"wide",next:edit?"Сохранить":"Готово",body:`<div style="margin-top:4px">${chipsHTML([["strict","◎","Строго","«Врата открыты. Время пошло. Не подведи.»"],["mentor","◐","Как наставник","«Ты молодец, что пришёл. Начнём с малого?»"]],{multi:false,sel:[d.tone],big:true})}</div>`,
       validate:el=>selOf(el.querySelector(".chips"))[0], onMount:el=>{ wireChips(el); el.addEventListener("click",()=>{ const v=selOf(el.querySelector(".chips"))[0]; if(v) d.tone=v; }); }});
-    if(r==="back") s=Math.max(edit?1:0,s-1); else s++; }
+    if(r==="back") pos=Math.max(edit?1:0,pos-1); else pos++; }
+  if(quick){ d.lvl=d.mins<=5?"beg":"mid"; }
   Object.assign(P,d); if(!P.cls) P.cls=d.spheres[0]; saveP(); }
 /* ---------- first launch ---------- */
 async function awaken(){ hubBusy=true; $("hubHud").classList.remove("on");
-  riftSystem(0); setTimeout(()=>{ if(HUB.rift&&!HUB.rift.g) HUB.rift.tgt=.28; },500);
-  await sysSay(["Ты меня слышишь?"],{ms:0});
-  if(HUB.rift){ HUB.rift.tgt=1; } sfx.gate(); flash(); await wait(700);
-  await sysSay(["Я — Система. Я вижу тех, кто готов стать сильнее. По-настоящему, не в игре."],{ms:0});
-  await stepWin({title:"Как это работает",icon:"?",cls:"wide",next:"Понял",body:`<div class="how3">
-    <div><i>${ico("bolt")}</i><b>Делаешь реальное дело</b><small>приседания, книга, фокус, дыхание — то, что выберешь сам</small></div>
-    <div><i>${ico("camera")}</i><b>Камера подтверждает</b><small>считает повторы и минуты. Видео не уходит с телефона</small></div>
-    <div><i>${ico("sword")}</i><b>Ты сильнее — и в жизни, и здесь</b><small>дела открывают Врата. Внутри Тень, которую бьёт твоя сила</small></div></div>`});
-  await interview(false);
+  // the prologue: you at point B → the fall → level 1 → your first real deed
+  const path=await prologue(); await proFirstDeed(path); proEnd(); await wait(400);
+  // then only three short questions; the rest the System asks later (menu → «Мои цели»)
+  P.spheres=[...path.sp]; saveP(); await interview(false,true);
   if(HUB.rift) HUB.rift.tgt=0; await sysSay([say(`${P.name}. Принято. Создаю твои Врата.`,`${P.name}, отлично. Сейчас соберу твои первые Врата — под тебя.`)],{ms:1400});
-  planToday(true); hubGatesRebuild(); await hubGatesRise(); P.onboarded=true; P.firstDay=todayKey(); saveP(); $("hubHud").classList.add("on"); hubHud(); hubBusy=false;
-  await planWindow(true); }
+  planToday(true); { const i=P.day.gates.findIndex(g=>g.deed==="squat"); if(i>=0&&rerollGate(i)) P.day.rerolls++; } hubGatesRebuild(); await hubGatesRise(); P.onboarded=true; P.firstDay=P.firstDay||todayKey(); saveP(); $("hubHud").classList.add("on"); hubHud(); hubBusy=false;
+  await sysSay([say("Это твои Врата на сегодня. Каждые — одно реальное дело. Листай и входи.","Вот твои Врата на сегодня — каждые открываются одним делом. Листай, выбирай, входи.")],{ms:0}); }
 /* the System speaks: one short line at a time */
 function sysSay(lines,{ms=0,title="Система"}={}){ return new Promise(async res=>{ for(let i=0;i<lines.length;i++){ const last=i===lines.length-1;
     await new Promise(r=>{ modal({id:"say",title,icon:"◎",cls:"small sysmsg",body:`<div class="holo-text"><p id="sayT"></p></div>${ms?"":`<div class="actions"><button class="btn primary small" id="sayN">Дальше</button></div>`}`,
@@ -4792,6 +4871,101 @@ function helpWindow(){ modal({id:"help",title:"Как играть",icon:"?",cls
     <div><i>📷</i><b>Дело → проверка</b><small>камера считает повторы и минуты, своё дело — честным словом</small></div>
     <div><i>⚔</i><b>Врата открыты → бой</b><small>сила удара = твои реальные дела. Победа — монеты и сюжет</small></div></div>
     <div class="holo-text" style="margin-top:12px"><p><b>Путь</b> — твой реальный прогресс: сколько сделал, серия дней, характеристики. <b>В город</b> — Врата у реальных мест, дойти можно только ногами.</p><p class="dim">Как приложение: iPhone — Safari → «Поделиться» → «На экран Домой». Android — Chrome → ⋮ → «Установить приложение».</p></div>`}); }
+
+/* ===== prologue.js ===== */
+/* ================= PROLOGUE «ТОЧКА Б»: you, a year from now, at the top → the fall → level 1 → stand up for real =================
+   The first two minutes are a feeling, not a manual: you hold the power, you lose it, you take the first real step back. */
+const PRO_PATHS=[
+  { k:"body", n:"Сильным", d:"тело, которое слушается", ic:"fist", line:"Тридцать подтягиваний. Тело слушается с полуслова.", sp:["body"], col:[0xff5a3c,0x2a0800,"#ff8a5c"] },
+  { k:"free", n:"Свободным", d:"своё дело и свои деньги", ic:"bolt", line:"Своё дело. Свои деньги. Никто не решает за тебя.", sp:["will","focus"], col:[0xffc640,0x2a1800,"#ffd166"] },
+  { k:"mind", n:"Умным", d:"голова, которая думает быстрее всех", ic:"brain", line:"Две книги в месяц. Ты думаешь быстрее всех в комнате.", sp:["read","focus"], col:[0x4f8dff,0x050f3c,"#8fb8ff"] },
+  { k:"calm", n:"Спокойным", d:"без тревоги и без телефона в руке", ic:"lotus", line:"Ни тревоги, ни ленты в три ночи. Телефон больше не решает за тебя.", sp:["calm"], col:[0x2effa8,0x00281a,"#6dffb0"] } ];
+const PRO={ on:false, skip:false, army:[], shadow:null, burst:[], aura:null, push:0 };
+const proFast=()=>PRO.skip||(TEST&&!window.__noAuto);
+function proEl(){ let el=$("pro"); if(el) return el; el=document.createElement("div"); el.id="pro"; el.className="pro";
+  el.innerHTML=`<div class="pro-bg" id="proBg"></div><svg class="pro-crack" id="proCrack" viewBox="0 0 100 180" preserveAspectRatio="none"><path d="M52 0 L49 22 L55 31 L46 52 L53 64 L44 88 L50 97 L41 126 L47 141 L38 180 M49 22 L36 30 L28 26 M55 31 L70 36 L79 49 M46 52 L30 60 L22 76 M53 64 L68 72 L74 88 L90 94 M44 88 L27 99 M50 97 L64 108 L70 128 M41 126 L24 138 L14 136 M47 141 L62 152 L66 170"/></svg>
+    <div class="pro-slash" id="proSlash"></div><div class="pro-panel" id="proPanel"></div><div class="pro-big" id="proBig"></div><div class="pro-cap" id="proCap"></div><div class="pro-opts" id="proOpts"></div><button class="pro-skip" id="proSkip">Пропустить ›</button>`;
+  document.body.appendChild(el); el.querySelector("#proSkip").onclick=e=>{ e.stopPropagation(); PRO.skip=true; el.querySelector("#proSkip").style.display="none"; }; return el; }
+/* wait for a tap (or a timeout) */
+function proTap(ms){ return new Promise(r=>{ if(proFast()){ setTimeout(r,PRO.skip?0:60); return; } const el=$("pro"); let done=false, tm=null;
+  const fin=e=>{ if(done) return; if(e&&e.target&&e.target.id==="proSkip") return; done=true; el.removeEventListener("pointerdown",fin); clearTimeout(tm); r(); };
+  tm=setTimeout(fin,ms); setTimeout(()=>{ if(!done) el.addEventListener("pointerdown",fin); },280); }); }
+async function proCap(text,{who="sys",ms=2600,big=false}={}){ if(PRO.skip) return; const el=$("proCap"); el.className="pro-cap on "+who+(big?" big":""); await typeLine(el,text,proFast()?1:who==="lord"?42:30); await proTap(ms); }
+function proCapOff(){ const el=$("proCap"); if(el) el.className="pro-cap"; }
+function proBig(text,cls=""){ const el=$("proBig"); el.className="pro-big "+cls; el.innerHTML=text; void el.offsetWidth; if(text) el.classList.add("on"); }
+function proChoose(){ return new Promise(res=>{ const el=$("proOpts"); el.className="pro-opts on";
+  el.innerHTML=PRO_PATHS.map((p,i)=>`<button data-i="${i}" style="--pc:${p.col[2]};--d:${i*.09}s"><i>${ico(p.ic)}</i><span><b>${p.n}</b><small>${p.d}</small></span></button>`).join("");
+  const pick=i=>{ sfx.select(); el.className="pro-opts"; setTimeout(()=>{ el.innerHTML=""; },300); res(PRO_PATHS[i]); };
+  el.querySelectorAll("button").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  if(TEST&&!window.__noAuto) setTimeout(()=>pick(window.__proPick||0),120); }); }
+/* the System window of the hunter you could be: numbers that count up, then drain */
+function proPanel(p,lvl,army,streak,rank){ const el=$("proPanel"); el.style.setProperty("--pc",p.col[2]);
+  el.innerHTML=`<small>[ Система ] · через год</small><b class="rk">Охотник ранга <em id="proRk">${rank}</em></b>
+    <div class="kv"><span>Уровень</span><b id="proLv">${lvl}</b></div><div class="kv"><span>Армия теней</span><b id="proAr">${army}</b></div><div class="kv"><span>Серия</span><b id="proSt">${streak}</b></div><p>${p.line}</p>`; el.classList.add("on"); }
+function proCount(id,from,to,ms,fmt=v=>v){ const el=$(id); if(!el) return Promise.resolve(); if(proFast()){ el.textContent=fmt(to); return Promise.resolve(); }
+  return new Promise(r=>{ const t0=performance.now(); const f=()=>{ const k=Math.min(1,(performance.now()-t0)/ms), e=1-Math.pow(1-k,3); el.textContent=fmt(Math.round(from+(to-from)*e)); if(k<1) requestAnimationFrame(f); else r(); }; f(); if(from<to) sfx.tick(); }); }
+/* 3D: the army behind you, the colossal Shadow in the Rift, the burst when it dies */
+function proArmy(n){ const types=["STR","MIND","SOUL","WILL"]; for(let i=0;i<n;i++){ const side=i%2?1:-1, row=Math.floor(i/2); const tx=soldierTex(types[i%4],i<6?"S":"A");
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx.t,transparent:true,depthWrite:false,fog:true,opacity:0})); const sc=1.35+((i*37)%10)/22;
+  sp.scale.set(sc,sc*1.5,1); sp.position.set(.35+side*(1.45+row*.95)+((i*53)%10-5)*.04,sc*.75,2.5-row*1.45); sp.userData={o:0,tgt:1,d:i*.08,sc,y0:sc*.75,kneel:0}; HUB.scene.add(sp); PRO.army.push(sp); } }
+function proShadow(){ const m=new THREE.Sprite(new THREE.SpriteMaterial({map:shadowTex(),transparent:true,depthWrite:false,fog:false,opacity:0,color:0x221018}));
+  m.scale.set(9,11.25,1); m.position.set(0,RY-.6,RZ+2.2); m.renderOrder=6; m.userData={o:0,tgt:.96,s:9,die:0}; HUB.scene.add(m); PRO.shadow=m; }
+function proBurst(col){ for(let i=0;i<60;i++){ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:WGLOW,color:col,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:1}));
+  const a=Math.random()*Math.PI*2, v=4+Math.random()*9; s.position.set(0,RY-.5,RZ+2.6); s.scale.setScalar(.25+Math.random()*.5); s.userData={vx:Math.cos(a)*v,vy:Math.sin(a)*v*.8+2,vz:(Math.random()-.2)*4,life:1}; HUB.scene.add(s); PRO.burst.push(s); } }
+function proTick(dt,t){ if(!PRO.on) return;
+  PRO.army.forEach((sp,i)=>{ const u=sp.userData; if(u.d>0){ u.d-=dt; return; } u.o+=(u.tgt-u.o)*Math.min(1,dt*(u.tgt>u.o?2.2:3.5)); sp.material.opacity=u.o;
+    sp.position.y=u.y0*(1-u.kneel*.25)+Math.sin(t*1.3+i)*.05*u.o; const k=.6+.4*u.o; sp.scale.set(u.sc*k,u.sc*1.5*k*(1-u.kneel*.2),1); });
+  const S=PRO.shadow; if(S){ const u=S.userData; if(u.die>0){ u.die+=dt*1.6; S.material.opacity=Math.max(0,.96-u.die); const s=u.s*(1+u.die*.9); S.scale.set(s,s*1.25,1); if(u.die>=1){ HUB.scene.remove(S); PRO.shadow=null; } }
+    else { u.o+=(u.tgt-u.o)*Math.min(1,dt*2.2); S.material.opacity=u.o; S.position.y=RY-.6+Math.sin(t*.8)*.15; const s=u.s*(.85+.15*u.o); S.scale.set(s,s*1.25,1); } }
+  for(let i=PRO.burst.length-1;i>=0;i--){ const s=PRO.burst[i], u=s.userData; u.life-=dt*.7; s.position.x+=u.vx*dt; s.position.y+=u.vy*dt; s.position.z+=u.vz*dt; u.vy-=dt*3; s.material.opacity=Math.max(0,u.life); if(u.life<=0){ HUB.scene.remove(s); PRO.burst.splice(i,1); } } }
+function proArmyFade(n){ const alive=PRO.army.filter(s=>s.userData.tgt>0); alive.slice(-n).forEach((s,i)=>{ s.userData.tgt=0; s.userData.d=i*.12; }); }
+function proClear(){ PRO.army.forEach(s=>HUB.scene.remove(s)); PRO.army=[]; if(PRO.shadow) HUB.scene.remove(PRO.shadow); PRO.shadow=null; PRO.burst.forEach(s=>HUB.scene.remove(s)); PRO.burst=[]; HUB.proAura=null; HUB.push=0; }
+function proSlash(){ const el=$("proSlash"); el.classList.remove("go"); void el.offsetWidth; el.classList.add("go"); flash(); HUB.shake=1.2;
+  const w=document.createElement("div"); w.className="mhsfx crit"; w.textContent="ДЗАН"; w.style.left="50%"; w.style.top="34%"; w.style.setProperty("--r","-9deg"); w.style.setProperty("--c","#fff"); w.style.zIndex=58; document.body.appendChild(w); setTimeout(()=>w.remove(),900);
+  noiseBurst(.5,2400,.12); tone(70,0,1.2,"sawtooth",.07,30); tone(1800,0,.25,"square",.02,300); }
+function proStrike(){ return new Promise(r=>{ proBig("КОСНИСЬ<br><small>один удар</small>","pulse"); const el=$("pro");
+  const hit=e=>{ if(e&&e.target&&e.target.id==="proSkip") return; el.removeEventListener("pointerdown",hit); clearTimeout(tm); proBig(""); proSlash(); if(PRO.shadow) PRO.shadow.userData.die=.01; proBurst(0xffe2a0); PRO.army.forEach(s=>s.userData.kneel=1); setTimeout(r,proFast()?60:900); };
+  const tm=setTimeout(hit,proFast()?60:9000); setTimeout(()=>el.addEventListener("pointerdown",hit),250); }); }
+/* the whole prologue; returns the chosen path (it seeds your spheres) */
+async function prologue(){ PRO.on=true; PRO.skip=false; const el=proEl(); el.classList.add("on","black"); hubBusy=true; $("hubHud").classList.remove("on"); riftSystem(0);
+  await wait(proFast()?30:700);
+  await proCap("Представь себя через год.",{ms:2200}); proCapOff();
+  proBig("Кем ты стал?","q"); const p=await proChoose(); proBig(""); P.proPath=p.k; saveP();
+  // ---- the vision: you at point B ----
+  riftTint(p.col[0],p.col[1],p.col[2],false); HUB.rift.tgt=1; proArmy(16); HUB.proAura=.95; el.classList.remove("black"); raidMusic(true); sfx.gate();
+  await wait(proFast()?30:900); proPanel(p,1,0,"0 дней","S"); await Promise.all([proCount("proLv",1,87,1600),proCount("proAr",0,312,1800),proCount("proSt",0,365,1700,v=>v+" "+plural(v,"день","дня","дней"))]);
+  await proCap("Это ты. Через год.",{ms:2400});
+  proShadow(); await proCap("Врата ранга S. Год назад они бы тебя сломали.",{ms:2200}); playFile("boss",.55); HUB.shake=.4; proCapOff(); await wait(proFast()?30:700);
+  await proStrike(); await proCap("Один удар.",{ms:1800,big:true});
+  // ---- the fall ----
+  raidMusic(false); if(ambEl) fadeTo(ambEl,0,1500); HUB.proAura=.6; $("proPanel").classList.add("fall");
+  await proCap("А потом ты пропустил один день.",{ms:2200}); proArmyFade(3); HUB.rift.tgt=.8; await proCount("proLv",87,74,700); await proCount("proAr",312,241,500);
+  await proCap("Ничего страшного. Потом ещё один.",{ms:2000}); proArmyFade(4); await proCount("proLv",74,52,700); $("proSt").textContent="0 дней";
+  await proCap("«Начнёшь с понедельника»",{who:"lord",ms:2100}); proArmyFade(4); HUB.proAura=.3; riftTint(0x9a8f99,0x0b0a10,"#a8a0b0",false); await proCount("proLv",52,19,800); await proCount("proAr",241,40,500);
+  await proCap("«Завтра. Потом. Когда будет настроение»",{who:"lord",ms:2300}); proArmyFade(8); HUB.proAura=.08;
+  $("proRk").textContent="E"; await proCount("proLv",19,1,900); $("proAr").textContent="0";
+  HUB.rift.tgt=.06; el.classList.add("cracked"); HUB.shake=.8; noiseBurst(.8,300,.1); tone(48,0,2.2,"sine",.09,30);
+  await proCap("Однажды ты просто перестал приходить.",{ms:2600}); proCapOff(); el.classList.add("black"); $("proPanel").classList.remove("on"); await wait(proFast()?30:1200); proClear();
+  // ---- the truth ----
+  el.classList.remove("cracked"); await proCap("Так уже было. С Охотником №0 — лучшим из нас.",{ms:2600});
+  await proCap("Он дошёл до вершины. А потом однажды не встал.",{ms:2600});
+  await proCap("Упасть может каждый. Я ищу тех, кто встаёт.",{ms:2800}); proCapOff();
+  if(ambEl&&!muted) fadeTo(ambEl,.38,2500); riftSystem(.35); HUB.proAura=0; el.classList.remove("black"); proBig(`УРОВЕНЬ 1<small>это не конец. это начало</small>`,"lvl"); sfx.seal(); await wait(proFast()?30:1600);
+  $("proSkip").style.display="none"; PRO.skip=false; return p; }
+/* the first real deed: stand up. The camera counts — or your honest word */
+async function proFirstDeed(p){ const g=mkPersonalGate("squat",0,1,{}); g.amt=10; g.unit="раз"; g.name="Приседания"; g.first=true;
+  for(let tries=0;tries<3;tries++){ proBig(""); const el=$("pro"); const o=$("proOpts"); o.className="pro-opts cta on";
+    o.innerHTML=`<div class="pro-cta"><small>Первое реальное дело</small><b>Встань. Прямо сейчас.</b><p>10 приседаний. Камера посчитает — видео не уходит с телефона. Это твой первый уровень.</p></div>
+      <button class="go" id="proGo">${ico("camera")} <span><b>Встать</b><small>камера считает</small></span></button><button class="alt" id="proHon"><span><b>Без камеры</b><small>на честное слово</small></span></button>${tries?`<button class="alt" id="proLater"><span><b>Позже</b><small>сначала посмотрю вокруг</small></span></button>`:""}`;
+    const pick=await new Promise(r=>{ o.querySelector("#proGo").onclick=()=>r("cam"); o.querySelector("#proHon").onclick=()=>r("hon"); const l=o.querySelector("#proLater"); if(l) l.onclick=()=>r("later"); if(TEST&&!window.__noAuto) setTimeout(()=>r("cam"),120); });
+    o.className="pro-opts"; if(pick==="later") return false;
+    el.classList.add("hide"); const res=await (pick==="cam"&&camAllowed()?camCheck(g):honorCheck(g)); el.classList.remove("hide");
+    if(res&&res.ok){ addTotal("squat",10); streakOnDeed(); P.stats.body=(P.stats.body||1)+1; const gain=P.xpNext-P.xp, ups=addXp(gain); hud(); saveP(); flash(); sfx.done();
+      proBig(`ТЫ ВСТАЛ<small>+${gain} опыта · сила +1</small>`,"lvl up"); await wait(proFast()?30:1500); proBig(""); if(ups){ await levelUpFx(); await wait(proFast()?30:2700); }
+      await proCap("Вот так это работает. Реальное дело — реальная сила. Здесь и в жизни.",{ms:3200}); proCapOff(); return true; }
+    await proCap(tries?"Ничего. Встать можно и со второго раза.":"Не вышло? Это нормально. Попробуй ещё раз.",{ms:1800}); proCapOff(); }
+  return false; }
+function proEnd(){ const el=$("pro"); PRO.on=false; proClear(); if(el){ el.classList.add("out"); setTimeout(()=>el.remove(),600); } }
 
 /* ===== ritual.js ===== */
 /* ================= RITUALS: morning «Пробуждение», evening «Отчёт Системе», and «Где ты сейчас?» =================
@@ -4853,7 +5027,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="0930-fe7698";
+const BUILD="0930-2c0b77";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
@@ -4873,11 +5047,11 @@ const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
 async function maybeInstallNudge(){ if(TEST&&!/[?&]inst/.test(location.search)) return; if(isStandalone()||!P.onboarded||daysPlayed()<2) return;
   const I=P.inst||(P.inst={n:0,d:null}); if(I.done||I.n>=3||(I.d&&dayDiff(I.d,todayKey())<3)) return; I.n++; I.d=todayKey(); saveP(); await installWindow(); }
 function installWindow(){ return new Promise(res=>{ const code=backupCode();
-  const steps=isIOS?`<div class="steps"><div><i>1</i><span>Нажми <b>«Скопировать прогресс»</b> ниже — на iPhone приложение с экрана Домой хранит данные отдельно от Safari</span></div>
+  const steps=isIOS?`<div class="isteps"><div><i>1</i><span>Нажми <b>«Скопировать прогресс»</b> ниже — на iPhone приложение с экрана Домой хранит данные отдельно от Safari</span></div>
       <div><i>2</i><span>В Safari открой <b>«Поделиться»</b> (квадрат со стрелкой, в новых iOS — через «•••») → <b>«На экран Домой»</b></span></div>
       <div><i>3</i><span>Открой Врата с иконки → <b>«Есть код прогресса»</b> → вставь. Всё на месте</span></div></div>`
-    :installEv?`<div class="steps"><div><i>1</i><span>Нажми <b>«Установить»</b> — иконка появится на экране. Прогресс сохранится</span></div></div>`
-    :`<div class="steps"><div><i>1</i><span>Chrome → <b>⋮</b> (справа сверху) → <b>«Добавить на главный экран»</b> или <b>«Установить приложение»</b></span></div><div><i>2</i><span>Открывай Врата с иконки. Прогресс сохранится</span></div></div>`;
+    :installEv?`<div class="isteps"><div><i>1</i><span>Нажми <b>«Установить»</b> — иконка появится на экране. Прогресс сохранится</span></div></div>`
+    :`<div class="isteps"><div><i>1</i><span>Chrome → <b>⋮</b> (справа сверху) → <b>«Добавить на главный экран»</b> или <b>«Установить приложение»</b></span></div><div><i>2</i><span>Открывай Врата с иконки. Прогресс сохранится</span></div></div>`;
   modal({id:"inst",title:"Врата — на экран телефона",icon:"◈",cls:"wide",closable:true,body:`<div class="holo-text"><p>Ты здесь уже ${daysPlayed()} ${plural(daysPlayed(),"день","дня","дней")}. Сделай из Врат приложение: иконка на экране, запуск за секунду, без адресной строки, работает даже без интернета.</p>
     ${isIOS?`<p class="dim">Важно: Safari может стереть данные сайта, если не заходить неделю. У приложения с экрана Домой такого нет.</p>`:""}</div>${steps}
     <div class="actions">${isIOS?`<button class="btn primary" id="inCopy">Скопировать прогресс</button>`:installEv?`<button class="btn primary" id="inGo">Установить</button>`:""}<button class="btn ghost small" id="inLater">Потом</button></div>`,
@@ -5088,13 +5262,13 @@ async function welcomeBack(fresh){ const tw=twinDaily(); if(tw){ buildTwin(); hu
 loadP(); P.xpNext=xpNeed(P.level); hud(); document.body.classList.toggle("touch",isTouch);
 apiReady.then(()=>{ if(API&&P.netToken) netRefresh(); }); buildHub(); if(P.perf||LOWQ) perfApply(Math.max(P.perf||0,LOWQ?2:0),false); if(P.onboarded){ planToday(); hubGatesRebuild(); } showHub(); resize();
 $("bMenu").onclick=()=>{ if(!anyBlocking()) menuWindow(); }; $("bArmy").onclick=()=>{ if(!anyBlocking()&&!hubBusy) armyWindow(); }; $("bPath").onclick=()=>{ if(!anyBlocking()&&!hubBusy) pathWindow(); }; $("bCity").onclick=()=>{ if(!anyBlocking()&&!hubBusy) enterCity(); };
-$("chipWeek").onclick=()=>{ if(!anyBlocking()) weekWindow(); }; $("hubStory").onclick=()=>{ if(!anyBlocking()) storyWindow(); }; $("meChip").onclick=()=>{ if(!anyBlocking()&&!hubBusy) pathWindow(); }; $("chipStreak").onclick=$("meChip").onclick;
+$("chipWeek").onclick=$("bWeek").onclick=()=>{ if(!anyBlocking()) weekWindow(); }; $("hubStory").onclick=()=>{ if(!anyBlocking()) storyWindow(); }; $("meChip").onclick=()=>{ if(!anyBlocking()&&!hubBusy) pathWindow(); }; $("chipStreak").onclick=$("meChip").onclick;
 requestAnimationFrame(frame);
 (async()=>{ const lb=$("loadBar"); for(let i=1;i<=10;i++){ lb.style.width=i*10+"%"; await wait(50); }
   const ld=$("loading"); $("loadSub").textContent=""; const b=document.createElement("button"); b.className="btn primary big"; b.id="enter"; b.textContent=P.onboarded?"Войти":"Начать"; ld.appendChild(b);
-  const h=document.createElement("div"); h.className="load-sub"; h.textContent=isTouch?"лучше в наушниках · телефон горизонтально":"лучше в наушниках"; ld.appendChild(h);
+  const h=document.createElement("div"); h.className="load-sub"; h.textContent="лучше в наушниках"; ld.appendChild(h);
   if(!P.onboarded){ const k=document.createElement("button"); k.className="btn ghost small"; k.id="lRestore"; k.textContent="Есть код прогресса"; k.onclick=()=>{ document.body.classList.add("preload"); backupWindow(); }; ld.appendChild(k); }
-  b.onclick=async()=>{ audio(); startMusic(); try{ if(isTouch&&document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen({navigationUI:"hide"}); if(screen.orientation&&screen.orientation.lock) await screen.orientation.lock("landscape"); }catch(e){}
+  b.onclick=async()=>{ audio(); startMusic(); try{ if(isTouch&&document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen({navigationUI:"hide"}); }catch(e){}
     ld.style.opacity=0; setTimeout(()=>ld.remove(),600); $("fade").style.opacity=0; started=true;
     if(!P.onboarded) awaken(); else welcomeBack(false); }; })();
 window.__g={ P, HUB, get MODE(){ return MODE; }, get F(){ return F; }, get gates(){ return gates; }, player, openGate, enterDungeon, D, THEMES, applyTheme, dungeonOf, planToday, hubGatesRebuild, showHub, enterCity, camp, week, maybeUrgent, checkMilestones, DEEDS, TIERS, deedAmount, mkPersonalGate, doDeed, addTotal, appChallenge, dayCheck, clockCheck, pathWindow, maybeTierUp, camp, storyScene, chapterCard, SEASON, storyIntro, storyAfterGate, storySide, storyWindow, morningRitual, eveningReport, ctxWindow, mainWindow, setCtx, twinDaily, maybeTwinBirth, shareCard, makeCard, backupCode, parseBackup, restoreBackup, backupWindow, feedbackWindow, installWindow, maybeInstallNudge, maybeCoach, perf, perfApply, diag, twinGate, buildTwin, twinWindow,
