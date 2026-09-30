@@ -416,6 +416,40 @@ body.testmode .joyzone{display:block}
   .dock{bottom:calc(150px + env(safe-area-inset-bottom))}
 }
 
+body.touch .joyzone{display:block}
+.actbtns{position:fixed;right:76px;bottom:calc(22px + env(safe-area-inset-bottom));z-index:12;display:none;gap:10px}
+body.touch .actbtns{display:flex}
+.actbtns .btn.ic{width:56px;height:56px;font-size:22px;padding:0;border-radius:50%;clip-path:none;background:rgba(8,14,34,.7)}
+.actbtns .btn.ic.on{box-shadow:0 0 14px var(--cyan);outline:1px solid var(--cyan)}
+#glabels{z-index:8}
+.glabel{position:absolute;left:0;top:0;display:flex;align-items:center;gap:7px;padding:4px 10px 4px 4px;background:rgba(6,8,26,.88);border:1px solid var(--c);box-shadow:0 0 10px color-mix(in srgb,var(--c) 35%,transparent);pointer-events:auto;cursor:pointer;white-space:nowrap;will-change:transform;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);transition:opacity .2s}
+.glabel b{width:24px;height:24px;display:grid;place-items:center;background:var(--c);color:#0a0c20;font-weight:800;font-size:14px}
+.glabel span{font-size:12px;font-weight:700;color:#fff;display:flex;flex-direction:column;line-height:1.15;letter-spacing:.02em}
+.glabel em{font-style:normal;font-weight:600;color:#c9d6ff;font-size:11px}
+.glabel.far{opacity:.72;transform-origin:center}
+.glabel.near{animation:gpulse 1.2s ease-in-out infinite}
+.glabel.tut{outline:2px solid #fff}
+.tutarrow{position:fixed;left:0;top:0;z-index:25;display:none;pointer-events:none;width:0;height:0}
+.tutarrow i{position:absolute;left:-14px;top:-40px;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid #ffd166;filter:drop-shadow(0 0 8px #ffd166);animation:tutb .9s ease-in-out infinite}
+@keyframes tutb{50%{transform:translateY(-8px)}}
+.hl{position:relative;animation:hlp 1s ease-in-out infinite;border-color:#ffd166!important}
+@keyframes hlp{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.07);filter:brightness(1.5) drop-shadow(0 0 10px #ffd166)}}
+.tutbar{font-size:10px;letter-spacing:.25em;color:var(--gold)}
+.breath{position:relative;width:170px;height:170px;margin:14px auto 6px;display:grid;place-items:center}
+.breath i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);box-shadow:0 0 24px var(--accent),inset 0 0 24px var(--accent);transform:scale(.55);transition:transform 4s ease-in-out}
+.breath i.in{transform:scale(1)}
+.breath span{font-size:18px;font-weight:800;letter-spacing:.2em;text-shadow:0 0 10px var(--accent)}
+.frag{font-size:15.5px;line-height:1.55;padding:12px 14px;border-left:2px solid var(--gold);background:rgba(255,209,102,.06);font-style:italic}
+.slides .sl-ic{font-size:44px;text-align:center;margin:6px 0 8px;filter:drop-shadow(0 0 12px var(--accent))}
+.slides .sl-t{font-size:20px;font-weight:800;text-align:center;letter-spacing:.04em;margin-bottom:8px}
+.slides .sl-p{font-size:14px;line-height:1.5;text-align:center;color:var(--ink)}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:12px}.dots i{width:7px;height:7px;border-radius:50%;background:rgba(95,227,255,.25)}.dots i.on{background:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+.daily .row{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(95,227,255,.12);font-size:13px}
+.daily .row b{color:#fff}.daily .row small{color:var(--ink-dim)}.daily .ok{color:#6dffb0}.daily .no{color:#56607e}
+.journal p{font-size:13.5px;line-height:1.5;margin:6px 0;padding-left:10px;border-left:2px solid rgba(255,209,102,.5)}
+.journal p.lock{color:#56607e;border-color:#2a3050;font-style:italic}
+@media (max-width:700px){ .actbtns{right:70px} }
+
 </style>
 </head>
 <body>
@@ -443,12 +477,16 @@ body.testmode .joyzone{display:block}
 <div class="objective" id="objective"><small id="objChapter">Цель</small><span id="objText">—</span><em id="objWhy"></em></div>
 <canvas class="minimap" id="minimap" width="240" height="240" title="Карта (M)"></canvas>
 <div class="dock" id="dock">
+  <button class="btn small ic" id="bDaily" title="Сегодня и история">📜</button>
   <button class="btn small ic" id="bList" title="Врата рядом">☰</button>
   <button class="btn small ic" id="bGyro" title="Гироскоп: телефон как окно">🧭</button>
   <button class="btn small ic ghost" id="bMute" title="Звук">♪</button>
   <button class="btn small ic ghost" id="bMenu" title="Система">≡</button>
 </div>
 <div class="joyzone" id="joyZone"></div>
+<div class="actbtns" id="actBtns"><button class="btn ic" id="bRun" title="Бег">»</button><button class="btn ic" id="bJump" title="Прыжок">⤒</button></div>
+<div class="layer" id="glabels"></div>
+<div class="tutarrow" id="tutArrow"><i></i></div>
 <div class="joy" id="joy"><i id="joyKnob"></i></div>
 <div class="guidebox" id="guideBox"><div class="gb-title">Проводник</div><div class="gb-text"></div><div class="gb-act"></div></div>
 <div class="fullmap" id="fullmap"><canvas id="fmCanvas"></canvas>
@@ -1593,7 +1631,7 @@ const walkMin=m=>Math.max(1,Math.round(m/75));
 
 /* ---------- state ---------- */
 const SAVE_KEY="levelup_city_v1";
-const P={ name:"", level:1, xp:0, xpNext:300, energy:3, streak:0, coins:0, rep:0, stats:{body:2,mind:2,will:2,soul:2}, cleared:{}, lastDay:null, hexes:[], firstRun:true, seenTips:[], clan:null, cls:null, spheres:[], shields:0, seen:[], explore:0, dyn:[], gifts:{}, firstGateDone:false };
+const P={ name:"", level:1, xp:0, xpNext:300, energy:3, streak:0, coins:0, rep:0, stats:{body:2,mind:2,will:2,soul:2}, cleared:{}, lastDay:null, hexes:[], firstRun:true, seenTips:[], clan:null, cls:null, spheres:[], shields:0, seen:[], explore:0, dyn:[], gifts:{}, firstGateDone:false, tutDone:false, frag:0, fragDay:null, day:null };
 const xpNeed=l=>300+(l-1)*30;
 function loadP(){ try{ const r=localStorage.getItem(SAVE_KEY); if(r) Object.assign(P,JSON.parse(r)); }catch(e){} }
 function saveP(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(P)); }catch(e){} }
@@ -2164,9 +2202,9 @@ const texCache=new Map();
 function signTexture(text,color,big){ const k=text+"|"+color+"|"+big; if(texCache.has(k)) return texCache.get(k);
   const c=document.createElement("canvas"); const g=c.getContext("2d"); const fs=big?76:56; g.font=`700 ${fs}px "Exo 2",Arial`; const w=Math.min(1400,g.measureText(text).width+fs*1.2); c.width=Math.ceil(w); c.height=Math.ceil(fs*1.9);
   g.font=`700 ${fs}px "Exo 2",Arial`; g.textAlign="center"; g.textBaseline="middle";
-  g.strokeStyle=color; g.lineWidth=4; g.shadowColor=color; g.shadowBlur=18; g.globalAlpha=.9; const r=18; const x0=6,y0=6,x1=c.width-6,y1=c.height-6;
+  g.strokeStyle=color; g.lineWidth=4; g.shadowColor=color; g.shadowBlur=10; g.globalAlpha=.9; const r=18; const x0=6,y0=6,x1=c.width-6,y1=c.height-6;
   g.beginPath(); g.moveTo(x0+r,y0); g.arcTo(x1,y0,x1,y1,r); g.arcTo(x1,y1,x0,y1,r); g.arcTo(x0,y1,x0,y0,r); g.arcTo(x0,y0,x1,y0,r); g.stroke();
-  g.fillStyle="rgba(10,10,30,.55)"; g.fill(); g.globalAlpha=1; g.fillStyle="#fff"; g.shadowBlur=22; g.fillText(text,c.width/2,c.height/2+2); g.shadowBlur=8; g.fillStyle=color; g.globalAlpha=.55; g.fillText(text,c.width/2,c.height/2+2);
+  g.fillStyle="rgba(6,6,22,.82)"; g.fill(); g.globalAlpha=1; g.shadowBlur=6; g.fillStyle="#f4f6ff"; g.fillText(text,c.width/2,c.height/2+2);
   const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter; const res={t,ar:c.width/c.height}; texCache.set(k,res); return res; }
 const signs=new Map(); let signAcc=0;
 function updateSigns(dt,px,pz){ signAcc+=dt; if(signAcc<.6) return; signAcc=0;
@@ -2245,13 +2283,13 @@ async function generateGates(){
   /* 4) dynamic rifts that spawned while walking (kept for 40 min) */
   (P.dyn||[]).filter(d=>d.exp>Date.now()).forEach(d=>out.push(mkGate(d,d.rank,day,{id:d.id,dyn:true,exp:d.exp})));
   /* 5) the very first gate: right in front of you */
-  if(!P.firstGateDone){ const fx=me.x-Math.sin(player.yaw)*26, fz=me.z-Math.cos(player.yaw)*26; const s=walkSpot(fx,fz,30)||{x:fx,z:fz}; const ll=fromLocal(s.x,s.z);
+  if(!P.tutDone){ const fx=me.x-Math.sin(player.yaw)*45, fz=me.z-Math.cos(player.yaw)*45; const s=walkSpot(fx,fz,30,taken)||walkSpot(me.x,me.z,80,[{x:me.x,z:me.z},...taken])||{x:fx,z:fz}; const ll=fromLocal(s.x,s.z);
     out.push(mkGate({...ll,name:"",type:"WILL",rift:true},"E",day,{id:"tut:"+day,tut:true})); }
   return out; }
 
 /* rifts spawn while you walk — the city keeps surprising you */
 let walkedSinceRift=0;
-function maybeSpawnRift(stepM){ walkedSinceRift+=stepM; if(walkedSinceRift<130) return; walkedSinceRift=0;
+function maybeSpawnRift(stepM){ if(TUT.on) return; walkedSinceRift+=stepM; if(walkedSinceRift<130) return; walkedSinceRift=0;
   P.dyn=(P.dyn||[]).filter(d=>d.exp>Date.now()); if(P.dyn.filter(d=>!clearedToday().includes(d.id)).length>=2) return;
   const me=player.local, a=-player.yaw-Math.PI/2+rnd(-.6,.6), d=rnd(45,95); const wx=me.x+Math.cos(a)*d, wz=me.z+Math.sin(a)*d;
   const s=walkSpot(wx,wz,40,gates.map(g=>toLocal(g))); if(!s) return;
@@ -2275,8 +2313,8 @@ function gateCard(g){
   modal({id:"gate",title:`${T.name} · ранг ${g.rank}`,icon:T.icon,accent:col,closable:true,body:`
     <div class="holo-sub">${g.name}${g.dyn?" · блуждающий":""}</div>
     <div class="holo-text"><p>${g.rank==="S"?"<b>Врата ранга S.</b> Открываются раз в неделю. Рейд клана — в воскресенье, но пройти можно и одному.":g.tut?"<b>Первые Врата.</b> Открылись прямо перед тобой — Система хочет посмотреть, на что ты способен.":FLAVOR[g.type]}</p></div>
-    <div class="kv"><span>Реальное дело</span><b>${Q.t}</b></div>
-    <div class="kv"><span>Что сделать</span><b style="text-align:right;max-width:62%">${Q.items?Q.items.map(i=>`${i.name} ${scaleGoal(i,g)}${i.unit?" "+i.unit:""}`).join(", "):Q.timer?`${scaleTimer(Q,g)} мин · ${Q.desc}`:"1 дело на выбор"}</b></div>
+    <div class="kv"><span>Реальное дело</span><b>${g.tut?"Дыхание":Q.t}</b></div>
+    <div class="kv"><span>Что сделать</span><b style="text-align:right;max-width:62%">${g.tut?"5 спокойных вдохов · меньше минуты":Q.items?Q.items.map(i=>`${i.name} ${scaleGoal(i,g)}${i.unit?" "+i.unit:""}`).join(", "):Q.timer?`${scaleTimer(Q,g)} мин · ${Q.desc}`:"1 дело на выбор"}</b></div>
     <div class="kv"><span>Награда</span><b style="color:var(--gold)">+${rw.xp} опыта${rw.cls?" (класс +10%)":""} · ⚡+${rw.en} · ${T.statName} +${rw.stat}</b></div>
     <div class="kv"><span>Бой внутри</span><b>◉ ${rw.coins} · район клану</b></div>
     <div class="kv"><span>Расстояние</span><b>${d<GATE_RANGE?"ты у Врат":`${fmtDist(d)} · ~${walkMin(d)} мин пешком`}</b></div>
@@ -2285,7 +2323,7 @@ function gateCard(g){
     <div class="actions">${inRange?"":`<button class="btn small" id="gRoute">${routeTarget===g?"Путь уже ведёт":"Проложить путь"}</button>`}${inRange&&!night?`<button class="btn primary" id="gOpen">Открыть Врата</button>`:""}${(!inRange||night)&&(TEST||testMode)?`<button class="btn small ghost" id="gHere">Я тут (тест)</button>`:""}</div>`,
     onMount:el=>{ const r=el.querySelector("#gRoute"); if(r) r.onclick=()=>{ closeModal("gate"); routeTo(g); };
       const o=el.querySelector("#gOpen"); if(o) o.onclick=()=>{ closeModal("gate"); startQuest(g); };
-      const h=el.querySelector("#gHere"); if(h) h.onclick=()=>{ closeModal("gate"); startQuest(g); }; }});
+      const h=el.querySelector("#gHere"); if(h) h.onclick=()=>{ closeModal("gate"); startQuest(g); }; if(TUT.on&&g.tut) tutHighlight(o?"#gOpen":"#gRoute"); }});
 }
 const scaleGoal=(i,g)=>Math.ceil(i.goal*(1+RANK_ORDER.indexOf(g.rank)*.2)/i.step)*i.step;
 const scaleTimer=(Q,g)=>Math.round(Q.timer*(1+RANK_ORDER.indexOf(g.rank)*.2));
@@ -2327,7 +2365,7 @@ function buildGateObj(gate){
   const N=46, pp=new Float32Array(N*3), pa=new Float32Array(N); for(let i=0;i<N;i++){ const a=Math.random()*6.28, r=Math.random()*2.4*sz; pp[i*3]=Math.cos(a)*r; pp[i*3+1]=0; pp[i*3+2]=Math.sin(a)*r; pa[i]=Math.random(); }
   const pg=new THREE.BufferGeometry(); pg.setAttribute("position",new THREE.BufferAttribute(pp,3)); pg.setAttribute("aP",new THREE.BufferAttribute(pa,1)); const rm=riseMat(col); const rise=new THREE.Points(pg,rm); rise.frustumCulled=false; g.add(rise);
   const lt=new THREE.Sprite(new THREE.SpriteMaterial({map:labelTex("",""," #fff"),transparent:true,depthWrite:false,depthTest:false,fog:false,color:0xb8b8c8})); lt.scale.set(4.4,1.3,1); lt.position.y=cy+2.9*sz+.8; lt.renderOrder=9; g.add(lt);
-  const hit=new THREE.Mesh(new THREE.SphereGeometry(3.4*sz,8,6),new THREE.MeshBasicMaterial({visible:false})); hit.position.y=cy; hit.userData.gate=gate; g.add(hit); gateHits.push(hit); lt.userData.gate=gate; gateHits.push(lt);
+  const hit=new THREE.Mesh(new THREE.SphereGeometry(3.4*sz,8,6),new THREE.MeshBasicMaterial({visible:false})); hit.position.y=cy; hit.userData.gate=gate; g.add(hit); gateHits.push(hit); lt.visible=false;
   const light=new THREE.Mesh(POOL_GEO,new THREE.MeshBasicMaterial({map:poolTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,color:col,opacity:.8})); light.rotation.x=-Math.PI/2; light.position.y=.07; light.scale.setScalar(.9*sz); g.add(light);
   gate.obj={g,pivot,torus,torus2,disc,pm,beam,bm,rise,rm,glyph,shards,label:lt,labelKey:"",cs,hit,sz,light};
   setGateCleared(gate,gate.cleared,true);
@@ -2341,13 +2379,23 @@ function updateGates(dt,t){
     o.pivot.rotation.y=Math.atan2(me.x-L.x,me.z-L.z); o.torus.rotation.z+=dt*.7; o.torus2.rotation.z-=dt*.45; o.glyph.rotation.z+=dt*.2;
     o.shards.forEach((s,i)=>{ s.position.y=2.9*o.sz+Math.sin(t*1.3+i*2)*.25; s.rotation.y+=dt*1.2; });
     const near=d<GATE_RANGE; o.torus.scale.setScalar(near?1+Math.sin(t*4)*.03:1);
-    // label (distance)
-    const key=gate.cleared?"✓":near?"near":Math.round(d/10);
-    if(o.labelKey!==key){ o.labelKey=key; o.label.material.map.dispose(); const T=GT[gate.type];
-      o.label.material.map=labelTex(`${gate.rank} · ${T.name.replace("Врата ","").toUpperCase()}`,gate.cleared?"закрыты ✓":near?"ты у Врат — нажми":fmtDist(d),o.cs); o.label.material.needsUpdate=true; }
-    const ls=Math.max(2.4,d*.07); o.label.scale.set(ls*3.4,ls,1); o.label.position.y=5.8*o.sz+.6+ls*.5;
     if(o.clearedT!==null && o.clearedT<1){ o.clearedT=Math.min(1,o.clearedT+dt*.6); const k=1-o.clearedT; o.pivot.scale.setScalar(Math.max(.01,k)); o.bm.uniforms.uOn.value=k; o.rm.uniforms.uOn.value=k; if(o.clearedT>=1) setGateCleared(gate,true,true); }
   } }
+
+/* crisp HTML labels over the gates (readable, never overlapping) */
+const labelsEl=$("glabels"), labelMap=new Map(), _lv=new THREE.Vector3();
+function updateLabels(){ if(!started||dOn){ labelsEl.style.display="none"; return; } labelsEl.style.display="";
+  const W=innerWidth,H=innerHeight; const list=gates.filter(g=>g.obj&&(!TUT.on||g.tut)).map(g=>({g,d:gateDist(g)})).filter(x=>x.d<900).sort((a,b)=>(b.g.tut-a.g.tut)||a.d-b.d); const placed=[]; const seen=new Set();
+  for(const {g,d} of list){ const o=g.obj; _lv.set(o.g.position.x,6.2*o.sz,o.g.position.z).project(camera); if(_lv.z>1||_lv.z<-1) continue;
+    let x=(_lv.x+1)/2*W, y=(1-_lv.y)/2*H; if(x<-80||x>W+80||y<-40||y>H+40) continue;
+    const w=g.cleared?90:150, h=34; let ok=false; for(let k=0;k<4;k++){ if(!placed.some(p=>Math.abs(p.x-x)<(p.w+w)/2+4&&Math.abs(p.y-y)<h)){ ok=true; break; } y-=h+2; }
+    if(!ok||placed.length>=6) continue; placed.push({x,y,w}); seen.add(g.id);
+    let el=labelMap.get(g.id); if(!el){ el=document.createElement("div"); el.className="glabel"; el.onclick=()=>{ if(!anyBlocking()) gateCard(g); }; labelsEl.appendChild(el); labelMap.set(g.id,el); }
+    const T=GT[g.type]; el.style.setProperty("--c",g.rank==="S"?"#ffe08a":T.color); const near=d<GATE_RANGE;
+    el.classList.toggle("near",near&&!g.cleared); el.classList.toggle("far",d>250); el.classList.toggle("tut",!!g.tut&&!g.cleared);
+    const html=g.cleared?`<b>✓</b><span>закрыты</span>`:`<b>${g.rank}</b><span>${g.tut?"Первые Врата":T.name}<em>${near?"ты у Врат · нажми":fmtDist(d)}</em></span>`; if(el._h!==html){ el.innerHTML=html; el._h=html; }
+    el.style.transform=`translate(${x}px,${y}px) translate(-50%,-100%)`; }
+  for(const [id,el] of labelMap){ if(!seen.has(id)){ el.remove(); labelMap.delete(id); } } }
 
 /* ================= ROUTE: glowing chevrons on the real sidewalks ================= */
 let routeTarget=null, routePath=null, routeAcc=0, routeLen=0;
@@ -2403,11 +2451,11 @@ function checkHex(){ const c=hexOf(fromLocal(player.local.x,player.local.z)); co
   toast(`⬡ Район ${ownerName(o)}${o!=="you"&&o!=="free"?` · «${CLANS[o].motto}»`:""}`,ownerCol(o)); }
 
 /* ================= PLAYER (first person) ================= */
-const player={ local:{x:0,z:0}, target:null, yaw:0, pitch:-.03, speed:0, acc:null, gps:false, bob:0, eye:1.68, walked:0,
+const player={ local:{x:0,z:0}, target:null, yaw:0, pitch:-.03, speed:0, acc:null, gps:false, bob:0, eye:1.68, eyeNow:1.68, walked:0, vy:0, jy:0, onGround:true, crouch:false, running:false, manualT:0,
   get pos(){ return fromLocal(this.local.x,this.local.z); } };
 let testMode=true;
 const keys={}; const joy={id:null,ox:0,oy:0,dx:0,dy:0};
-addEventListener("keydown",e=>{ if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA") return; keys[e.code]=true; if(e.code==="Escape"){ const top=[...open.entries()].reverse().find(([k,m])=>m.closable); if(top) closeModal(top[0]); else if(mapOpen) closeFullMap(); } if(e.code==="KeyM") mapOpen?closeFullMap():openFullMap(); });
+addEventListener("keydown",e=>{ if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA") return; keys[e.code]=true; if(e.code==="Space"){ e.preventDefault(); if(document.activeElement&&document.activeElement.blur) document.activeElement.blur(); } if(e.code==="Escape"){ const top=[...open.entries()].reverse().find(([k,m])=>m.closable); if(top) closeModal(top[0]); else if(mapOpen) closeFullMap(); } if(e.code==="KeyM") mapOpen?closeFullMap():openFullMap(); });
 addEventListener("keyup",e=>{ keys[e.code]=false; });
 addEventListener("blur",()=>{ for(const k in keys) keys[k]=false; });
 
@@ -2417,21 +2465,31 @@ function tryMove(nx,nz){ if(!CITY.bgrid) { player.local.x=nx; player.local.z=nz;
   if(!insideBuilding(player.local.x,nz)){ player.local.z=nz; return; } }
 function stepPlayer(dt){
   const L=player.local; const ox=L.x, oz=L.z;
-  if(testMode){ let f=0,s=0; if(keys.KeyW||keys.ArrowUp) f++; if(keys.KeyS||keys.ArrowDown) f--; if(keys.KeyA) s--; if(keys.KeyD) s++; if(keys.ArrowLeft||keys.KeyQ) player.yaw+=dt*1.8; if(keys.ArrowRight||keys.KeyE) player.yaw-=dt*1.8;
-    if(joy.id!==null){ f-=joy.dy; s+=joy.dx; }
-    let l=Math.hypot(f,s); if(l>1){ f/=l; s/=l; l=1; } if(anyBlocking()||!started||cinematic) { f=0; s=0; l=0; }
-    if(l>.05){ const run=keys.ShiftLeft||keys.ShiftRight||Math.hypot(joy.dx,joy.dy)>.95; const sp=run?12:5.2; const sy=Math.sin(player.yaw), cy=Math.cos(player.yaw);
-      const dx=(-sy*f+cy*s)*sp*dt, dz=(-cy*f-sy*s)*sp*dt; tryMove(L.x+dx,L.z+dz); } }
-  else if(player.target){ const d=Math.hypot(player.target.x-L.x,player.target.z-L.z); if(d>.05){ const k=Math.min(1,(9*dt)/d); L.x+=(player.target.x-L.x)*k; L.z+=(player.target.z-L.z)*k; } const po=pushOut(L.x,L.z); if(po){ L.x=po.x; L.z=po.z; } }
+  // manual movement always works (keyboard / joystick); GPS only moves you when you really walked somewhere
+  let f=0,s=0; if(keys.KeyW||keys.ArrowUp) f++; if(keys.KeyS||keys.ArrowDown) f--; if(keys.KeyA) s--; if(keys.KeyD) s++; if(keys.ArrowLeft||keys.KeyQ) player.yaw+=dt*1.8; if(keys.ArrowRight||keys.KeyE) player.yaw-=dt*1.8;
+  if(joy.id!==null){ f-=joy.dy; s+=joy.dx; }
+  let l=Math.hypot(f,s); if(l>1){ f/=l; s/=l; l=1; } const frozen=anyBlocking()||!started||cinematic; if(frozen){ f=0; s=0; l=0; }
+  const crouch=!!(keys.KeyC||keys.ControlLeft)&&!frozen; player.crouch=crouch;
+  if(l>.05){ const run=(keys.ShiftLeft||keys.ShiftRight||runLock||Math.hypot(joy.dx,joy.dy)>.97)&&!crouch; const sp=crouch?2:run?8.5:4.3; player.running=run; const sy=Math.sin(player.yaw), cy=Math.cos(player.yaw);
+    const dx=(-sy*f+cy*s)*sp*dt, dz=(-cy*f-sy*s)*sp*dt; tryMove(L.x+dx,L.z+dz); player.target=null; player.manualT=performance.now(); }
+  else { player.running=false; if(player.target){ const d=Math.hypot(player.target.x-L.x,player.target.z-L.z); if(d>.05){ const k=Math.min(1,(6*dt)/d); L.x+=(player.target.x-L.x)*k; L.z+=(player.target.z-L.z)*k; } else player.target=null; const po=pushOut(L.x,L.z); if(po){ L.x=po.x; L.z=po.z; } } }
+  // jump & gravity
+  if((keys.Space||jumpReq)&&player.onGround&&!frozen){ player.vy=6.3; player.onGround=false; noiseBurst(.08,700,.02); }
+  jumpReq=false;
+  if(!player.onGround){ player.vy-=19*dt; player.jy+=player.vy*dt; if(player.jy<=0){ player.jy=0; player.vy=0; player.onGround=true; noiseBurst(.12,260,.04); player.land=.18; } }
+  player.land=Math.max(0,(player.land||0)-dt);
   const moved=Math.hypot(L.x-ox,L.z-oz); player.speed=player.speed*.85+(moved/Math.max(dt,1e-3))*.15; if(moved<30){ player.walked+=moved; maybeSpawnRift(moved); }
-  const pb=player.bob; player.bob+=dt*(player.speed>.6?Math.min(11,4+player.speed*1.3):0); if(started&&Math.floor(pb*2/Math.PI)!==Math.floor(player.bob*2/Math.PI)&&Math.floor(player.bob*2/Math.PI)%2===0) footstep();
+  const pb=player.bob; player.bob+=dt*(player.speed>.6&&player.onGround?Math.min(13,4+player.speed*1.2):0); if(started&&player.onGround&&Math.floor(pb*2/Math.PI)!==Math.floor(player.bob*2/Math.PI)&&Math.floor(player.bob*2/Math.PI)%2===0) footstep();
   // camera
-  const bobY=player.speed>.6?Math.sin(player.bob*2)*.045:0;
-  camera.position.set(L.x,player.eye+bobY,L.z);
+  player.eyeNow+=((crouch?1.05:player.eye)-player.eyeNow)*Math.min(1,dt*10);
+  const bobY=player.speed>.6&&player.onGround?Math.sin(player.bob*2)*(player.running?.07:.045):0;
+  camera.position.set(L.x,player.eyeNow+bobY+player.jy-player.land*.5,L.z);
   if(gyroOn&&gyroQ){ camera.quaternion.copy(gyroQ); const e=new THREE.Euler().setFromQuaternion(gyroQ,"YXZ"); player.yaw=e.y; player.pitch=e.x; }
   else { camera.rotation.set(player.pitch,player.yaw,0,"YXZ"); }
+  const fovT=(isTouch&&innerWidth<innerHeight?74:66)+(player.running&&player.speed>5?6:0); if(Math.abs(camera.fov-fovT)>.05){ camera.fov+=(fovT-camera.fov)*Math.min(1,dt*6); camera.updateProjectionMatrix(); }
   sky.position.copy(camera.position); ground.position.set(Math.round(L.x/50)*50,0,Math.round(L.z/50)*50);
 }
+let jumpReq=false, runLock=false;
 function footstep(){ noiseBurst(.07,rnd(350,520),.018); }
 const headingDeg=()=>((-player.yaw*180/Math.PI)%360+360)%360;
 const bearingTo=(x,z)=>((Math.atan2(x-player.local.x,-(z-player.local.z))*180/Math.PI)+360)%360;
@@ -2450,21 +2508,24 @@ function tapWorld(x,y){ if(anyBlocking()||!started) return; ndc.set(x/innerWidth
 
 /* ---------- joystick (test mode on phones) ---------- */
 const jz=$("joyZone");
-jz.addEventListener("pointerdown",e=>{ if(!testMode) return; joy.id=e.pointerId; joy.ox=e.clientX; joy.oy=e.clientY; const j=$("joy"); j.style.display="block"; j.style.left=e.clientX+"px"; j.style.top=e.clientY+"px"; jz.setPointerCapture(e.pointerId); });
+jz.addEventListener("pointerdown",e=>{ joy.id=e.pointerId; joy.ox=e.clientX; joy.oy=e.clientY; const j=$("joy"); j.style.display="block"; j.style.left=e.clientX+"px"; j.style.top=e.clientY+"px"; jz.setPointerCapture(e.pointerId); });
 jz.addEventListener("pointermove",e=>{ if(e.pointerId!==joy.id) return; let dx=e.clientX-joy.ox, dy=e.clientY-joy.oy; const l=Math.hypot(dx,dy), m=48; if(l>m){ dx*=m/l; dy*=m/l; } joy.dx=dx/m; joy.dy=dy/m; $("joyKnob").style.transform=`translate(${dx}px,${dy}px)`; });
 const jEnd=e=>{ if(e.pointerId!==joy.id) return; joy.id=null; joy.dx=joy.dy=0; $("joy").style.display="none"; }; jz.addEventListener("pointerup",jEnd); jz.addEventListener("pointercancel",jEnd);
 
 /* ---------- GPS ---------- */
+let lastFix=null;
 function startGPS(){
   if(!navigator.geolocation){ gpsFail("нет доступа к геолокации"); return; }
   navigator.geolocation.watchPosition(p=>{ const c={lat:p.coords.latitude,lng:p.coords.longitude}; player.acc=p.coords.accuracy;
       if(p.coords.accuracy>80 && player.gps) return;
-      if(!player.gps){ player.gps=true; testMode=false; updateTestUI(); if(!ORIGIN||distM(ORIGIN,c)>2500){ relocate(c); } else { const L=toLocal(c); const far=Math.hypot(L.x-player.local.x,L.z-player.local.z); player.local={...L}; player.target={...L}; if(far>150&&gates.length) loadGates(); } toast(`Геолокация есть · точность ${Math.round(p.coords.accuracy)} м`,"#6dffb0"); }
-      else if(!testMode) player.target=toLocal(c); },
+      if(!player.gps){ player.gps=true; testMode=false; updateTestUI(); if(!ORIGIN||distM(ORIGIN,c)>2500){ relocate(c); } else { const L=toLocal(c); const far=Math.hypot(L.x-player.local.x,L.z-player.local.z); player.local={...L}; player.target=null; lastFix=L; if(far>150&&gates.length) loadGates(); } toast(`Геолокация есть · точность ${Math.round(p.coords.accuracy)} м`,"#6dffb0"); }
+      else { const L=toLocal(c); if(!lastFix||Math.hypot(L.x-lastFix.x,L.z-lastFix.z)>12){ lastFix=L; player.target={...L}; } } },
     e=>gpsFail(e.code===1?"доступ не дан":"сигнал не найден"),{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
 }
 function gpsFail(why){ if(player.gps) return; testMode=true; updateTestUI(); toast(`Геолокация: ${why}. Тест-режим у ${TEST_START.name}: ${isTouch?"джойстик слева внизу":"WASD, мышью — смотреть"}`,"#ffd166"); }
-function updateTestUI(){ document.body.classList.toggle("testmode",testMode); }
+function updateTestUI(){ document.body.classList.toggle("testmode",testMode); document.body.classList.toggle("touch",isTouch); }
+$("bJump").addEventListener("pointerdown",e=>{ e.preventDefault(); jumpReq=true; });
+$("bRun").addEventListener("pointerdown",e=>{ e.preventDefault(); runLock=!runLock; $("bRun").classList.toggle("on",runLock); });
 
 /* ---------- gyro: the phone is a window into the neon city ---------- */
 let gyroOn=false, gyroQ=null, gyroOff=null, compassH=null;
@@ -2490,7 +2551,7 @@ const DIRS=[["С",0],["СВ",45],["В",90],["ЮВ",135],["Ю",180],["ЮЗ",225],
 function updateCompass(){ const H=headingDeg(); const W=cbar.clientWidth||300; const span=75; let html="";
   const pos=a=>{ let d=((a-H+540)%360)-180; return Math.abs(d)<=span?(d/span*.5+.5)*W:null; };
   for(let a=0;a<360;a+=15){ const x=pos(a); if(x===null) continue; const lab=DIRS.find(d=>d[1]===a); html+=lab?`<b style="left:${x}px" class="${a===0?"n":""}">${lab[0]}</b>`:`<i style="left:${x}px"></i>`; }
-  const list=gates.filter(g=>!g.cleared).map(g=>({g,d:gateDist(g)})).filter(x=>x.d<1600).sort((a,b)=>a.d-b.d).slice(0,6);
+  const list=gates.filter(g=>!g.cleared&&(!TUT.on||g.tut)).map(g=>({g,d:gateDist(g)})).filter(x=>x.d<1600).sort((a,b)=>a.d-b.d).slice(0,6);
   for(const {g,d} of list){ const L=toLocal(g); const b=bearingTo(L.x,L.z); let x=pos(b); const T=GT[g.type]; const edge=x===null; if(edge){ let dd=((b-H+540)%360)-180; x=dd<0?4:W-4; }
     html+=`<span data-id="${g.id}" class="gm ${routeTarget===g?"tgt":""} ${edge?"edge":""}" style="left:${x}px;--c:${g.rank==="S"?"#ffe08a":T.color}">${g.rank}<em>${fmtDist(d)}</em></span>`; }
   cbar.innerHTML=html; }
@@ -2588,14 +2649,14 @@ async function nextSay(){ const s=sayQ.shift(); if(!s){ sayBusy=false; return; }
 /* ---------- discovery pops: real places around you ---------- */
 let popAcc=0, lastPop=0, idleAcc=0;
 const POP_KIND=c=>/cafe|restaurant|fast_food|bar|bakery|pub|beer/.test(c)?["Точка отдыха","☕"]:/shop|grocery|clothing|mall|department/.test(c)?["Лавка","◈"]:/sport|pitch|stadium|fitness/.test(c)?["Место силы","⚔"]:/library|books|college|university/.test(c)?["Хранилище знаний","◆"]:/railway/.test(c)?["Узел метро","Ⓜ"]:/pharmacy|doctors|dentist|clinic|hospital/.test(c)?["Лазарет","✚"]:/park|garden/.test(c)?["Тихое место","❖"]:["Точка на карте","◇"];
-function discoveryTick(dt){ popAcc+=dt; if(popAcc<1) return; popAcc=0; if(!started||cinematic||anyBlocking()) return;
+function discoveryTick(dt){ popAcc+=dt; if(popAcc<1) return; popAcc=0; if(!started||cinematic||anyBlocking()||TUT.on) return;
   const now=performance.now(); if(now-lastPop<14000) return; P.seen=P.seen||[];
   let best=null,bd=24; for(const p of CITY.pois){ if(SKIP_SIGN.test(p.c)&&p.c!=="railway") continue; const d=Math.hypot(p.x-player.local.x,p.z-player.local.z); if(d<bd&&!P.seen.includes(p.n)){ bd=d; best=p; } }
   if(!best) return; lastPop=now; P.seen.push(best.n); if(P.seen.length>400) P.seen.shift(); P.explore=(P.explore||0)+1; saveP();
   const [kind,ic]=POP_KIND(best.c); const t=classifyPoi({class:best.c,subclass:best.s,name:best.n});
   modal({id:"disc"+now,title:"Обнаружено",icon:ic,cls:"small notif pop",blocking:false,accent:t?GT[t].color:"#9fe8ff",body:`<div class="notif-text">${best.n}<small>${kind}${t?` · здесь могут открыться ${GT[t].name}`:""} · исследовано мест: ${P.explore}</small></div>`});
   setTimeout(()=>closeModal("disc"+now),3600); addXp(2); }
-function idleTick(dt){ idleAcc+=dt; if(idleAcc<48) return; idleAcc=0; if(!started||cinematic||anyBlocking()||sayBusy) return;
+function idleTick(dt){ idleAcc+=dt; if(idleAcc<48) return; idleAcc=0; if(!started||cinematic||anyBlocking()||sayBusy||TUT.on) return;
   const open=gates.filter(g=>!g.cleared).map(g=>({g,d:gateDist(g)})).sort((a,b)=>a.d-b.d);
   const tips=[];
   if(open[0]) { const {g,d}=open[0]; const Q=QUESTS[g.type][g.questIdx]; tips.push(`Ближайшие — ${GT[g.type].name} ранга ${g.rank}, ${fmtDist(d)}. Там: «${Q.t}». Я бы начал с них, но решаешь ты.`); }
@@ -2714,13 +2775,13 @@ function updateSysbar(){ const n=gates.filter(g=>!g.cleared).length; const end=n
 const seenNear=new Set(), seenClose=new Set(), seenView=new Set(); let quietUntil=0;
 const busyUI=()=>dOn||mapOpen||[...open.keys()].some(k=>!/^(n\d|disc|at$)/.test(k));
 function proximity(){
-  for(const g of gates){ if(g.cleared) continue; const d=gateDist(g);
-    if(d<140 && !seenNear.has(g.id)){ seenNear.add(g.id); toast(`${GT[g.type].icon} Врата ранга <b>${g.rank}</b> рядом · ${fmtDist(d)}`,GT[g.type].color); }
+  for(const g of gates){ if(g.cleared) continue; if(TUT.on&&!g.tut) continue; const d=gateDist(g);
+    if(d<140 && !TUT.on && !seenNear.has(g.id)){ seenNear.add(g.id); toast(`${GT[g.type].icon} Врата ранга <b>${g.rank}</b> рядом · ${fmtDist(d)}`,GT[g.type].color); }
     if(d<GATE_RANGE && !seenClose.has(g.id) && !anyBlocking() && !busyUI() && performance.now()>quietUntil){ seenClose.add(g.id); sfx.near(); if(navigator.vibrate) navigator.vibrate([60,40,60]); gateCard(g); }
     if(d>GATE_RANGE*2.5) seenClose.delete(g.id);
     // first time a gate enters your view → guide comments
-    if(!cinematic&&!seenView.has(g.id)&&d<260&&d>GATE_RANGE){ const L=toLocal(g); let db=((bearingTo(L.x,L.z)-headingDeg()+540)%360)-180; if(Math.abs(db)<30){ seenView.add(g.id); if(!sayBusy) guideSay(`Видишь столб света${db<-8?" слева":db>8?" справа":" впереди"}? ${GT[g.type].name}, ранг ${g.rank}. ${fmtDist(d)} — это ~${walkMin(d)} мин.`,{accent:GT[g.type].color}); } } }
-  if(routeTarget && gateDist(routeTarget)<GATE_RANGE){ const g=routeTarget; clearRoute(); objective(`Ты у Врат ранга ${g.rank}`,g,GT[g.type].name,"Нажми на Врата или сюда"); }
+    if(!cinematic&&!TUT.on&&!seenView.has(g.id)&&d<260&&d>GATE_RANGE){ const L=toLocal(g); let db=((bearingTo(L.x,L.z)-headingDeg()+540)%360)-180; if(Math.abs(db)<30){ seenView.add(g.id); if(!sayBusy) guideSay(`Видишь столб света${db<-8?" слева":db>8?" справа":" впереди"}? ${GT[g.type].name}, ранг ${g.rank}. ${fmtDist(d)} — это ~${walkMin(d)} мин.`,{accent:GT[g.type].color}); } } }
+  if(routeTarget && gateDist(routeTarget)<GATE_RANGE){ const g=routeTarget; clearRoute(); if(!TUT.on) objective(`Ты у Врат ранга ${g.rank}`,g,GT[g.type].name,"Нажми на Врата или сюда"); }
   else if(routeTarget){ $("objChapter").textContent=`${GT[routeTarget.type].name} · ${fmtDist(gateDist(routeTarget))}`; }
 }
 
@@ -2728,7 +2789,7 @@ function proximity(){
 let wakeLock=null;
 async function keepAwake(on){ try{ if(on&&navigator.wakeLock&&!wakeLock) wakeLock=await navigator.wakeLock.request("screen"); if(!on&&wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){} }
 function flowEnd(){ quietUntil=performance.now()+7000; }
-function startQuest(g){ quietUntil=performance.now()+1e9; const Q=QUESTS[g.type][g.questIdx]; if(!P.opened) P.opened={};
+function startQuest(g){ quietUntil=performance.now()+1e9; document.querySelectorAll(".hl").forEach(x=>x.classList.remove("hl")); if(g.tut&&!(P.opened||{})[g.id]) return breathQuest(g); const Q=QUESTS[g.type][g.questIdx]; if(!P.opened) P.opened={};
   if(P.opened[g.id]) return gateOpened(g,false,true);
   if(Q.items) itemsQuest(g,Q); else if(Q.timer) timerQuest(g,Q); else pickQuest(g,Q); }
 const TIER={cam:"📷 камера · ×1.5",photo:"🖼 фото",honor:"✋ честное слово"};
@@ -2791,14 +2852,15 @@ function gateOpened(g,fresh,again){
     <div class="holo-text"><p>${again?"Ты уже сделал дело у этих Врат. Можно войти.":"Реальное дело открыло проход."} Внутри — Тень. Решай сам:</p></div>
     <div class="choices" style="margin-top:8px"><button class="choice" id="oIn" style="--c:#ff4f6a"><b>☠ Войти и сразиться</b><small>◉ ${rw.coins} монет · район переходит тебе · шанс на редкое</small></button>
     <button class="choice" id="oOut"><b>✓ Закрыть Врата без боя</b><small>Опыт уже твой. Без монет и района</small></button></div>`,
-    onMount:el=>{ el.querySelector("#oIn").onclick=()=>{ closeModal("opened"); enterDungeon(g); }; el.querySelector("#oOut").onclick=()=>{ closeModal("opened"); finishGate(g,false); }; }});
+    onMount:el=>{ el.querySelector("#oIn").onclick=()=>{ closeModal("opened"); if(g.tut) tutGo(4); enterDungeon(g); }; el.querySelector("#oOut").onclick=()=>{ closeModal("opened"); finishGate(g,false); };
+      if(g.tut){ el.querySelector("#oOut").style.display="none"; tutHighlight("#oIn"); guideSay("Дело сделано — Врата открылись. Внутри Тень. Войди: первый бой я проведу с тобой.",{ms:4200}); } }});
 }
 function finishGate(g,won){
   g.cleared=true; quietUntil=performance.now()+9000; objState.lock=performance.now()+8000; const key=g.rank==="S"?g.period:todayKey(); P.cleared[key]=[...(P.cleared[key]||[]),g.id]; delete (P.opened||{})[g.id];
   setGateCleared(g,true); if(routeTarget===g) clearRoute(); saveP(); updateSysbar();
   const left=gates.filter(x=>!x.cleared).length;
   objective(left?`Ещё Врат рядом: ${left}`:"Все Врата рядом закрыты",null,"Система",left?"Метки Врат — на компасе сверху. Пока гуляешь, по пути откроются новые разломы":"Завтра откроются новые. А разломы по пути — хоть сейчас");
-  repFromOthers(g); if(g.dyn){ P.dyn=(P.dyn||[]).filter(d=>d.id!==g.id); saveP(); }
+  storyOnGate(g); repFromOthers(g); if(g.dyn){ P.dyn=(P.dyn||[]).filter(d=>d.id!==g.id); saveP(); }
 }
 
 /* ================= DUNGEON (inside the gate) ================= */
@@ -2862,26 +2924,26 @@ const SHADE={ STR:"Тень лени", MIND:"Тень отвлечения", SOU
 const B={};
 function battleStart(g){
   const T=GT[g.type], st=P.stats[T.stat], first=!P.fought; P.fought=true;
-  Object.assign(B,{g,on:true,busy:false,bhp:RANKS[g.rank].hp,bmax:RANKS[g.rank].hp,hp:100+P.stats.soul*6,max:100+P.stats.soul*6,allies:false});
+  const bh=g.tut?45:RANKS[g.rank].hp; Object.assign(B,{g,on:true,busy:false,bhp:bh,bmax:bh,hp:100+P.stats.soul*6,max:100+P.stats.soul*6,allies:false});
   const pd=()=>10+P.stats[T.stat]*6+P.level*2, wd=()=>6+P.stats.will*4, rd=()=>26+P.level*6;
   B.skills=[ {id:"s1",name:P.cls?CLASSES[P.cls].skill:"Удар",sub:()=>`~${pd()} · от «${T.statName}» (${P.stats[T.stat]})`,c:T.color,fn:pd},
     {id:"s2",name:"Фокус",sub:()=>`~${wd()} · +12 стойкости`,c:"#ffd166",fn:wd,heal:12},
     {id:"s3",name:"Рывок",sub:()=>`~${rd()} · ⚡1 (у тебя ${P.energy})`,c:"#5fe3ff",fn:rd,cost:1} ];
   const name=(g.rank==="S"?"Владыка: ":"")+SHADE[g.type];
   modal({id:"battle",title:name,icon:"☠",cls:"battle",blocking:false,accent:"#ff4f6a",body:`
-    ${first?`<div class="bt-help" id="bHelp"><b>Как драться:</b> выбери приём. Цифра — урон. Сила приёмов = твои характеристики, а они растут только от реальных дел. Потом Тень бьёт в ответ. Сбей её полоску до нуля.</div>`:""}
+    ${g.tut?`<div class="bt-help" id="bHelp"><b>Первый бой.</b> Нажми «${P.cls?CLASSES[P.cls].skill:"Удар"}» — это приём твоего класса. Цифра над Тенью — урон. Чем больше реальных дел, тем сильнее приёмы. Тень отвечает, но сейчас я держу её слабой.</div>`:first?`<div class="bt-help" id="bHelp"><b>Как драться:</b> выбери приём. Цифра — урон. Сила приёмов = твои характеристики, а они растут только от реальных дел. Потом Тень бьёт в ответ. Сбей её полоску до нуля.</div>`:""}
     <div class="hp"><div class="row"><span>Тень · ранг ${g.rank}</span><span id="bhpT">${B.bhp} / ${B.bmax}</span></div><div class="hpb"><i id="bhp" style="width:100%"></i></div></div>
     <div class="hp"><div class="row"><span>Твоя стойкость</span><span id="mhpT">${B.hp} / ${B.max}</span></div><div class="hpb me"><i id="mhp" style="width:100%"></i></div></div>
     <div class="log" id="blog"><span class="turn">ТВОЙ ХОД</span> Выбери приём</div>
     <div class="skills">${B.skills.map(k=>`<button class="skill" id="${k.id}" style="--c:${k.c}">${k.name}<small id="${k.id}sub">${k.sub()}</small></button>`).join("")}</div>
     <div class="actions" style="margin-top:8px">${g.rank==="S"||g.rank==="A"?`<button class="btn small gold" id="bClan">⚑ Позвать клан</button>`:""}<button class="btn ghost small" id="bRun">Отступить</button></div>`,
-    onMount:el=>{ B.skills.forEach(k=>{ const b=el.querySelector("#"+k.id); if(k.cost&&P.energy<k.cost) b.disabled=true; b.onclick=()=>bMove(k); }); el.querySelector("#bRun").onclick=bRetreat;
+    onMount:el=>{ if(g.tut) tutHighlight("#s1"); B.skills.forEach(k=>{ const b=el.querySelector("#"+k.id); if(k.cost&&P.energy<k.cost) b.disabled=true; b.onclick=()=>bMove(k); }); el.querySelector("#bRun").onclick=bRetreat;
       const cb=el.querySelector("#bClan"); if(cb) cb.onclick=()=>{ cb.disabled=true; B.allies=true; toast("⚑ MIRA и ARTEM пришли на помощь. Каждый ход они бьют Тень","#8c7bff"); sfx.chest(); }; }});
 }
 function bUpd(msg){ const b=$("bhp"); if(!b) return; b.style.width=(B.bhp/B.bmax*100)+"%"; $("bhpT").textContent=`${B.bhp} / ${B.bmax}`; $("mhp").style.width=(B.hp/B.max*100)+"%"; $("mhpT").textContent=`${B.hp} / ${B.max}`; $("blog").innerHTML=msg; }
 function floater(text,x,y,color,crit){ const f=document.createElement("div"); f.className="floater"+(crit?" crit":""); f.style.left=x+"px"; f.style.top=y+"px"; f.style.color=color||"#fff"; f.textContent=text; $("floaters").appendChild(f); setTimeout(()=>f.remove(),1200); }
 async function bMove(k){
-  if(B.busy||!B.on) return; B.busy=true; document.querySelectorAll(".skill").forEach(b=>b.disabled=true); const hb=$("bHelp"); if(hb) hb.remove();
+  if(B.busy||!B.on) return; B.busy=true; document.querySelectorAll(".hl").forEach(x=>x.classList.remove("hl")); document.querySelectorAll(".skill").forEach(b=>b.disabled=true); const hb=$("bHelp"); if(hb) hb.remove();
   if(k.cost){ P.energy-=k.cost; hud(); }
   const crit=Math.random()<.22; let dmg=Math.round(k.fn()*(crit?1.6:1)*rnd(.9,1.1));
   sfx.hit(); D.bossMat.uniforms.uHit.value=1; D.shake=.4; D.attackT=.3; floater((crit?"КРИТ ":"")+"-"+dmg,innerWidth/2+rnd(-40,40),innerHeight*.3,k.c,crit);
@@ -2890,8 +2952,8 @@ async function bMove(k){
   if(B.allies && B.bhp>0){ const ad=Math.round(rnd(18,28)); B.bhp=Math.max(0,B.bhp-ad); sfx.hit(); floater("⚑ -"+ad,innerWidth/2+rnd(60,120),innerHeight*.28,"#8c7bff"); bUpd(`Клан бьёт: <b>${ad}</b>`); await wait(650); }
   if(B.bhp<=0) return bWin();
   bUpd(`<span class="turn enemy">ХОД ТЕНИ</span> …`); await wait(450);
-  const bd=Math.round(rnd(8,14)*(1+RANK_ORDER.indexOf(B.g.rank)*.12)), ex=EXCUSES[Math.floor(Math.random()*EXCUSES.length)];
-  sfx.hurt(); flash(true); D.shake=.6; B.hp=Math.max(0,B.hp-bd); floater("-"+bd,innerWidth/2,innerHeight*.55,"#ff4f6a");
+  const bd=B.g.tut?Math.round(rnd(3,6)):Math.round(rnd(8,14)*(1+RANK_ORDER.indexOf(B.g.rank)*.12)), ex=EXCUSES[Math.floor(Math.random()*EXCUSES.length)];
+  sfx.hurt(); flash(true); D.shake=.6; B.hp=Math.max(B.g.tut?1:0,B.hp-bd); floater("-"+bd,innerWidth/2,innerHeight*.55,"#ff4f6a");
   bUpd(`Тень шепчет ${ex} · <b style="color:#ff8aa0">-${bd}</b>`); await wait(850);
   if(B.hp<=0) return bLose();
   B.busy=false; bUpd(`<span class="turn">ТВОЙ ХОД</span> ${B.bhp<B.bmax*.35?"Добивай!":"Выбери приём"}`);
@@ -2952,6 +3014,104 @@ let hum=null;
 function updateHum(){ const a=audio(); if(!a) return; if(!hum){ try{ const g=a.createGain(); g.gain.value=0; const f=a.createBiquadFilter(); f.type="lowpass"; f.frequency.value=320; const o1=a.createOscillator(), o2=a.createOscillator(); o1.type="sawtooth"; o2.type="sine"; o1.frequency.value=55; o2.frequency.value=110.6; o1.connect(f); o2.connect(f); f.connect(g).connect(master()); o1.start(); o2.start(); hum={g,f}; }catch(e){ return; } }
   let d=1e9; for(const g of gates){ if(!g.cleared) d=Math.min(d,gateDist(g)); } const k=started&&!dOn&&!muted?clamp(1-d/80,0,1):0; hum.g.gain.setTargetAtTime(k*k*.07,a.currentTime,.4); hum.f.frequency.setTargetAtTime(220+k*500,a.currentTime,.4); }
 
+/* ================= STORY + TUTORIAL: why you are here, why you come back ================= */
+const CHAPTER={ n:1, title:"Глава 1 · Пробуждение", frags:[
+  "Я помню свет. Система не создаёт героев — она находит тех, кто готов начать сегодня, а не завтра. Она нашла тебя.",
+  "Тени появились, когда люди начали откладывать жизнь «на потом». Каждое «потом» — трещина в городе. Из трещин открываются Врата.",
+  "Врата тянутся к местам, где город помнит силу: стадионы, библиотеки, скверы. Места хранят то, что в них делали люди.",
+  "Я был частью Системы. Меня разбило на осколки, когда Владыка Теней запечатал первые Врата изнутри. Каждые закрытые тобой Врата возвращают мне кусок памяти.",
+  "Охотники были и до тебя. Их эхо до сих пор ходит по улицам. Некоторые сдались — и сами стали тенями.",
+  "Владыка не нападает силой. Он шепчет: «ты устал», «завтра», «у других проще». Ты слышал этот голос. Все слышали.",
+  "Я вспомнил всё. В воскресенье откроются Врата ранга S. Там он. И там — последний осколок меня. Приходи готовым." ] };
+const TUT={ on:false, step:-1, acc:0, yaw0:0, walk0:0, gate:null };
+const TUT_STEPS=5;
+
+/* ---------- welcome: what is this game, in three screens ---------- */
+function welcomeSlides(){ const S=[
+  ["◎","Твой город — это игра","Ты стоишь на своей настоящей улице. Дома, дороги и вывески — реальные, только ночью и в неоне."],
+  ["▮","Рядом открываются Врата","Столбы света — это Врата. Они появляются в паре минут ходьбы от тебя. Каждый день — новые."],
+  ["✦","Открываешь их реальными делами","Приседания, книга, прогулка, дело, которое откладывал. Сделал в жизни — стал сильнее в игре. Внутри Врат — Тень, её побеждает твоя сила."]];
+  return new Promise(res=>{ let i=0; const draw=()=>{ const [ic,t,p]=S[i];
+    modal({id:"welcome",title:"Система",icon:"◎",body:`<div class="slides"><div class="sl-ic">${ic}</div><div class="sl-t">${t}</div><div class="sl-p">${p}</div><div class="dots">${S.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("")}</div></div>
+      <div class="actions center"><button class="btn primary" id="wNext">${i<S.length-1?"Дальше":"Понял, погнали"}</button></div>`,
+      onMount:el=>el.querySelector("#wNext").onclick=()=>{ i++; if(i<S.length){ closeModal("welcome",true); draw(); } else { closeModal("welcome"); res(); } }}); }; draw(); }); }
+
+/* ---------- tutorial: step by step, the next step unlocks only when you did this one ---------- */
+function tutStart(){ TUT.on=true; TUT.gate=gates.find(g=>g.tut&&!g.cleared); if(!TUT.gate){ TUT.on=false; return; }
+  // face the first gate a bit off-center so "look around" makes sense
+  const L=toLocal(TUT.gate); player.yaw=Math.atan2(-(L.x-player.local.x),-(L.z-player.local.z))+1.3; player.pitch=-.02;
+  tutGo(0); }
+function tutGo(n){ TUT.step=n; TUT.acc=0; TUT.yaw0=player.yaw; TUT.walk0=player.walked; const S=`ОБУЧЕНИЕ · ШАГ ${Math.min(n+1,TUT_STEPS)} ИЗ ${TUT_STEPS}`;
+  $("objective").classList.add("tutmode");
+  if(n===0){ objective("Осмотрись вокруг",null,S,isTouch?"Веди пальцем по экрану влево-вправо":"Зажми мышь и веди — так ты поворачиваешь голову");
+    guideSay("Я — Проводник, осколок Системы. Ты сейчас в своём настоящем районе — только ночью и в неоне. Осмотрись.",{ms:4500}); }
+  if(n===1){ objective("Пройдись",null,S,isTouch?"Джойстик слева внизу · » бег · ⤒ прыжок":"W A S D — идти · Shift — бег · Пробел — прыжок · C — присесть");
+    guideSay(isTouch?"Отлично. Теперь пройдись: джойстик слева внизу. Справа — бег и прыжок.":"Отлично. Теперь пройдись: W A S D. Shift — бег, пробел — прыжок.",{ms:4200}); }
+  if(n===2){ routeTo(TUT.gate); objective("Иди к столбу света",TUT.gate,S,"Это Врата. Светящиеся стрелки на земле ведут к ним");
+    guideSay("Видишь столб света? Это Врата — трещина, через которую в город лезут Тени. Иди по стрелкам. Когда подойдёшь — они откроются сами.",{ms:5200}); }
+  if(n===3){ objective("Открой Врата делом",TUT.gate,S,"Врата открывает только реальное дело. Первое — лёгкое, 30 секунд");
+    guideSay("Врата не открыть кнопкой. Их открывает реальное дело. Первое — лёгкое: пять спокойных вдохов. Прямо сейчас, по-настоящему.",{ms:5000}); }
+  if(n===4){ objective("Победи Тень",null,S,"Приёмы бьют тем сильнее, чем ты сильнее в жизни"); }
+}
+function tutTick(dt){ if(!TUT.on) return; TUT.acc+=dt;
+  if(TUT.step===0){ const d=Math.abs(player.yaw-TUT.yaw0); if(d>1.1&&TUT.acc>1.2) tutGo(1); }
+  else if(TUT.step===1){ if(player.walked-TUT.walk0>7||TUT.acc>14||(TUT.gate&&gateDist(TUT.gate)<GATE_RANGE)) tutGo(2); }
+  else if(TUT.step===2){ if(TUT.gate&&gateDist(TUT.gate)<GATE_RANGE) tutGo(3); }
+  // arrow pointing at what to press
+  const ar=$("tutArrow"); let tgt=null;
+  if(TUT.step===2&&TUT.gate&&TUT.gate.obj&&!anyBlocking()){ const el=labelMap.get(TUT.gate.id); if(el){ const r=el.getBoundingClientRect(); tgt={x:r.left+r.width/2,y:r.top-4}; } }
+  if(!tgt){ const hl=document.querySelector(".hl"); if(hl){ const r=hl.getBoundingClientRect(); if(r.width) tgt={x:r.left+r.width/2,y:r.top-2}; } }
+  if(tgt){ ar.style.display="block"; ar.style.transform=`translate(${tgt.x}px,${tgt.y}px)`; } else ar.style.display="none";
+}
+function tutHighlight(sel){ setTimeout(()=>{ const e=document.querySelector(sel); if(e) e.classList.add("hl"); },120); }
+async function tutFinish(){ TUT.on=false; TUT.step=-1; $("tutArrow").style.display="none"; $("objective").classList.remove("tutmode"); P.tutDone=true; saveP();
+  await showFragment(0,true);
+  await new Promise(res=>modal({id:"loop",title:"Что дальше",icon:"✦",body:`<div class="holo-text"><p><b>Так устроена игра:</b></p></div>
+    <div class="daily"><div class="row"><span>▮</span><b>Каждый день рядом — новые Врата</b><small>в 1–3 мин ходьбы</small></div>
+    <div class="row"><span>📜</span><b>Первые Врата дня → осколок памяти</b><small>история по дню</small></div>
+    <div class="row"><span>🔥</span><b>Серия дней делает тебя сильнее</b><small>не сгорает сразу</small></div>
+    <div class="row"><span>⬡</span><b>Победа в бою — район твоему клану</b><small>держи его</small></div>
+    <div class="row"><span>◈</span><b>3 Врата за день → сундук дня</b><small>монеты, щит серии</small></div></div>
+    <div class="note">В воскресенье — Врата ранга S и финал главы. Всё это — в 📜 справа.</div>
+    <div class="actions"><button class="btn primary" id="lpOk">Понял</button></div>`,onMount:el=>el.querySelector("#lpOk").onclick=()=>{ closeModal("loop"); res(); }}));
+  guideSay("Следующий осколок — завтра, после первых Врат дня. А сегодня можешь идти дальше: вокруг ещё Врата, и сундук дня ждёт.",{ms:5000});
+  quietUntil=performance.now()+12000; objState.lock=0; autoObjective(); }
+
+/* the first deed: five calm breaths, guided */
+function breathQuest(g){ const T=GT[g.type]; const N=5, DUR=TEST?.5:8;
+  modal({id:"quest",title:"Первое дело",icon:T.icon,accent:T.color,body:`<div class="holo-sub">Пять спокойных вдохов</div>
+    <div class="holo-text" style="text-align:center"><p>Вдох — когда круг растёт. Выдох — когда сжимается. По-настоящему, не торопись.</p></div>
+    <div class="breath"><i id="brC"></i><span id="brT">ГОТОВ?</span></div><div class="tmr-s" id="brN">0 из ${N}</div>
+    <div class="actions center"><button class="btn primary" id="brGo">Начать</button></div><div class="stamp" id="stamp"><span>ВЫПОЛНЕНО</span></div>`,
+    onMount:el=>{ tutHighlight("#brGo"); el.querySelector("#brGo").onclick=async e=>{ e.target.remove(); document.querySelectorAll(".hl").forEach(x=>x.classList.remove("hl"));
+      for(let i=0;i<N;i++){ if(!open.has("quest")) return; $("brT").textContent="ВДОХ"; $("brC").classList.add("in"); sfx.select(); await new Promise(r=>setTimeout(r,DUR*500)); $("brT").textContent="ВЫДОХ"; $("brC").classList.remove("in"); await new Promise(r=>setTimeout(r,DUR*500)); $("brN").textContent=`${i+1} из ${N}`; }
+      $("stamp").classList.add("show"); sfx.done(); setTimeout(()=>{ closeModal("quest"); questDone(g,false); },1100); }; }}); }
+
+/* ---------- story fragments: one per day, first gate of the day ---------- */
+function showFragment(i,first){ const f=CHAPTER.frags[i]; playFile("lvl",.5); flash();
+  return new Promise(res=>modal({id:"frag",title:`Осколок памяти ${i+1} из ${CHAPTER.frags.length}`,icon:"◈",accent:"#ffd166",body:`<div class="holo-sub">${CHAPTER.title}</div>
+    <div class="frag" id="fragT"></div>
+    <div class="note">${i<CHAPTER.frags.length-1?"Следующий осколок — завтра, после первых Врат дня.":"Глава завершена. Врата ранга S ждут."}</div>
+    <div class="actions"><button class="btn primary" id="frOk">Дальше</button></div>`,onMount:async el=>{ el.querySelector("#frOk").onclick=()=>{ closeModal("frag"); res(); }; await typeLine(el.querySelector("#fragT"),"Проводник: «"+f+"»",22); }})); }
+async function storyOnGate(g){
+  const td=todayKey(); P.day=P.day&&P.day.d===td?P.day:{d:td,closed:0,chest:false}; P.day.closed++;
+  if(g.tut){ P.frag=Math.max(P.frag||0,1); P.fragDay=td; saveP(); await tutFinish(); return; }
+  if((P.frag||0)<CHAPTER.frags.length&&P.fragDay!==td){ const i=P.frag||0; P.frag=i+1; P.fragDay=td; saveP(); await showFragment(i); }
+  if(P.day.closed>=3&&!P.day.chest){ P.day.chest=true; const coins=40+Math.floor(Math.random()*30); P.coins+=coins; const sh=Math.random()<.5; if(sh) P.shields=(P.shields||0)+1; saveP(); hud(); sfx.chest();
+    await new Promise(res=>modal({id:"chest",title:"Сундук дня",icon:"◈",accent:"#ffd166",body:`<div class="notif-text gold">◉ ${coins} монет${sh?"<br>🛡 щит серии":""}<small>за 3 Врата сегодня</small></div><div class="actions"><button class="btn primary" id="chOk">Забрать</button></div>`,onMount:el=>el.querySelector("#chOk").onclick=()=>{ closeModal("chest"); res(); }})); }
+  saveP(); }
+
+/* ---------- 📜 today + journal ---------- */
+function dailyWindow(){ const td=todayKey(); const day=P.day&&P.day.d===td?P.day:{closed:0,chest:false}; const fragToday=P.fragDay===td;
+  const row=(ok,ic,t,s)=>`<div class="row"><span class="${ok?"ok":"no"}">${ok?"✓":ic}</span><b>${t}</b><small>${s}</small></div>`;
+  modal({id:"daily",title:"Сегодня",icon:"📜",closable:true,body:`<div class="daily">
+    ${row(fragToday,"◈","Осколок истории",fragToday?"получен":"закрой 1 Врата")}
+    ${row(day.closed>=3,"◈",`Сундук дня · ${Math.min(3,day.closed)}/3`,day.chest?"открыт":"закрой 3 Врата")}
+    ${row(P.lastDay===td,"🔥",`Серия: ${P.streak}`,P.lastDay===td?"продлена":"одни Врата — и +1")}
+    ${row(false,"⬡","Держи район","победа в бою у Врат")}</div>
+    <div class="sec">${CHAPTER.title} · ${P.frag||0}/${CHAPTER.frags.length}</div>
+    <div class="journal">${CHAPTER.frags.map((f,i)=>i<(P.frag||0)?`<p>${f}</p>`:`<p class="lock">Осколок ${i+1} — ${i===(P.frag||0)?(fragToday?"завтра":"после первых Врат дня"):"ещё запечатан"}</p>`).join("")}</div>`}); }
+
 /* ================= BOOT & LOOP ================= */
 let started=false, cinematic=false, T=0, last=performance.now();
 let genCenter=null, cityCenter={x:0,z:0}, cityBusy=false;
@@ -2978,8 +3138,8 @@ async function descend(){ cinematic=true; const L=player.local; const t0=perform
 async function intro(){
   const ct=$("cineText"); document.body.classList.add("hidden-ui");
   const first=!P.cls;
-  if(first){ await typeLine(ct,"Система пробудилась."); await typeLine(ct,"Не в игре. В твоём городе."); ct.innerHTML=""; $("cine").style.opacity=0; $("fade").style.opacity=.35; await onboarding(); }
-  else { $("cine").style.opacity=0; $("fade").style.opacity=.35; }
+  if(first){ await typeLine(ct,"Система пробудилась."); await typeLine(ct,"Не в игре. В твоём городе."); ct.innerHTML=""; $("cine").style.opacity=0; $("fade").style.opacity=0; await welcomeSlides(); await onboarding(); }
+  else { $("cine").style.opacity=0; $("fade").style.opacity=0; if(!P.tutDone) await welcomeSlides(); }
   const ask=P.geoOk?true:await new Promise(res=>modal({id:"geo",title:"Геолокация",icon:"◎",body:`<div class="holo-text"><p>Ты появишься на своей настоящей улице — в неоне. Врата откроются в паре минут ходьбы от тебя. Для этого нужна геолокация.</p><p class="dim">Координаты остаются на телефоне. Никто не видит, где ты сейчас.</p></div>
     <div class="actions"><button class="btn ghost small" id="gNo">Без неё (тест у метро «Ленинский пр.»)</button><button class="btn primary" id="gYes">Разрешить</button></div>`,
     onMount:el=>{ el.querySelector("#gYes").onclick=()=>{ closeModal("geo"); res(true); }; el.querySelector("#gNo").onclick=()=>{ closeModal("geo"); res(false); }; }}));
@@ -2998,13 +3158,11 @@ async function intro(){
   const n=gates.filter(g=>!g.cleared).length; sfx.gate(); banner(`${n} ${plural(n,"ВРАТА","ВРАТ","ВРАТ")}`,`открылись рядом с тобой · ${CITY.source==="osm"?"реальный город":CITY.source==="snapshot"?"снимок района":"схема"}`,"#5fe3ff");
   await wait(2400);
   const near=gates.filter(g=>!g.cleared).map(g=>({g,d:gateDist(g)})).sort((a,b)=>a.d-b.d)[0];
-  if(near) objective(`Ближайшие: ${GT[near.g.type].name} ${near.g.rank}`,near.g,`${fmtDist(near.d)} · ~${walkMin(near.d)} мин`,"Метки Врат — на компасе сверху. Нажми сюда — проложу путь");
-  if(first){ guideSay(`Я — Проводник. Этот город настоящий: дома, улицы и вывески — такие же, как вокруг тебя. Только в неоне.`,{ms:4200});
-    guideSay(`Первые Врата открылись прямо перед тобой. ${isTouch?"Веди пальцем по экрану, чтобы осмотреться.":"Мышью — осмотреться, WASD — идти."}`,{ms:4200});
-    guideSay("Я подсказываю, но решаешь ты. Иди к свету.",{ms:3000});
-    if(isTouch) guideSay("Хочешь, чтобы телефон стал окном в этот город? Включи гироскоп — и просто поворачивайся.",{actions:[{t:"🧭 Включить",cls:"primary",fn:toggleGyro},{t:"Потом",cls:"ghost",fn:()=>{}}]}); }
+  if(near&&P.tutDone) objective(`Ближайшие: ${GT[near.g.type].name} ${near.g.rank}`,near.g,`${fmtDist(near.d)} · ~${walkMin(near.d)} мин`,"Метки Врат — на компасе сверху. Нажми сюда — проложу путь");
+  if(!P.tutDone&&gates.some(g=>g.tut&&!g.cleared)){ tutStart(); }
+  else if(first){ if(isTouch) guideSay("Хочешь, чтобы телефон стал окном в этот город? Включи гироскоп — и просто поворачивайся.",{actions:[{t:"🧭 Включить",cls:"primary",fn:toggleGyro},{t:"Потом",cls:"ghost",fn:()=>{}}]}); }
   else briefing();
-  if(testMode&&!first) toast(isTouch?"Тест-режим: джойстик — слева внизу, палец — осмотреться":"Тест-режим: WASD — идти, мышь — смотреть, M — карта","#ffd166");
+  if(testMode&&P.tutDone) toast(isTouch?"Тест-режим: джойстик — слева внизу, палец — осмотреться":"Тест-режим: WASD — идти, мышь — смотреть, M — карта","#ffd166");
 }
 function briefing(){ const td=todayKey(); if(P.briefDay===td) return; P.briefDay=td; saveP(); const y=new Date(); y.setDate(y.getDate()-1);
   const n=gates.filter(g=>!g.cleared).length; let s;
@@ -3014,7 +3172,7 @@ function briefing(){ const td=todayKey(); if(P.briefDay===td) return; P.briefDay
   else s=`${P.name}, рядом ${n} Врат. Одни сегодня — и начнётся серия.`;
   guideSay(s,{title:"Утренняя сводка",ms:5000}); }
 
-function autoObjective(){ if(objState.lock&&performance.now()<objState.lock) return; const near=gates.filter(g=>!g.cleared).map(g=>({g,d:gateDist(g)})).sort((a,b)=>a.d-b.d)[0];
+function autoObjective(){ if(TUT.on) return; if(objState.lock&&performance.now()<objState.lock) return; const near=gates.filter(g=>!g.cleared).map(g=>({g,d:gateDist(g)})).sort((a,b)=>a.d-b.d)[0];
   if(!near){ objective("Все Врата рядом закрыты",null,"Система","Гуляй — по пути откроются блуждающие разломы"); return; }
   const {g,d}=near; if(d<GATE_RANGE) objective(`Ты у Врат ранга ${g.rank}`,g,GT[g.type].name,"Нажми на Врата или сюда");
   else objective(`Ближайшие: ${GT[g.type].name} ${g.rank}`,g,`${fmtDist(d)} · ~${walkMin(d)} мин`,"Нажми сюда — проложу путь по тротуарам"); }
@@ -3023,7 +3181,7 @@ let secAcc=0, hudAcc=0, cityAcc=0, fpsAcc=0, fpsN=0, qualityChecked=false;
 function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; T+=dt; UNI.time.value=T;
   if(!dOn){
     if(!started&&!cinematic) orbitCam(T); else if(!cinematic) stepPlayer(dt);
-    updateGates(dt,T); updateRoute(dt,T); updateSigns(dt,player.local.x,player.local.z); updateEchoes(dt,T); updateGuide(dt,T); updateTraffic(dt); holoMats.forEach(()=>{});
+    updateGates(dt,T); updateRoute(dt,T); updateSigns(dt,player.local.x,player.local.z); updateEchoes(dt,T); updateGuide(dt,T); updateTraffic(dt); updateLabels(); if(started) tutTick(dt);
     hudAcc+=dt; if(hudAcc>.06){ hudAcc=0; if(started) updateCompass(); }
     if(started) updateMinimap(dt);
     composer.render();
@@ -3037,7 +3195,7 @@ function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; T+=dt; UN
 
 /* ---------- boot ---------- */
 loadP(); P.xpNext=xpNeed(P.level); hud(); updateTestUI();
-$("bList").onclick=()=>{ if(!anyBlocking("list")) listWindow(); }; $("bMenu").onclick=()=>{ if(!anyBlocking("menu")) menuWindow(); }; $("bMute").onclick=()=>setMuted(!muted); $("bGyro").onclick=toggleGyro;
+$("bList").onclick=()=>{ if(!anyBlocking("list")) listWindow(); }; $("bMenu").onclick=()=>{ if(!anyBlocking("menu")) menuWindow(); }; $("bMute").onclick=()=>setMuted(!muted); $("bGyro").onclick=toggleGyro; $("bDaily").onclick=()=>{ if(!anyBlocking("daily")) dailyWindow(); };
 $("objective").onclick=()=>{ const g=objState.target; if(g&&g.lat){ if(!g.cleared&&gateDist(g)>GATE_RANGE&&routeTarget!==g) routeTo(g); else gateCard(g); } else listWindow(); };
 setOrigin(TEST_START); player.yaw=-.35;
 ensureCity(0,0);
