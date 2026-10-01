@@ -1,6 +1,6 @@
 /* LevelUp «Врата» — service worker: opens instantly, works offline, keeps the camera models after the first download.
    index.html: network first (updates arrive), cache as fallback. Everything else: cache first. */
-const V="cf2416f6bb", CORE="gates-core-"+V, RUN="gates-run-v1";
+const V="404376499d", CORE="gates-core-"+V, RUN="gates-run-v1";
 const PRE=["./","./index.html","./manifest.json","./icon-192.png","./icon-512.png","./apple-touch-icon.png","./audio/amb.mp3","./audio/raid.mp3"];
 self.addEventListener("install",e=>{ e.waitUntil(caches.open(CORE).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting())); });
 self.addEventListener("activate",e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith("gates-core-")&&k!==CORE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });

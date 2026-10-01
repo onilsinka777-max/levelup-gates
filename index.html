@@ -602,7 +602,7 @@ body.infp .vignette{opacity:.4}
 .fp-sys .ln.lord{border-color:#ff2a5a;color:#ff9fb2;font-style:italic;background:rgba(40,0,10,.7)}.fp-sys .ln.out{opacity:0;transition:opacity .5s}@keyframes fpSl{from{opacity:0;transform:translateX(-12px)}}
 .fp-title{position:absolute;left:0;right:0;top:30%;text-align:center;pointer-events:none;opacity:0;transform:scale(.94);transition:opacity .45s,transform .45s;padding:0 18px}.fp-title.on{opacity:1;transform:none}
 .fp-title b{display:block;font:italic 900 clamp(26px,8.5vw,44px)/1.05 "Exo 2",Impact,system-ui;color:#fff;letter-spacing:.03em;-webkit-text-stroke:1.5px #05060d;paint-order:stroke fill;text-shadow:0 0 22px var(--tc,#7fe9ff)}
-.fp-title small{display:block;margin-top:8px;font:600 13px/1.4 "Exo 2";color:#cfe3f7;text-shadow:0 1px 4px #000}
+.fp-title small{display:block;margin:8px auto 0;max-width:460px;font:600 13px/1.4 "Exo 2";color:#e4eefa;text-shadow:0 1px 3px #000,0 0 12px rgba(0,0,0,.95),0 0 4px #000}.fp-title.big small{font-size:14px}
 .fp-title.zone b{font-size:clamp(22px,7vw,34px);font-style:normal;letter-spacing:.12em;text-transform:uppercase;--tc:#b58cff}.fp-title.zone small{font-style:italic}
 .fp-title.boss{top:22%}.fp-title.boss b{--tc:#ff2a4a}.fp-title.dead b{color:#ff4f6a;font-size:clamp(40px,13vw,72px);letter-spacing:.2em;--tc:#ff0030}
 .fp-title.gold b{--tc:#ffd166}.fp-title.big b{font-size:clamp(34px,11vw,60px)}
@@ -764,6 +764,36 @@ body:not(.touch) .fp-hint{bottom:calc(190px + var(--sb));top:auto}
 body:not(.touch) .fp-mini{width:150px;height:150px}body:not(.touch) .fp-mini canvas{width:150px;height:150px}body:not(.touch) .fp-mini .mn-n{top:152px;font-size:11px}
 .holo.map .holo-frame{max-width:min(96vw,780px)}.mapwrap{display:flex;justify-content:center}.mapwrap canvas{border-radius:6px;box-shadow:0 0 30px rgba(0,0,0,.6);cursor:pointer;touch-action:manipulation}
 .maplg{margin-top:8px;font:600 11px "Exo 2";color:#cfc0a0;text-align:center;line-height:1.5}
+/* ================= REALITY: the character sheet ================= */
+.real{position:fixed;inset:0;z-index:12;display:none;color:#e8e6f6;font-family:"Exo 2",system-ui,sans-serif;overflow:hidden}.real.on{display:block}
+.rl-sky{position:absolute;inset:0;touch-action:pan-y}
+.rl-top{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column;gap:6px;padding:calc(8px + var(--st,0px)) 12px 6px;pointer-events:none}.rl-row{display:flex;align-items:center;gap:8px}.rl-top>*{pointer-events:auto}
+.rl-me{display:flex;align-items:center;gap:8px;background:rgba(8,8,22,.7);border:1px solid rgba(181,140,255,.35);border-radius:12px;padding:4px 10px 4px 4px;color:#fff;cursor:pointer}
+.rl-me b{min-width:32px;height:32px;display:grid;place-items:center;font:800 15px "Exo 2";border-radius:8px;background:rgba(95,227,255,.12);border:1px solid rgba(95,227,255,.5)}
+.rl-me span{display:flex;flex-direction:column;text-align:left}.rl-me i{font:800 13px "Exo 2";font-style:normal}.rl-me small{font:600 10px "Exo 2";color:#a8a3c4}
+.rl-res{display:flex;align-items:center;gap:6px}.rl-mana{position:relative;width:110px;height:16px;border-radius:8px;background:rgba(10,24,52,.8);border:1px solid rgba(111,183,255,.45);overflow:hidden}
+.rl-mana i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#1f5fff,#6fb7ff)}.rl-mana em{position:relative;display:block;text-align:center;font:800 10px/16px "Exo 2";font-style:normal;color:#fff;text-shadow:0 1px 2px #000}
+.rl-btns{display:flex;gap:6px;margin-left:auto}.rl-btns .icon{width:38px;height:38px;border-radius:10px;border:1px solid rgba(181,140,255,.35);background:rgba(8,8,22,.7);color:#fff;font-size:17px;cursor:pointer}
+.rl-sph{position:absolute;left:0;right:0;top:calc(96px + var(--st,0px));text-align:center;pointer-events:none}.rl-sph small{display:block;font:700 9px "Exo 2";letter-spacing:.4em;color:#8f8aab;text-transform:uppercase}
+.rl-sph b{display:block;font:italic 900 26px "Exo 2";letter-spacing:.08em;text-shadow:0 0 18px currentColor}.rl-sph em{display:block;font:600 11px "Exo 2";font-style:normal;color:#c8c3e0;margin-top:2px}
+.rl-dots{position:absolute;left:0;right:0;top:calc(50vh - 30px);display:flex;justify-content:center;gap:8px;pointer-events:auto}.rl-dots i{font-style:normal;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(8,8,22,.6);font-size:14px;cursor:pointer;opacity:.6}
+.rl-dots i.on{opacity:1;border-color:var(--c);box-shadow:0 0 12px var(--c)}
+.rl-arrow{position:absolute;top:28vh;width:36px;height:56px;border:0;background:rgba(8,8,22,.35);color:#fff;font-size:28px;border-radius:10px;cursor:pointer}.rl-arrow.l{left:6px}.rl-arrow.r{right:6px}
+.rl-panel{position:absolute;left:0;right:0;bottom:0;top:50vh;background:linear-gradient(180deg,rgba(6,6,18,.6),rgba(6,6,18,.95) 12%);border-top:1px solid rgba(181,140,255,.25);padding:8px 12px calc(76px + var(--sb,0px));overflow:auto}
+.rl-tabs{display:flex;gap:6px;margin-bottom:6px}.rl-tabs button{flex:1;appearance:none;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#b8b3d4;font:700 12px "Exo 2";padding:7px 4px;border-radius:9px;cursor:pointer}.rl-tabs button.on{color:#fff;border-color:#b58cff;background:rgba(181,140,255,.15)}
+.rl-h{display:flex;align-items:center;gap:8px;font:800 13px "Exo 2";color:#fff;margin:6px 0}.rl-h.small{font-size:11px;color:#a8a3c4;margin-top:10px}.rl-h .btn,.rl-h .ctx{margin-left:auto}.rl-h .ctx{font-size:11px}
+.rl-ql{display:grid;gap:6px}.rl-q{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--c);border-radius:10px;padding:7px 10px}
+.rl-q>i{font-style:normal;font-size:18px;width:26px;text-align:center}.rl-q>div{flex:1;min-width:0}.rl-q b{display:block;font:800 13px "Exo 2";color:#fff}.rl-q small{display:block;font:600 11px "Exo 2";color:#a8a3c4}.rl-q em{font:700 11px "Exo 2";font-style:normal;color:#6dffb0;white-space:nowrap}
+.rl-q.done{opacity:.72}.rl-q .pb{margin-top:4px}
+.rl-q .rl-sw{min-width:34px;padding:6px 8px;margin-right:-2px;font-size:14px;opacity:.85}
+.rl-mine{display:flex;flex-wrap:wrap;gap:6px}.rl-chip{appearance:none;border:1px solid var(--c,#b58cff);background:rgba(255,255,255,.04);color:#fff;border-radius:999px;padding:6px 12px;font:700 12px "Exo 2";cursor:pointer;display:flex;align-items:center;gap:6px}
+.rl-chip small{font:600 10px "Exo 2";color:#a8a3c4}.rl-chip.add{border-style:dashed;--c:#8f8aab;color:#c8c3e0}
+.rl-note{font:500 11px/1.45 "Exo 2";color:#8f8aab;margin-top:8px}
+.rl-sk{padding:4px 2px}.rl-skh{display:flex;align-items:center;gap:10px}.rl-skh b{font:900 18px "Exo 2";color:#fff}.rl-skh .rk{font:900 15px "Exo 2";border:1.5px solid;border-radius:8px;padding:0 8px}.rl-sk>small{display:block;font:600 11px "Exo 2";color:#a8a3c4;margin:2px 0 6px}
+.rl-sk .actions{flex-wrap:wrap;justify-content:flex-start}
+.rl-shade{position:absolute;right:12px;bottom:calc(12px + var(--sb,0px));display:flex;flex-direction:column;align-items:center;padding:10px 22px!important;z-index:2;box-shadow:0 0 24px rgba(95,140,255,.35)}.rl-shade small{font:600 10px "Exo 2";opacity:.75}
+.rl-mode .chips,.rl-mins .chips{flex-wrap:wrap}
+@media (orientation:landscape){ .rl-sph{top:calc(90px + var(--st,0px))} .rl-sph small{display:none} .rl-sph b{font-size:22px} .rl-top{right:min(44vw,460px)} .rl-panel{top:0;padding-top:calc(10px + var(--st,0px));left:auto;width:min(44vw,460px);border-top:0;border-left:1px solid rgba(181,140,255,.25);background:rgba(6,6,18,.88)} .rl-dots{top:auto;bottom:calc(14px + var(--sb,0px));left:0;right:auto;width:calc(100vw - min(44vw,460px))} .rl-sph{right:auto;width:calc(100vw - min(44vw,460px))} .rl-arrow{top:45vh}.rl-arrow.r{right:calc(min(44vw,460px) + 6px)} .rl-shade{right:14px} }
 
 </style>
 </head>
@@ -3677,8 +3707,10 @@ const fwdX=y=>-Math.sin(y), fwdZ=y=>-Math.cos(y);
 /* ---------- stats: real deeds are your power ---------- */
 function plStats(){ const O=PL.override; if(O){ Object.assign(PL,{lvl:O.lvl,rank:O.rank,atk:O.atk,max:O.hp,crit:O.crit||.2,dashMax:O.dash||3,flaskMax:O.flasks||3}); return; }
   const S=P.stats||{}, L=P.level||1; PL.lvl=L; PL.rank=RANK_NAME(L);
-  PL.atk=Math.round(12+L*1.6+(S.body||1)*2.5+(S.will||1)*1.2); PL.max=Math.round(110+L*9+(S.body||1)*5+(S.soul||1)*4);
-  const GB=typeof gearBonus==="function"?gearBonus():{atk:0,hp:0,crit:0}; PL.atk+=GB.atk; PL.max+=GB.hp; PL.crit=Math.min(.6,.06+(S.mind||1)*.012+GB.crit); PL.dashMax=(S.will||1)>=10?3:2; PL.flaskMax=Math.min(6,2+Math.floor((S.soul||1)/3)+(P.flaskBonus||0)); }
+  // the form of the spheres in Reality: an abandoned skill weakens its stat (never below 68%)
+  const fk=typeof formK==="function"?formK:()=>1; const sb=(S.body||1)*fk("body"), sw=(S.will||1)*fk("will"), ss=(S.soul||1)*fk("soul"), sm=(S.mind||1)*fk("mind");
+  PL.atk=Math.round(12+L*1.6+sb*2.5+sw*1.2); PL.max=Math.round(110+L*9+sb*5+ss*4);
+  const GB=typeof gearBonus==="function"?gearBonus():{atk:0,hp:0,crit:0}; PL.atk+=GB.atk; PL.max+=GB.hp; PL.crit=Math.min(.6,.06+sm*.012+GB.crit); PL.dashMax=(S.will||1)>=10?3:2; PL.flaskMax=Math.min(6,2+Math.floor((S.soul||1)/3)+(P.flaskBonus||0)); }
 /* ---------- scene & camera ---------- */
 function fpInit(){ if(FP.cam) return; FP.cam=new THREE.PerspectiveCamera(78,innerWidth/innerHeight,.05,1400); FP.cam.rotation.order="YXZ"; fpHud(); fpInput(); addEventListener("resize",fpResize); }
 function fpResize(){ if(!FP.cam) return; const a=innerWidth/innerHeight; FP.cam.aspect=a; FP.baseFov=a<.8?82:a<1.3?74:68; FP.cam.fov=FP.baseFov; FP.cam.updateProjectionMatrix(); }
@@ -3686,7 +3718,7 @@ function fpPost(on){ if(on){ renderPass.mat.uniforms.uStr.value=.62; renderPass.
     gradeP.enabled=true; gradeP.uniforms.uVig.value=.26; gradeP.uniforms.uBand.value=.1; if(HUB.post) HUB.post.enabled=false; renderPass.scene=FP.scene; renderPass.camera=FP.cam; }
   else { renderPass.mat.uniforms.uFar.value=420; gradeP.uniforms.uVig.value=.55; gradeP.uniforms.uBand.value=.18; gradeP.uniforms.uHit.value=0; gradeP.uniforms.uSpeed.value=0; } }
 /* enter a zone: {id, scene, h(x,z), solid(x,z,r), spawn, update(dt,t), markers(), onEnter, onLeave, music} */
-async function fpEnter(zone,sp,opts={}){ fpInit(); plStats(); if(!opts.keepHp){ PL.hp=PL.max; PL.flasks=PL.flaskMax; } PL.dead=false; PL.dashN=PL.dashMax; PL.ult=opts.ult??PL.ult; PL.vy=0; PL.weak=0; PL.moveK=1;
+async function fpEnter(zone,sp,opts={}){ if(typeof realHide==="function") realHide(); fpInit(); plStats(); if(!opts.keepHp){ PL.hp=PL.max; PL.flasks=PL.flaskMax; } PL.dead=false; PL.dashN=PL.dashMax; PL.ult=opts.ult??PL.ult; PL.vy=0; PL.weak=0; PL.moveK=1;
   $("fade").style.transition="opacity .5s"; $("fade").style.opacity=1; await wait(opts.instant?0:520);
   if(FP.zone&&FP.zone!==zone&&FP.zone.onLeave) FP.zone.onLeave(); fpClearEnts();
   FP.zone=zone; FP.scene=zone.scene; if(zone.onEnter) zone.onEnter(opts); const s=sp||zone.spawn; PL.x=s.x; PL.z=s.z; PL.yaw=s.yaw||0; PL.pitch=-.04; PL.y=zone.h(PL.x,PL.z);
@@ -3898,7 +3930,7 @@ function fpNeedTick(){ const on=!PL.dead&&FP.on; const n={};
 function fpFocus(id,ms=3600){ const b=$(id); if(!b) return; b.classList.add("focus"); clearTimeout(b._ft); b._ft=setTimeout(()=>b.classList.remove("focus"),ms); }
 /* the pause menu */
 function fpMenu(){ if(!FP.on||anyBlocking()) return; const Z=FP.zone||{}; const leave=Z.leaveLabel||"В убежище";
-  const W=Z.id==="world"&&!Z.prologue; modal({id:"fpm",title:"Пауза",icon:"≡",closable:true,body:`${Z.prologue?"":timeBlock()}<div class="menu-grid" style="margin-top:10px"><button class="btn primary" id="fmGo">Продолжить</button>${W?`<button class="btn" id="fmOb">◈ К обелиску</button><button class="btn life" id="fmLife">☀ В Явь</button>`:""}${Z.prologue?"":`<button class="btn" id="fmDiff">⚔ Сложность: ${diff().n}</button>`}<button class="btn" id="fmBr">☀ Яркость: ${Math.round((P.bright||1)*100)}%</button><button class="btn" id="fmSens">Чувствительность: ${Math.round(FP.sens*100)}%</button>
+  const W=Z.id==="world"&&!Z.prologue; modal({id:"fpm",title:"Пауза",icon:"≡",closable:true,body:`${Z.prologue?"":timeBlock()}<div class="menu-grid" style="margin-top:10px"><button class="btn primary" id="fmGo">Продолжить</button>${W?`<button class="btn" id="fmOb">◈ К обелиску</button><button class="btn life" id="fmLife">☀ В Реальность</button>`:""}${Z.prologue?"":`<button class="btn" id="fmDiff">⚔ Сложность: ${diff().n}</button>`}<button class="btn" id="fmBr">☀ Яркость: ${Math.round((P.bright||1)*100)}%</button><button class="btn" id="fmSens">Чувствительность: ${Math.round(FP.sens*100)}%</button>
     <button class="btn" id="fmSnd">Звук: ${muted?"выкл":"вкл"}</button><button class="btn" id="fmCtl">? Управление</button>${Z.id==="world"&&!Z.prologue?`<button class="btn" id="fmMap">◈ Карта</button><button class="btn" id="fmArmy">☗ Армия · ${army().length}</button><button class="btn" id="fmGear">◆ Снаряжение</button><button class="btn" id="fmPath">✦ Путь и сила</button><button class="btn" id="fmStory">📖 Сюжет</button><button class="btn" id="fmPlan">◎ Дела на сегодня</button><button class="btn ghost" id="fmMore">Настройки и прогресс</button>`:""}${Z.noLeave?"":`<button class="btn ghost" id="fmOut">${leave}</button>`}</div>
 `,
     onMount:el=>{ el.querySelector("#fmGo").onclick=()=>closeModal("fpm"); el.querySelector("#fmSens").onclick=()=>{ FP.sens=FP.sens>=1.6?.6:Math.round((FP.sens+.2)*10)/10; P.sens=FP.sens; saveP(); closeModal("fpm",true); fpMenu(); };
@@ -3914,24 +3946,24 @@ function fpMenu(){ if(!FP.on||anyBlocking()) return; const Z=FP.zone||{}; const 
 /* ================= FP FX: sparks, ink, slashes in the air, red warnings on the ground, shockwaves =================
    One pooled particle system for light (additive) and one for ink (dark smoke). Everything is short-lived and cheap. */
 const FX={ list:[] };
-function fxPool(scene,N,additive){ const pos=new Float32Array(N*3), col=new Float32Array(N*3), siz=new Float32Array(N), vel=new Float32Array(N*3), life=new Float32Array(N), max=new Float32Array(N), grav=new Float32Array(N), drag=new Float32Array(N);
+function fxPool(scene,N,additive,alpha=.85){ const pos=new Float32Array(N*3), col=new Float32Array(N*3), siz=new Float32Array(N), vel=new Float32Array(N*3), life=new Float32Array(N), max=new Float32Array(N), grav=new Float32Array(N), drag=new Float32Array(N);
   for(let i=0;i<N;i++){ pos[i*3+1]=-9999; }
-  const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.BufferAttribute(pos,3)); g.setAttribute("color",new THREE.BufferAttribute(col,3)); g.setAttribute("aS",new THREE.BufferAttribute(siz,1));
+  const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.BufferAttribute(pos,3)); g.setAttribute("color",new THREE.BufferAttribute(col,3)); g.setAttribute("aS",new THREE.BufferAttribute(siz,1)); const kf=new Float32Array(N); g.setAttribute("aK",new THREE.BufferAttribute(kf,1));
   const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:additive?THREE.AdditiveBlending:THREE.NormalBlending,uniforms:{uTex:{value:WGLOW},uPx:{value:innerHeight}},
-    vertexShader:`attribute float aS; attribute vec3 color; varying vec3 vC; varying float vA; void main(){ vC=color; vec4 mv=modelViewMatrix*vec4(position,1.); vA=step(0.,aS); gl_PointSize=min(160.,abs(aS)*${additive?"420.":"520."}/-mv.z); gl_Position=projectionMatrix*mv; }`,
+    vertexShader:`attribute float aS; attribute float aK; attribute vec3 color; varying vec3 vC; varying float vA; varying float vK; void main(){ vC=color; vK=aK; vec4 mv=modelViewMatrix*vec4(position,1.); vA=step(0.,aS); gl_PointSize=min(160.,abs(aS)*${additive?"420.":"520."}/-mv.z); gl_Position=projectionMatrix*mv; }`,
     fragmentShader:additive?`uniform sampler2D uTex; varying vec3 vC; varying float vA; void main(){ float a=texture2D(uTex,gl_PointCoord).r; gl_FragColor=vec4(vC*a*vA,1.); }`
-      :`uniform sampler2D uTex; varying vec3 vC; varying float vA; void main(){ float a=texture2D(uTex,gl_PointCoord).r; gl_FragColor=vec4(vC,a*.85*vA); }`});
+      :`uniform sampler2D uTex; varying vec3 vC; varying float vA; varying float vK; void main(){ float a=texture2D(uTex,gl_PointCoord).r; gl_FragColor=vec4(vC,pow(a,${alpha<.8?"1.6":"1.0"})*${alpha.toFixed(2)}*vA*smoothstep(0.,.45,vK)*(1.-smoothstep(.85,1.,vK))); }`});
   const pts=new THREE.Points(g,m); pts.frustumCulled=false; pts.renderOrder=additive?8:7; scene.add(pts);
-  return { N, pos, col, siz, vel, life, max, grav, drag, g, pts, i:0, sz0:new Float32Array(N), c0:new Float32Array(N*3) }; }
-function fxEnsure(){ const sc=FP.scene; if(!sc) return; if(sc.userData.fx) { FX.glow=sc.userData.fx.glow; FX.ink=sc.userData.fx.ink; return; } sc.userData.fx={ glow:fxPool(sc,900,true), ink:fxPool(sc,500,false) }; FX.glow=sc.userData.fx.glow; FX.ink=sc.userData.fx.ink; }
+  return { N, pos, col, siz, vel, life, max, grav, drag, kf, g, pts, i:0, sz0:new Float32Array(N), c0:new Float32Array(N*3) }; }
+function fxEnsure(){ const sc=FP.scene; if(!sc) return; if(sc.userData.fx) { FX.glow=sc.userData.fx.glow; FX.ink=sc.userData.fx.ink; FX.mist=sc.userData.fx.mist; return; } sc.userData.fx={ glow:fxPool(sc,900,true), ink:fxPool(sc,500,false), mist:fxPool(sc,700,false,.42) }; FX.glow=sc.userData.fx.glow; FX.ink=sc.userData.fx.ink; FX.mist=sc.userData.fx.mist; }
 function fxEmit(P0,x,y,z,vx,vy,vz,life,size,r,g,b,grav=0,drag=1){ const i=P0.i; P0.i=(P0.i+1)%P0.N; P0.pos[i*3]=x; P0.pos[i*3+1]=y; P0.pos[i*3+2]=z; P0.vel[i*3]=vx; P0.vel[i*3+1]=vy; P0.vel[i*3+2]=vz;
   P0.life[i]=life; P0.max[i]=life; P0.sz0[i]=size; P0.siz[i]=size; P0.c0[i*3]=r; P0.c0[i*3+1]=g; P0.c0[i*3+2]=b; P0.grav[i]=grav; P0.drag[i]=drag; }
-function fxPoolTick(P0,dt,additive){ if(!P0) return; const {pos,vel,life,max,siz,col,c0,sz0,grav,drag}=P0;
-  for(let i=0;i<P0.N;i++){ if(life[i]<=0){ if(pos[i*3+1]>-9000){ pos[i*3+1]=-9999; siz[i]=-1; } continue; } life[i]-=dt; const k=Math.max(0,life[i]/max[i]);
+function fxPoolTick(P0,dt,additive){ if(!P0) return; const {pos,vel,life,max,siz,col,c0,sz0,grav,drag,kf}=P0;
+  for(let i=0;i<P0.N;i++){ if(life[i]<=0){ if(pos[i*3+1]>-9000){ pos[i*3+1]=-9999; siz[i]=-1; } continue; } life[i]-=dt; const k=Math.max(0,life[i]/max[i]); kf[i]=k;
     const dr=Math.pow(drag[i],dt); vel[i*3]*=dr; vel[i*3+1]=vel[i*3+1]*dr-grav[i]*dt; vel[i*3+2]*=dr; pos[i*3]+=vel[i*3]*dt; pos[i*3+1]+=vel[i*3+1]*dt; pos[i*3+2]+=vel[i*3+2]*dt;
     siz[i]=additive?sz0[i]*(.3+.7*k):sz0[i]*(1.6-.6*k); const f=additive?k:Math.min(1,k*1.4); col[i*3]=c0[i*3]*f; col[i*3+1]=c0[i*3+1]*f; col[i*3+2]=c0[i*3+2]*f; if(!additive) siz[i]=sz0[i]*(1.8-k); }
-  P0.g.attributes.position.needsUpdate=true; P0.g.attributes.color.needsUpdate=true; P0.g.attributes.aS.needsUpdate=true; }
-function fxClear(){ [FX.glow,FX.ink].forEach(P0=>{ if(P0) P0.life.fill(0); }); FX.list.forEach(o=>o.kill&&o.kill()); FX.list=[]; }
+  P0.g.attributes.position.needsUpdate=true; P0.g.attributes.color.needsUpdate=true; P0.g.attributes.aS.needsUpdate=true; P0.g.attributes.aK.needsUpdate=true; }
+function fxClear(){ [FX.glow,FX.ink,FX.mist].forEach(P0=>{ if(P0) P0.life.fill(0); }); FX.list.forEach(o=>o.kill&&o.kill()); FX.list=[]; }
 const _c3=new THREE.Color();
 /* bursts */
 function fxSparks(x,y,z,col,n=14,speed=6,size=.22){ fxEnsure(); _c3.set(col); for(let i=0;i<n;i++){ const a=Math.random()*6.283, u=Math.random()*2-1, s=speed*(.4+Math.random()*.8), q=Math.sqrt(1-u*u);
@@ -3979,7 +4011,7 @@ function fxBeam(x,z,y,col,h=8,dur=1.2,w=1){ const m=new THREE.MeshBasicMaterial(
 function fxStop(s){ FP.stop=Math.max(FP.stop,s); }
 function fxSlow(k,s){ FP.slow=Math.min(FP.slow,k); FP.slowT=Math.max(FP.slowT,s); }
 function fxImpact(k=1){ FP.hitK=Math.max(FP.hitK,k); }
-function fxTick(dt,rdt){ fxPoolTick(FX.glow,dt,true); fxPoolTick(FX.ink,dt,false); for(let i=FX.list.length-1;i>=0;i--){ if(FX.list[i].tick(dt)) FX.list.splice(i,1); } }
+function fxTick(dt,rdt){ fxPoolTick(FX.glow,dt,true); fxPoolTick(FX.ink,dt,false); fxPoolTick(FX.mist,dt,false); for(let i=FX.list.length-1;i>=0;i--){ if(FX.list[i].tick(dt)) FX.list.splice(i,1); } }
 
 /* ===== fp-view.js ===== */
 /* ================= FP VIEW: your hands and two daggers =================
@@ -4147,17 +4179,27 @@ function viewTick(dt,rdt){ if(!VM.root||!FP.on) return; const spread=FP.cam.aspe
 /* ================= FP ENEMIES: imps, hounds, brutes, whisperers, your shadow soldiers — and the boss =================
    Every creature is a few merged meshes (cheap on phones) with one shader: vertex color + glowing parts + rim + hit flash + dissolve. */
 FP.LP=Array.from({length:FP_NL},()=>new THREE.Vector3(0,-999,0)); FP.LC=Array.from({length:FP_NL},()=>new THREE.Color(0,0,0));
-function crMat(tint){ return new THREE.ShaderMaterial({fog:true,defines:{NL:FP_NL},uniforms:THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uTint:{value:new THREE.Color(tint||0x7a4dff)},uRim:{value:1.7},uHit:{value:0},uDis:{value:0},uEm:{value:1},uSh:{value:0},uLK:{value:1},uAmb:{value:new THREE.Color(.24,.22,.34)},uSun:{value:new THREE.Color(.34,.36,.5)},uLP:{value:FP.LP},uLC:{value:FP.LC}}]),
+function crMat(tint){ return new THREE.ShaderMaterial({fog:true,defines:{NL:FP_NL},uniforms:THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uTint:{value:new THREE.Color(tint||0x7a4dff)},uRim:{value:1.7},uHit:{value:0},uDis:{value:0},uEm:{value:1},uSh:{value:0},uLK:{value:1},uTime:{value:0},uBase:{value:-1e4},uAlpha:{value:1},uAmb:{value:new THREE.Color(.24,.22,.34)},uSun:{value:new THREE.Color(.34,.36,.5)},uLP:{value:FP.LP},uLC:{value:FP.LC}}]),
   vertexShader:`attribute vec3 color; attribute float aE; varying vec3 vC; varying float vE; varying vec3 vN; varying vec3 vV; varying vec3 vW; ${FOG_V}
     void main(){ vC=color; vE=aE; vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; vN=normalize(mat3(modelMatrix)*normal); vV=normalize(cameraPosition-w.xyz); vec4 mvPosition=viewMatrix*w; gl_Position=projectionMatrix*mvPosition;
       #include <fog_vertex>
     }`,
-  fragmentShader:`varying vec3 vC; varying float vE; varying vec3 vN; varying vec3 vV; varying vec3 vW; uniform vec3 uTint,uAmb,uSun; uniform float uHit,uDis,uEm,uRim,uSh,uLK; uniform vec3 uLP[NL]; uniform vec3 uLC[NL]; ${FOG_F}
+  fragmentShader:`varying vec3 vC; varying float vE; varying vec3 vN; varying vec3 vV; varying vec3 vW; uniform vec3 uTint,uAmb,uSun; uniform float uHit,uDis,uEm,uRim,uSh,uLK,uTime,uBase,uAlpha; uniform vec3 uLP[NL]; uniform vec3 uLC[NL]; ${FOG_F}
     float h(vec3 p){ return fract(sin(dot(p,vec3(12.9,78.2,37.7)))*43758.5); }
-    void main(){ if(uDis>0.&&h(floor(vW*22.))<uDis) discard; vec3 N=normalize(vN); float rim=pow(1.-max(dot(N,vV),0.),2.4);
+    float vn(vec3 p){ vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(mix(h(i),h(i+vec3(1.,0.,0.)),f.x),mix(h(i+vec3(0.,1.,0.)),h(i+vec3(1.,1.,0.)),f.x),f.y),mix(mix(h(i+vec3(0.,0.,1.)),h(i+vec3(1.,0.,1.)),f.x),mix(h(i+vec3(0.,1.,1.)),h(i+vec3(1.,1.,1.)),f.x),f.y),f.z); }
+    void main(){ float sm=1., cut=0.;
+      if(uSh>.5){ vec3 q=vW*3.2+vec3(0.,-uTime*1.4,0.); sm=vn(q)*.62+vn(q*2.3+7.1)*.38; cut=max(uDis,(1.-smoothstep(0.,.6,vW.y-uBase))*.6); if(sm<cut) discard; }
+      else if(uDis>0.&&h(floor(vW*22.))<uDis) discard;
+      vec3 N=normalize(vN); float rim=pow(1.-max(dot(N,vV),0.),2.4);
       vec3 lit=uAmb+uSun*max(dot(N,normalize(vec3(.3,1.,.2))),0.); for(int i=0;i<NL;i++){ vec3 L=uLP[i]-vW; float d=length(L); lit+=uLC[i]*uLK*max(dot(N,L/max(d,.001)),0.)/(1.+d*d*.09); }
-      vec3 bc=mix(vC,vec3(.035,.03,.06)+vC*.15,uSh); vec3 ec=mix(vC,uTint*.75+vC*.25,uSh); vec3 c=bc*lit*1.8+uTint*smoothstep(.4,1.,rim)*uRim+ec*vE*2.6*uEm; if(uDis>0.){ float e=step(h(floor(vW*22.)),uDis+.06); c=mix(c,uTint*1.1,e); }
-      c=mix(c,vec3(1.35)+uTint*.35,uHit); gl_FragColor=vec4(c,1.);
+      vec3 c;
+      if(uSh>.5){ // a shadow soldier: a body of black smoke, a violet edge that breathes, eyes that burn
+        vec3 sv=mix(vec3(.42,.3,1.),uTint,.2); float r2=smoothstep(.12,.9,rim), fl=.5+.8*sm; float foot=1.-smoothstep(0.,1.3,vW.y-uBase);
+        c=(vec3(.016,.012,.032)+vC*.04)*lit*.9 + sv*(r2*uRim*.75*fl + pow(r2,3.)*.6*fl + foot*.07*fl);
+        c+=sv*smoothstep(.45,1.,vE)*(.3+.7*sm)*1.1*uEm + vec3(.5,.58,1.)*smoothstep(.95,1.,vE)*.45*uEm*(.5+.5*sm);   // eyes burn brighter than runes
+        c+=sv*(1.-smoothstep(0.,.07,sm-cut))*step(.001,cut)*.8; }
+      else { vec3 bc=vC; vec3 ec=vC; c=bc*lit*1.8+uTint*smoothstep(.4,1.,rim)*uRim+ec*vE*2.6*uEm; if(uDis>0.){ float e=step(h(floor(vW*22.)),uDis+.06); c=mix(c,uTint*1.1,e); } }
+      c=mix(c,vec3(1.35)+uTint*.35,uHit); gl_FragColor=vec4(c,uAlpha);
       #include <fog_fragment>
     }`}); }
 /* merge primitive parts into one geometry: [geo, color, emit, (x,y,z), (rx,ry,rz), (sx,sy,sz)] */
@@ -4521,7 +4563,7 @@ function mdlSoldier(){ if(CRG.soldier) return CRG.soldier; const B=0x060509, E=0
     [Gs.cone(.05,.35,5),A,.3,[-.12,1.8,-.02],[-.3,0,.4]],[Gs.cone(.05,.35,5),A,.3,[.12,1.8,-.02],[-.3,0,-.4]],[Gs.sph(.14,8,6),A,0,[-.28,1.35,0],[0,0,0],[1.2,.8,1]],[Gs.sph(.14,8,6),A,0,[.28,1.35,0],[0,0,0],[1.2,.8,1]]]);
   const arm=crGeo([[Gs.cyl(.06,.05,.55,6),B,0,[0,-.27,0]],[Gs.box(.05,.9,.02),E,.9,[0,-.95,.12],[.3,0,0]]]);
   return CRG.soldier={body,arm}; }
-function mkAlly(x,z,i,opts={}){ const M=mdlSoldier(); const g=new THREE.Group(); const mat=crMat(0x9a6dff); const body=new THREE.Mesh(M.body,mat); g.add(body); const arm=new THREE.Group(); arm.position.set(.3,1.35,0); arm.add(new THREE.Mesh(M.arm,mat)); g.add(arm);
+function mkAlly(x,z,i,opts={}){ const M=mdlSoldier(); const g=new THREE.Group(); const mat=crMat(0x9a6dff); mat.uniforms.uSh.value=1; mat.uniforms.uRim.value=1.6; mat.uniforms.uEm.value=.8; const body=new THREE.Mesh(M.body,mat); g.add(body); const arm=new THREE.Group(); arm.position.set(.3,1.35,0); arm.add(new THREE.Mesh(M.arm,mat)); g.add(arm);
   const sc=opts.scale||(.78+Math.random()*.16); g.scale.setScalar(sc); FP.scene.add(g); const y=FP.zone.h(x,z);
   const a={ kind:"ally", g, mat, arm, x, z, y, yaw:PL.yaw, r:.4, h:1.9*sc, life:opts.life||14, t:0, rise:0, cd:Math.random()*.6, tgt:null, gone:false, dis:0, dmg:PL.atk*(opts.dmgK||FP.allyDmgK||.45), squad:opts.squad||null,
     tick(dt){ allyTick(this,dt); }, remove(){ FP.scene.remove(g); mat.dispose(); } };
@@ -4543,7 +4585,7 @@ function shellBuild(S,mat,o={}){ const g=new THREE.Group(); let anim=null, h=1.9
 function mkShellAlly(s,x,z,i,opts={}){ const S=s&&s.shell; if(!S) return mkAlly(x,z,i,opts);
   const col=new THREE.Color(SCLS[s.type]?SCLS[s.type].col:"#b58cff"); const mat=crMat(col.getHex()); mat.uniforms.uSh.value=1; mat.uniforms.uRim.value=1.5; mat.uniforms.uEm.value=.55;
   const B=shellBuild(S,mat); const g=B.g; const rk=(RMULT[s.rank]||1); const sc=opts.scale||(S.kind==="boss"?.8+(rk-1)*.2:S.type==="brute"?.78:1.05); g.scale.setScalar(sc); FP.scene.add(g); const y=FP.zone.h(x,z);
-  const a={ kind:"ally", shell:true, g, mat, arm:new THREE.Group(), x, z, y, yaw:PL.yaw, r:S.kind==="boss"?.55*sc:.4, h:B.h*sc, life:opts.life||14, t:0, rise:0, cd:Math.random()*.6, tgt:null, gone:false, dis:0, dmg:PL.atk*(opts.dmgK||FP.allyDmgK||.45), squad:opts.squad||null, sol:s, ab:sAbility(s), abCd:2+Math.random()*4, anim:B.anim, walk:0, mv:0, big:S.kind==="boss"||S.type==="brute",
+  const a={ kind:"ally", shell:true, g, mat, cmat:B.extra?B.extra.cm:null, arm:new THREE.Group(), x, z, y, yaw:PL.yaw, r:S.kind==="boss"?.55*sc:.4, h:B.h*sc, life:opts.life||14, t:0, rise:0, cd:Math.random()*.6, tgt:null, gone:false, dis:0, dmg:PL.atk*(opts.dmgK||FP.allyDmgK||.45), squad:opts.squad||null, sol:s, ab:sAbility(s), abCd:2+Math.random()*4, anim:B.anim, walk:0, mv:0, big:S.kind==="boss"||S.type==="brute",
     tick(dt){ allyTick(this,dt); }, remove(){ FP.scene.remove(g); mat.dispose(); if(B.extra){ B.extra.cm.dispose(); if(B.extra.R.rib) B.extra.R.rib.dispose(); } } };
   fxSmoke(x,y,z,0x4a2d9f,4,1.6*sc,.8); FP.allies.push(a); return a; }
 function allyTick(a,dt){ a.t+=dt; a.rise=Math.min(1,a.rise+dt*1.8);
@@ -4556,8 +4598,16 @@ function allyTick(a,dt){ a.t+=dt; a.rise=Math.min(1,a.rise+dt*1.8);
   if(a.ab&&a.dis<=0&&a.rise>=1){ a.abCd-=dt; if(a.abCd<=0&&a.tgt&&allyAbility(a,d)) a.abCd=a.ab.cd*(.85+Math.random()*.3); }
   if(a.tgt&&d<=want+.4&&a.cd<=0&&a.dis<=0){ a.cd=.75+Math.random()*.4; a.swing=.3; const T=a.tgt; hitEnemy(T,a.dmg*(.8+Math.random()*.4),{ally:true,push:.5,pose:T.boss?1.2:0,by:a}); }
   a.swing=Math.max(0,(a.swing||0)-dt); if(a.anim) a.anim(a,dt); else a.arm.rotation.x=a.swing>0?-2.4+(.3-a.swing)*10:-.2+Math.sin(a.t*3)*.05;
-  if(a.shell&&a.dis<=0){ const dc=Math.hypot(a.x-PL.x,a.z-PL.z); const inFront=Math.abs(wrapA(yawTo(PL.x,PL.z,a.x,a.z)-PL.yaw))<.9; const want=inFront&&dc<(a.big?5.5:3)?.55:0; a.fade=(a.fade||0)+(want-(a.fade||0))*Math.min(1,dt*6); a.mat.uniforms.uDis.value=a.fade; }
-  a.y+=(FP.zone.h(a.x,a.z)-a.y)*Math.min(1,dt*12); a.g.position.set(a.x,a.y-(1-a.rise)*2+Math.sin(a.t*2+a.x)*.05,a.z); a.g.rotation.y=a.yaw+Math.PI; }
+  if(a.shell&&a.dis<=0){ const dc=Math.hypot(a.x-PL.x,a.z-PL.z); const inFront=Math.abs(wrapA(yawTo(PL.x,PL.z,a.x,a.z)-PL.yaw))<.9; const want=inFront&&dc<(a.big?5.5:3)?.55:0; a.fade=(a.fade||0)+(want-(a.fade||0))*Math.min(1,dt*6);
+    // right in front of you a shadow turns to see-through smoke instead of blocking the view
+    const tr=a.fade>.02; if(a.mat.transparent!==tr) a.mat.transparent=tr; a.mat.uniforms.uAlpha.value=1-a.fade*1.3; if(a.cmat) a.cmat.uniforms.uA.value=1-a.fade*1.3; }
+  a.y+=(FP.zone.h(a.x,a.z)-a.y)*Math.min(1,dt*12); const gy=a.y-(1-a.rise)*2+Math.sin(a.t*2+a.x)*.05; a.g.position.set(a.x,gy,a.z); a.g.rotation.y=a.yaw+Math.PI;
+  a.mat.uniforms.uTime.value=FP.t+(a.x*.37); a.mat.uniforms.uBase.value=gy; shadowMist(a,dt); }
+/* black smoke rising off a shadow, with rare violet sparks — less of it right in front of your eyes */
+function shadowMist(a,dt){ if(!FX.mist||a.dis>=.9||a.rise<.5) return; const near=(a.fade||0)>.2; a.mist=(a.mist||0)+dt*(near?3:a.big?26:16)*(a.g.scale.x>1.2?1.4:1);
+  while(a.mist>1){ a.mist-=1; const ang=Math.random()*6.283, rr=a.r*(.5+Math.random()*.7), yy=a.y+.1+Math.random()*a.h*.85;
+    const v=Math.random(); fxEmit(FX.mist,a.x+Math.cos(ang)*rr,yy,a.z+Math.sin(ang)*rr,Math.cos(ang)*.3,.5+Math.random()*1.1,Math.sin(ang)*.3,.6+Math.random()*.8,(a.big?.42:.3)*(.6+Math.random()*.7),.03+v*.05,.02+v*.02,.07+v*.12,-.3,.5); }
+  if(FX.glow&&!near&&Math.random()<dt*2.5){ const ang=Math.random()*6.283; fxEmit(FX.glow,a.x+Math.cos(ang)*a.r*.6,a.y+Math.random()*a.h*.8,a.z+Math.sin(ang)*a.r*.6,0,.8+Math.random()*.6,0,.6+Math.random()*.4,.1+Math.random()*.08,.3,.2,.75,-.3,.6); } }
 /* a boss-soldier's own move: fires by itself when it makes sense */
 function allyAbility(a,d){ const A=a.ab, s=a.sol, T=a.tgt; const near=(r,x=a.x,z=a.z)=>FP.ents.filter(e=>e.alive&&!e.ghost&&Math.hypot(e.x-x,e.z-z)<r); const say=()=>fpFloat(a.x,a.y+a.h+.3,a.z,`${A.n}`,"ally");
   if(A.k==="slam"){ if(d>4.5) return false; a.swing=.3; const L=near(4.2); L.forEach(e=>hitEnemy(e,a.dmg*2.6,{ally:true,push:2.8,pose:e.boss?6:0,by:a})); fxRing(a.x,a.z,a.y,0x9a6dff,.3,5,.5,.6); fxSmoke(a.x,a.y+.2,a.z,0x4a2d9f,12,2.6,.8); FP.shake=Math.max(FP.shake,.25); tone(70,0,.35,"sawtooth",.05,40); say(); return true; }
@@ -4606,11 +4656,11 @@ function mdlBoss(v){ const k="boss"+v; if(CRG[k]) return CRG[k]; const B=0x0a071
   const blade=v===0?crGeo([[Gs.box(.07,2.3,.34),A,0,[0,-1.25,.1]],[Gs.box(.03,2.2,.05),E,1.2,[0,-1.25,.28]],[Gs.box(.22,.1,.4),A,0,[0,-.1,.1]],[Gs.cone(.06,.5,4),E,1,[0,-2.55,.12],[Math.PI,0,0]]]):null;
   const leg=crGeo([[Gs.cyl(.16,.13,.55,8),B,0,[0,-.27,0]],[Gs.cone(.08,.3,5),A,.2,[0,-.55,.14],[Math.PI/2,0,0]],[Gs.cyl(.13,.09,.5,8),B,0,[0,-.78,0]],[Gs.box(.22,.1,.36),A,0,[0,-1.02,.08]]]);
   return CRG[k]={body,upper,fore,blade,leg}; }
-function bossCloak(tint){ const m=new THREE.ShaderMaterial({fog:true,side:THREE.DoubleSide,transparent:true,depthWrite:false,uniforms:THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uTime:{value:0},uDis:{value:0},uLight:{value:0},uT:{value:new THREE.Color(tint)}}]),
+function bossCloak(tint){ const m=new THREE.ShaderMaterial({fog:true,side:THREE.DoubleSide,transparent:true,depthWrite:false,uniforms:THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uTime:{value:0},uDis:{value:0},uLight:{value:0},uA:{value:1},uT:{value:new THREE.Color(tint)}}]),
     vertexShader:`uniform float uTime; varying float vY; varying vec3 vW; ${FOG_V} void main(){ vec3 p=position; float k=-p.y/2.4; vY=k; p.z+=sin(uTime*2.3+k*5.+modelMatrix[3].x*9.)*.25*k; p.x+=sin(uTime*1.7+k*4.+modelMatrix[3].z*7.)*.12*k; vec4 w=modelMatrix*vec4(p,1.); vW=w.xyz; vec4 mvPosition=viewMatrix*w; gl_Position=projectionMatrix*mvPosition;
       #include <fog_vertex>
       }`,
-    fragmentShader:`varying float vY; varying vec3 vW; uniform float uDis,uLight; uniform vec3 uT; ${FOG_F} float h(vec3 p){ return fract(sin(dot(p,vec3(12.9,78.2,37.7)))*43758.5); } void main(){ if(h(floor(vW*7.))<uDis) discard; float a=(1.-smoothstep(.6,1.,vY)); vec3 c=mix(vec3(.03,.01,.05)+uT*smoothstep(.8,1.,vY)*.35,uT*(.35+.2*fract(vY*7.)),uLight); gl_FragColor=vec4(c,a*.95);
+    fragmentShader:`varying float vY; varying vec3 vW; uniform float uDis,uLight,uA; uniform vec3 uT; ${FOG_F} float h(vec3 p){ return fract(sin(dot(p,vec3(12.9,78.2,37.7)))*43758.5); } void main(){ if(h(floor(vW*7.))<uDis) discard; float a=(1.-smoothstep(.6,1.,vY)); vec3 c=mix(vec3(.03,.01,.05)+uT*smoothstep(.8,1.,vY)*.35,uT*(.35+.2*fract(vY*7.)),uLight); gl_FragColor=vec4(c,a*.95*uA);
       #include <fog_fragment>
       }`}); return m; }
 function mkBoss(x,z,o){ const kit=o.kit&&BKIT[o.kit]?BKIT[o.kit]:null; const tint=new THREE.Color(o.tint||(kit?kit.E:0xb040ff)); const mat=crMat(tint);
@@ -5029,7 +5079,7 @@ async function ariseFP(g,Z){ if(!canArise(g)){ if(g.nemesis) toast(say("Двой
   const ok=await ariseTries(T);
   if(!ok){ if(ok===false) toast("Хозяин этих Врат вернётся. Стань сильнее делами — и попробуй снова","#b58cff"); Z.scene.remove(gh); mat.dispose(); if(SB.extra) SB.extra.cm.dispose(); return null; }
   flash(); fxImpact(.5); banner("ВОССТАНЬ","","#b58cff"); tone(55,0,2,"sawtooth",.08,110); [220,277,330,440].forEach((f,i)=>tone(f,.4+i*.12,1.2,"sine",.05)); if(navigator.vibrate) try{ navigator.vibrate([60,40,120]); }catch(e){}
-  fxBeam(bx,bz,-18,0x9a6dff,12,1.5,2.5); fxRing(bx,bz,-18,0x9a6dff,.5,8,1,.6); let k=0; const iv=setInterval(()=>{ k+=.05; mat.uniforms.uDis.value=Math.max(0,.55-k); ga.kneel=Math.max(0,1-k*1.4); SB.anim&&SB.anim(ga,0); if(k>.8) clearInterval(iv); },30);
+  fxBeam(bx,bz,-18,0x9a6dff,12,1.5,2.5); fxRing(bx,bz,-18,0x9a6dff,.5,8,1,.6); let k=0; const iv=setInterval(()=>{ k+=.05; mat.uniforms.uDis.value=Math.max(0,.55-k); mat.uniforms.uTime.value=k*6; ga.kneel=Math.max(0,1-k*1.4); SB.anim&&SB.anim(ga,0); if(k>.8) clearInterval(iv); },30);
   await wait(1800);
   const s={ id:"s"+Date.now().toString(36), name:SNAMES[hashStr(g.id+army().length)%SNAMES.length], type:g.type||"WILL", rank:g.rank||"E", lvl:1, xp:0, gr:1, from:dg.epi, born:todayKey(), shell };
   army().push(s); P.squad=P.squad||[]; squadFix(); if(P.squad.length<squadCap()) P.squad.push(s.id); saveP(); campEvent("arise");
@@ -5042,7 +5092,7 @@ async function ariseFP(g,Z){ if(!canArise(g)){ if(g.nemesis) toast(say("Двой
       onMount:el=>el.querySelector("#sOk").onclick=()=>{ const n=el.querySelector("#sName").value.trim(); if(n) s.name=n.replace(/[<>&"]/g,"").slice(0,14); saveP(); closeModal("arise"); r(); }}); });
   Z.scene.remove(gh); mat.dispose(); if(SB.extra) SB.extra.cm.dispose(); return s; }
 function ariseHold(label,sub,o={}){ return new Promise(res=>{ let el=$("fpArise"); if(!el){ el=document.createElement("div"); el.id="fpArise"; el.className="fp-arise"; el.innerHTML=`<div class="t"><b></b><small></small><div class="ch"></div></div><button class="hold" id="fpAriseB"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/></svg>${ico("arise")}<span></span></button><button class="skip" id="fpAriseX">Отпустить Тень</button>`; $("fp").appendChild(el); }
-  const nm=!!o.noMana; el.classList.toggle("nomana",nm); el.querySelector(".t b").textContent=nm?"НЕТ МАНЫ":"ВОССТАНЬ?"; el.querySelector(".t small").textContent=nm?"Мана — только от реальных дел. Сделай дело в Яви и возвращайся: тень подождёт":sub;
+  const nm=!!o.noMana; el.classList.toggle("nomana",nm); el.querySelector(".t b").textContent=nm?"НЕТ МАНЫ":"ВОССТАНЬ?"; el.querySelector(".t small").textContent=nm?"Мана — только от реальных дел. Сделай дело в Реальности и возвращайся: тень подождёт":sub;
   const ch=el.querySelector(".ch"); ch.innerHTML=nm?`<i style="color:#6fb7ff">мана ${Math.floor(mana())} / ${MANA.arise}</i>`:o.chance!=null?`<i style="color:${chanceCol(o.chance)}">Шанс: ${chanceWord(o.chance)}</i><i>попытка ${4-(o.left||3)} из 3</i><i style="color:#6fb7ff">мана −${MANA.arise} · есть ${Math.floor(mana())}</i>`:"";
   el.querySelector(".hold span").textContent=nm?"":label; el.querySelector("#fpAriseX").textContent=nm?"Понятно":"Отпустить Тень"; el.classList.add("on"); let k=0, hold=false, done=false, last=performance.now();
   const b=el.querySelector("#fpAriseB"); b.disabled=nm; const dn=e=>{ e.preventDefault(); e.stopPropagation(); hold=true; }, up=()=>{ hold=false; }; b.onpointerdown=dn; b.onpointerup=up; b.onpointerleave=up; b.onpointercancel=up;
@@ -5832,7 +5882,7 @@ function lifeRemnant(e,o={}){ const Z=FP.zone; if(!Z||Z.prologue) return; const 
   const gm=crMat(col.getHex()); gm.uniforms.uSh.value=1; gm.uniforms.uRim.value=1.5; gm.uniforms.uDis.value=.2; gm.uniforms.uRim.value=2; const GB=shellBuild(shell,gm); const gsc=shell.kind==="boss"?Math.min(1.6,(o.gsc||1.4)):shell.type==="brute"?.9:1.1; GB.g.scale.setScalar(gsc); GB.g.rotation.y=yawTo(x,z,PL.x,PL.z)+Math.PI; g.add(GB.g); const ga={kneel:1,walk:0,mv:0,swing:0}; GB.anim&&GB.anim(ga,0); if(shell.kind!=="boss") GB.g.position.y=-.25;
   const R={x,z,y,g,pil,gl,s,t:0,life:o.life||40,gm,GB}; R.it={x,z,r:3.4,label:"Восстань",ic:"arise",arise:true,act:()=>lifeArise(R)}; Z.inter.push(R.it); LIFE.rem.push(R);
   if(!P.tipArise){ P.tipArise=1; saveP(); setTimeout(()=>fpHint("Его тень ждёт приказа. Нажми «Восстань» — и он пойдёт за тобой",4200),700); } else fpSys("☗ Тень ждёт приказа — «Восстань»","",2400); }
-function lifeRemTick(dt){ for(let i=LIFE.rem.length-1;i>=0;i--){ const R=LIFE.rem[i]; R.t+=dt; if(R.gm) R.gm.uniforms.uDis.value=.18+.05*Math.sin(R.t*3); const near=Math.min(1,Math.max(0,(Math.hypot(R.x-PL.x,R.z-PL.z)-1.5)/3)); R.pil.material.opacity=(.25+.12*Math.sin(R.t*5))*(.3+.7*near); R.gl.material.opacity=(.6+.3*Math.sin(R.t*3))*near; if(near>.9&&Math.random()<dt*4) fxSmoke(R.x,R.y,R.z,0x5a3daf,1,2.4,.9);
+function lifeRemTick(dt){ for(let i=LIFE.rem.length-1;i>=0;i--){ const R=LIFE.rem[i]; R.t+=dt; if(R.gm){ R.gm.uniforms.uDis.value=.18+.05*Math.sin(R.t*3); R.gm.uniforms.uTime.value=R.t; } const near=Math.min(1,Math.max(0,(Math.hypot(R.x-PL.x,R.z-PL.z)-1.5)/3)); R.pil.material.opacity=(.25+.12*Math.sin(R.t*5))*(.3+.7*near); R.gl.material.opacity=(.6+.3*Math.sin(R.t*3))*near; if(near>.9&&Math.random()<dt*4) fxSmoke(R.x,R.y,R.z,0x5a3daf,1,2.4,.9);
     if(R.t>R.life||R.done){ lifeRemKill(R); LIFE.rem.splice(i,1); } } }
 function lifeRemKill(R){ if(R.g.parent) R.g.parent.remove(R.g); R.g.traverse(o=>{ if(o.material&&!o.material.uniforms) o.material.dispose(); }); if(R.gm) R.gm.dispose(); if(R.GB&&R.GB.extra) R.GB.extra.cm.dispose(); R.it.off=true; const Z=FP.zone; if(Z) Z.inter=Z.inter.filter(q=>q!==R.it); }
 async function lifeArise(R){ if(R.done||R.busy) return; const A=army(); R.busy=true;
@@ -6100,7 +6150,7 @@ const SEASON={ title:"Сезон 1 · Охотник №0", ch:[
     out:[["sys","Новый солдат в строю."],["vera","У тебя целая армия теней. Страшно и красиво."]], tease:"Утро решает всё." },
   { t:"Главное", goal:{ev:"main",need:1,t:"Сделай главное дело дня ★"}, onIntro:"main",
     intro:[["arch","№0 делал всё подряд — и сгорел. Настоящий охотник знает, что главное."],["sys","Выбери главное дело дня. Сделай его — хоть сейчас, хоть вечером."]],
-    out:[["arch","Одно главное дело каждый день — и через год ты другой человек. Он этого так и не понял."]], tease:"Владыка заговорит твоим голосом." },
+    out:[["arch","Он думал, что вершина — это место. А это было каждое утро. Он так и не понял."]], tease:"Владыка заговорит твоим голосом." },
   { t:"Голос изнутри", goal:{ev:"cam",need:2,t:"Сделай 2 дела под камерой",alt:{ev:"allday",need:1,t:"Закрой все дела дня"}},
     intro:[["lord",()=>`«${ex0()}». Узнаёшь? Это твои слова. Я просто повторяю.`],["lord",()=>`«${ex1()}». Ты сам меня кормишь, ${P.name}.`]],
     choice:{at:"intro",q:"Владыка ждёт ответа.",o:[
@@ -6560,6 +6610,220 @@ function runesTake(){ const R=P.runes; if(!R) return 0; P.coins+=R.n; P.runes=nu
 let _xpLock=false;
 async function combatXp(n){ if(PL.override||!n) return; const ups=addXp(Math.round(n)); P.fightXp=(P.fightXp||0)+Math.round(n); if(ups){ plStats(); if(FP.on){ PL.hp=PL.max; } if(!_xpLock){ _xpLock=true; await levelUpFx(); _xpLock=false; } if(FP.on) fpSys("Уровень вырос в бою. Дела в жизни растят его втрое быстрее","gold",3600); } }
 
+/* ===== real.js ===== */
+/* ================= REALITY: your life as a character sheet =================
+   Each sphere is a constellation in the night sky, each skill a star. Stars grow with real hours (rank E→S)
+   and fade when a skill is abandoned (its "form" drops from the 4th day; hours and rank are never lost).
+   Below the sky: the quests of the day (they open the Gates in the Shadows), your own skills, your own rewards. */
+const REAL={ on:false, el:null, cv:null, g:null, page:0, pan:0, sel:null, t:0, raf:0, drag:null, hit:[], tab:"day" };
+const SKILLS=[
+  {id:"str",sp:"body",n:"Сила",d:["squat","sumo","jsquat","pushup","kneepush","diamond","lunge","revlunge","burpee","climber","bridge","plank","wallsit"]},
+  {id:"end",sp:"body",n:"Выносливость",d:["walk","run","stairs","jacks","knees"]},
+  {id:"hard",sp:"body",n:"Закалка и гибкость",d:["fold","cold"]},
+  {id:"deep",sp:"focus",n:"Глубокая работа",d:["focus","deep"]},
+  {id:"study",sp:"focus",n:"Учёба",d:["study"]},
+  {id:"mind",sp:"focus",n:"Острый ум",d:["math","schulte","memory","anagram"]},
+  {id:"lang",sp:"focus",n:"Языки",d:["words"]},
+  {id:"books",sp:"read",n:"Книги",d:["read","chapter","audio"]},
+  {id:"thoughts",sp:"read",n:"Мысли",d:["scroll","thought"]},
+  {id:"breath",sp:"calm",n:"Дыхание",d:["breath","box","b478"]},
+  {id:"silence",sp:"calm",n:"Тишина",d:["still","scan","gratitude"]},
+  {id:"detox",sp:"calm",n:"Свобода от ленты",d:["detox"]},
+  {id:"deeds",sp:"will",n:"Дела",d:["task","clean","inbox","plan"]},
+  {id:"order",sp:"will",n:"Режим",d:["wake","water","nosugar"]} ];
+const SKILL_OF={}; SKILLS.forEach(s=>s.d.forEach(k=>SKILL_OF[k]=s.id));
+const SPH_ORDER=["body","focus","read","calm","will"];
+const SPH_SIGN={ body:"Воин", focus:"Око", read:"Фонарь", calm:"Лотос", will:"Клинок" };
+const CONST={ body:[[.5,.1],[.5,.3],[.28,.44],[.72,.44],[.5,.56],[.34,.86],[.66,.86],[.14,.3],[.86,.3],[.5,.2]],
+  focus:[[.16,.5],[.33,.33],[.5,.27],[.67,.33],[.84,.5],[.67,.67],[.5,.73],[.33,.67],[.5,.5],[.5,.1]],
+  read:[[.5,.08],[.36,.24],[.64,.24],[.3,.55],[.7,.55],[.4,.84],[.6,.84],[.5,.42],[.5,.66]],
+  calm:[[.5,.28],[.28,.44],[.72,.44],[.16,.66],[.84,.66],[.5,.74],[.33,.88],[.67,.88],[.5,.52]],
+  will:[[.5,.04],[.5,.22],[.5,.42],[.32,.52],[.68,.52],[.5,.62],[.5,.84],[.4,.95],[.6,.95]] };
+// which star each skill takes, in order: spread out so labels never collide
+const CSLOT={ body:[0,2,3,5,6,7,8,4,1,9], focus:[0,4,9,6,2,8,1,3,5,7], read:[0,3,4,5,6,1,2,7,8], calm:[0,3,4,6,7,1,2,5,8], will:[0,3,4,6,1,7,8,2,5] };
+const CEDGE={ body:[[0,9],[9,1],[1,2],[1,3],[2,7],[3,8],[1,4],[4,5],[4,6]], focus:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,0],[8,2],[8,6],[2,9]],
+  read:[[0,1],[0,2],[1,3],[2,4],[3,5],[4,6],[5,6],[1,7],[2,7],[7,8]], calm:[[0,1],[0,2],[1,3],[2,4],[3,5],[4,5],[5,6],[5,7],[0,8],[8,5]], will:[[0,1],[1,2],[2,3],[2,4],[2,5],[5,6],[6,7],[6,8]] };
+/* ---------- the numbers ---------- */
+const SK_RANK=[["E",0],["D",600],["C",1800],["B",4800],["A",12000],["S",30000]]; // minutes
+function skRank(min){ let r=SK_RANK[0]; for(const q of SK_RANK) if(min>=q[1]) r=q; return r[0]; }
+function skNext(min){ const i=SK_RANK.findIndex(q=>q[1]>min); return i<0?null:SK_RANK[i]; }
+const RK_COL={E:"#9aa3b8",D:"#6fb7ff",C:"#6dffb0",B:"#b58cff",A:"#ffd166",S:"#ff4f6a"};
+function realState(){ const R=P.real||(P.real={min:{},last:{},cnt:{},rew:[],mig:0}); if(!R.mig){ R.mig=1; Object.entries(P.totals||{}).forEach(([k,n])=>{ const s=SKILL_OF[k]; if(s&&n) R.min[s]=(R.min[s]||0)+deedMinutes(k,n); });
+    const lastDay=P.lastDay||todayKey(); if(lastDay) SKILLS.forEach(s=>{ if(R.min[s.id]) R.last[s.id]=lastDay; }); saveP(); } return R; }
+const mySkills=()=>P.mySkills||(P.mySkills=[]);
+function allSkills(){ return [...SKILLS.map(s=>({...s,own:false})),...mySkills().map(s=>({...s,own:true}))]; }
+const skMin=id=>realState().min[id]||0;
+/* form: full for three days, then it fades a little every day (never below 20%); one session brings it back */
+function skForm(id){ const L=realState().last[id]; if(!L) return skMin(id)>0?.6:.35; const d=daysSince(L); return d<=3?1:Math.max(.2,1-(d-3)*.12); }
+function sphereForm(sp){ const L=allSkills().filter(s=>s.sp===sp&&skMin(s.id)>0); if(!L.length) return 1; return L.reduce((a,s)=>a+skForm(s.id),0)/L.length; }
+// form weakens the stat in the Shadows: full form = full bonus, at the lowest form the stat works at 68%
+function statForm(st){ const L=Object.keys(SPHERES).filter(k=>SPHERES[k].stat===st); return L.length?L.reduce((a,k)=>a+sphereForm(k),0)/L.length:1; }
+const formK=st=>.6+.4*statForm(st);
+const sphereMin=sp=>allSkills().filter(s=>s.sp===sp).reduce((a,s)=>a+skMin(s.id),0);
+/* every real deed lands on its star */
+function realAdd(skillId,mins,amount){ if(!skillId||!(mins>0)) return null; const R=realState(); const was=skRank(R.min[skillId]||0); R.min[skillId]=(R.min[skillId]||0)+mins; R.last[skillId]=todayKey(); if(amount) R.cnt[skillId]=(R.cnt[skillId]||0)+amount; saveP();
+  const now=skRank(R.min[skillId]); const S=allSkills().find(s=>s.id===skillId); if(now!==was&&S){ setTimeout(()=>{ banner(`РАНГ ${now}`,`навык «${S.n}» · ${fmtHM(R.min[skillId])}`,RK_COL[now]); },400); }
+  realRewardsCheck(); return {was,now}; }
+/* the System guesses the sphere from the name; you can correct it */
+const SK_GUESS=[["body",/зал|спорт|бег|трен|фитнес|плав|вело|бокс|кач|турник|футбол|растяж|отжим|присед|штанг|танц/i],["read",/книг|чтени|чита|стать|аудиокн|литерат/i],
+  ["calm",/медит|дыхан|сон|тишин|дневник|релакс|осознан|молит/i],["focus",/англ|язык|учёб|учеб|курс|программ|код|работ|репетит|урок|матем|экзам|проект|монтаж|дизайн|бизнес|блог|контент|видео|музык|рисов|универ|сесси/i],
+  ["will",/уборк|режим|план|дисципл|вода|подъём|подъем|порядок|дела|финанс|бюджет/i]];
+function skGuess(name){ for(const [sp,re] of SK_GUESS) if(re.test(name)) return sp; return "will"; }
+let _skN=0; function skAdd(n,sp,unit){ const id="my"+Date.now().toString(36)+(_skN++)+Math.floor(Math.random()*1e3); mySkills().push({id,n,sp,unit:unit||"",born:todayKey()}); saveP(); return id; }
+/* Anton asked for his two right away */
+function realSeed(){ if(P.realSeeded) return; P.realSeeded=1; if(/антон/i.test(P.name||"")){ if(!mySkills().some(s=>/зал/i.test(s.n))) skAdd("Зал","body",""); if(!mySkills().some(s=>/англ/i.test(s.n))) skAdd("Английский","focus","слов"); } saveP(); }
+/* ---------- your own rewards: «100 часов зала → новые кроссовки» ---------- */
+function realRewardsCheck(){ const R=realState(); (R.rew||[]).forEach(w=>{ if(w.done) return; const m=w.skill?skMin(w.skill):lifeTotal(); if(m>=w.h*60){ w.done=todayKey(); saveP(); setTimeout(()=>{ banner("НАГРАДА ЗАСЛУЖЕНА",w.n,"#ffd166"); toast(`Ты заработал: ${w.n}. Подари её себе — честно`,"#ffd166"); },900); } }); }
+/* ---------- the screen ---------- */
+function realBuild(){ if(REAL.el) return; const el=document.createElement("div"); el.id="real"; el.className="real"; el.innerHTML=`<canvas class="rl-sky"></canvas>
+  <div class="rl-top"><div class="rl-row"><button class="rl-me" id="rlMe"><b id="rlLv">1</b><span><i id="rlName"></i><small id="rlRank"></small></span></button>
+    <div class="rl-btns"><button class="icon" id="rlArmy" title="Армия">☗</button><button class="icon" id="rlPath" title="Путь">◈</button><button class="icon" id="rlMenu" title="Меню">≡</button></div></div>
+    <div class="rl-res"><span class="rl-mana" title="Мана — только от реальных дел"><i id="rlManaB"></i><em id="rlMana"></em></span><span class="chip" id="rlCoins"></span><span class="chip" id="rlStreak"></span></div></div>
+  <div class="rl-sph" id="rlSph"></div><div class="rl-dots" id="rlDots"></div>
+  <button class="rl-arrow l" id="rlL">‹</button><button class="rl-arrow r" id="rlR">›</button>
+  <div class="rl-panel" id="rlPanel"></div>
+  <button class="rl-shade btn primary" id="rlShade">⚔ Тени<small>мир · Врата · армия</small></button>`;
+  document.body.appendChild(el); REAL.el=el; REAL.cv=el.querySelector(".rl-sky"); REAL.g=REAL.cv.getContext("2d");
+  const cv=REAL.cv; const down=e=>{ if(anyBlocking()) return; REAL.drag={x:e.clientX,y:e.clientY,p:REAL.pan,t:performance.now(),moved:false}; };
+  const move=e=>{ const D=REAL.drag; if(!D) return; const dx=e.clientX-D.x; if(Math.abs(dx)>8) D.moved=true; REAL.pan=D.p-dx/REAL.W; };
+  const up=e=>{ const D=REAL.drag; REAL.drag=null; if(!D) return; if(!D.moved){ realTap(e.clientX,e.clientY); return; } const v=(e.clientX-D.x)/(performance.now()-D.t); let pg=Math.round(REAL.pan); if(Math.abs(v)>.35) pg=Math.round(D.p)+(v<0?1:-1); realGo(pg); };
+  cv.addEventListener("pointerdown",down); addEventListener("pointermove",move); addEventListener("pointerup",up);
+  el.querySelector("#rlL").onclick=()=>realGo(REAL.page-1); el.querySelector("#rlR").onclick=()=>realGo(REAL.page+1);
+  el.querySelector("#rlShade").onclick=()=>{ if(anyBlocking()||hubBusy) return; enterWorld(); };
+  el.querySelector("#rlArmy").onclick=()=>{ if(!anyBlocking()) armyWindow(); }; el.querySelector("#rlPath").onclick=()=>{ if(!anyBlocking()) pathWindow(); };
+  el.querySelector("#rlMenu").onclick=()=>{ if(!anyBlocking()) menuWindow(); }; el.querySelector("#rlMe").onclick=()=>{ if(!anyBlocking()) realTimeWindow(); };
+  addEventListener("keydown",e=>{ if(!REAL.on||anyBlocking()) return; if(e.code==="ArrowLeft") realGo(REAL.page-1); if(e.code==="ArrowRight") realGo(REAL.page+1); });
+  addEventListener("resize",()=>{ if(REAL.on) realResize(); }); }
+function realGo(p){ REAL.page=Math.max(0,Math.min(SPH_ORDER.length-1,p)); REAL.sel=null; if(REAL.tab==="skill") REAL.tab="day"; realRefresh(); sfx.select&&sfx.select(); }
+function realResize(){ const cv=REAL.cv, dpr=Math.min(2,devicePixelRatio||1); REAL.W=innerWidth; REAL.H=innerHeight; cv.width=REAL.W*dpr; cv.height=REAL.H*dpr; cv.style.width=REAL.W+"px"; cv.style.height=REAL.H+"px"; REAL.dpr=dpr; REAL.port=innerHeight>innerWidth; }
+function realShow(){ if(!P.onboarded) return; realBuild(); realSeed(); realState(); REAL.on=true; REAL.el.classList.add("on"); $("hubHud").classList.remove("on"); realResize(); realRefresh(); if(!started){ REAL.t=performance.now()/1000; realDraw(); return; } if(!REAL.raf) REAL.raf=requestAnimationFrame(realLoop); }
+function realHide(){ if(!REAL.el) return; REAL.on=false; REAL.el.classList.remove("on"); }
+function realRefresh(){ if(!REAL.on) return; const lv=P.level||1; $("rlLv").textContent=lv; $("rlName").textContent=P.name||"Охотник"; $("rlRank").textContent=`ранг ${RANK_NAME(lv)} · в жизни ${fmtHM(lifeTotal())}`;
+  $("rlMana").textContent=`мана ${Math.floor(mana())}`; $("rlManaB").style.width=Math.min(100,mana()/manaMax()*100)+"%"; $("rlCoins").textContent=`◉ ${P.coins||0}`; $("rlStreak").textContent=`🔥 ${P.streak||0}`;
+  const sp=SPH_ORDER[REAL.page]; const S=SPHERES[sp]; const m=sphereMin(sp); const f=sphereForm(sp);
+  $("rlSph").innerHTML=`<small>созвездие</small><b style="color:${S.col}">${SPH_SIGN[sp]}</b><em>${S.n} · ${fmtHM(m)} · ранг ${skRank(m)}${f<.95?` · форма ${Math.round(f*100)}%`:""}</em>`;
+  $("rlDots").innerHTML=SPH_ORDER.map((k,i)=>`<i class="${i===REAL.page?"on":""}" style="--c:${SPHERES[k].col}" data-p="${i}">${SPHERES[k].ic}</i>`).join(""); $("rlDots").querySelectorAll("[data-p]").forEach(d=>d.onclick=()=>realGo(+d.dataset.p));
+  realPanel(); }
+/* ---------- the sky ---------- */
+const _rs=[]; for(let i=0;i<260;i++){ const r=seeded(1000+i); _rs.push([r(),r(),r()*1.4+.3,r()*6.28]); }
+function realLoop(now){ REAL.raf=0; if(!REAL.on) return; REAL.raf=requestAnimationFrame(realLoop); if(document.hidden) return; REAL.t=now/1000; if(!REAL.drag) REAL.pan+=(REAL.page-REAL.pan)*.14; realDraw(); }
+function realGeom(){ const W=REAL.W, H=REAL.H, port=REAL.port; const sky=port?{x:0,y:150,w:W,h:H*.5-40-150}:{x:0,y:136,w:W-Math.min(W*.44,460),h:H-136-52}; const sz=Math.min(sky.w*.8,sky.h*.86); return {W,H,sky,sz}; }
+function realDraw(){ const c=REAL.g, d=REAL.dpr, G=realGeom(), W=G.W, H=G.H, t=REAL.t; c.setTransform(d,0,0,d,0,0);
+  const sp0=SPH_ORDER[Math.max(0,Math.min(4,Math.round(REAL.pan)))]; const col=new THREE.Color(SPHERES[sp0].col);
+  const grd=c.createLinearGradient(0,0,0,H); grd.addColorStop(0,"#03030c"); grd.addColorStop(.55,`rgb(${8+col.r*18|0},${8+col.g*14|0},${22+col.b*26|0})`); grd.addColorStop(1,"#05040c"); c.fillStyle=grd; c.fillRect(0,0,W,H);
+  // nebula, stars drift slowly with the pan
+  c.globalCompositeOperation="lighter"; const nb=c.createRadialGradient(G.sky.x+G.sky.w*.5,G.sky.y+G.sky.h*.5,10,G.sky.x+G.sky.w*.5,G.sky.y+G.sky.h*.5,G.sz*.9); nb.addColorStop(0,`rgba(${col.r*255|0},${col.g*255|0},${col.b*255|0},.16)`); nb.addColorStop(1,"rgba(0,0,0,0)"); c.fillStyle=nb; c.fillRect(0,0,W,H);
+  for(const [x,y,s,ph] of _rs){ const px=((x*W*1.6-REAL.pan*W*.18)%(W*1.6)+W*1.6)%(W*1.6)-W*.3, py=y*H; const a=.25+.35*Math.sin(t*1.3+ph); c.fillStyle=`rgba(220,225,255,${a})`; c.fillRect(px,py,s,s); }
+  REAL.hit=[];
+  for(let i=0;i<SPH_ORDER.length;i++){ const off=(i-REAL.pan); if(Math.abs(off)>1.2) continue; const sp=SPH_ORDER[i]; realConst(sp,G.sky.x+G.sky.w/2+off*G.sky.w,G.sky.y+G.sky.h/2,G.sz,1-Math.min(1,Math.abs(off))*.75); }
+  c.globalCompositeOperation="source-over"; }
+function realConst(sp,cx,cy,sz,vis){ const c=REAL.g, t=REAL.t; const P0=CONST[sp], E=CEDGE[sp], SL=CSLOT[sp]; const S=SPHERES[sp]; const col=new THREE.Color(S.col);
+  const skills=allSkills().filter(s=>s.sp===sp); const n=Math.max(P0.length,skills.length);
+  // star i of the pattern gets skill skAt[i]; extra skills beyond the pattern orbit around it
+  const skAt={}; skills.forEach((s,k)=>{ if(k<SL.length) skAt[SL[k]]=s; });
+  const pt=i=>{ if(i<P0.length){ const p=P0[i]; return [cx+(p[0]-.5)*sz,cy+(p[1]-.5)*sz]; } const a=(i-P0.length)*2.4+.6, rr=sz*.56; return [cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8]; };
+  const extra=skills.slice(SL.length); extra.forEach((s,k)=>skAt[P0.length+k]=s);
+  const lit=i=>skAt[i]?skMin(skAt[i].id)>0:false, frm=i=>skAt[i]?skForm(skAt[i].id):.3;
+  // lines: dim when the stars at both ends are dark, bright when both shine
+  E.forEach(([a,b])=>{ const A=pt(a), B=pt(b); const on=lit(a)&&lit(b); c.strokeStyle=`rgba(${col.r*255|0},${col.g*255|0},${col.b*255|0},${(on?.45*Math.min(frm(a),frm(b)):.09)*vis})`; c.lineWidth=on?1.6:1; c.beginPath(); c.moveTo(A[0],A[1]); c.lineTo(B[0],B[1]); c.stroke(); });
+  const N=Math.max(P0.length,P0.length+extra.length), stars=[];
+  for(let i=0;i<N;i++){ const [x,y]=pt(i); const sk=skAt[i]; if(!sk){ c.fillStyle=`rgba(160,170,200,${.18*vis})`; c.beginPath(); c.arc(x,y,2,0,7); c.fill(); continue; }
+    const m=skMin(sk.id), rk=skRank(m), ri="EDCBAS".indexOf(rk), f=skForm(sk.id); const r=3+ri*1.6+(m>0?1.5:0); const tw=.85+.15*Math.sin(t*2+i*1.7); const a=(m>0?.35+.65*f:.25)*vis*tw;
+    const gl=c.createRadialGradient(x,y,0,x,y,r*4.5); gl.addColorStop(0,`rgba(255,255,255,${a})`); gl.addColorStop(.25,`rgba(${col.r*255|0},${col.g*255|0},${col.b*255|0},${a*.7})`); gl.addColorStop(1,"rgba(0,0,0,0)"); c.fillStyle=gl; c.beginPath(); c.arc(x,y,r*4.5,0,7); c.fill();
+    c.fillStyle=`rgba(255,255,255,${Math.min(1,a+.2)})`; c.beginPath(); c.arc(x,y,r*.55,0,7); c.fill();
+    if(REAL.sel===sk.id){ c.strokeStyle=`rgba(255,255,255,${.8*vis})`; c.lineWidth=1.5; c.beginPath(); c.arc(x,y,r*2.2+2*Math.sin(t*4),0,7); c.stroke(); }
+    stars.push({x,y,r,sk,m,rk}); REAL.hit.push({x,y,r:Math.max(18,r*3),id:sk.id,sp}); }
+  if(vis<=.6) return;
+  // labels: try below, above, right, left of the star; take the first spot that hits no other label or star
+  const placed=[], G=realGeom(), clip=G.sky; const hitBox=(a,b)=>a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h;
+  for(const st of stars){ const {x,y,r,sk,m,rk}=st; const l1=sk.n, l2=m>0?`${rk} · ${fmtHM(m)}`:"не зажжена";
+    c.font="700 11px 'Exo 2', Arial"; const w=Math.max(c.measureText(l1).width,c.measureText(l2).width+4)+6, h=27, gap=r*2+5;
+    const cand=[{x:x-w/2,y:y+gap},{x:x-w/2,y:y-gap-h},{x:x+gap,y:y-h/2},{x:x-gap-w,y:y-h/2}];
+    const ok=b=>!placed.some(p=>hitBox(p,b))&&!stars.some(o=>o!==st&&hitBox(b,{x:o.x-o.r-3,y:o.y-o.r-3,w:o.r*2+6,h:o.r*2+6}))&&b.x>=cx-clip.w/2+4&&b.x+b.w<=cx+clip.w/2-4&&b.y>=clip.y+4&&b.y+b.h<=clip.y+clip.h+30;
+    let b=cand.map(q=>({...q,w,h})).find(ok)||{...cand[0],w,h}; placed.push(b);
+    const tx=b.x+w/2; c.textAlign="center"; c.fillStyle=`rgba(230,232,250,${.85*vis})`; c.fillText(l1,tx,b.y+10); c.font="800 10px 'Exo 2', Arial"; c.fillStyle=RK_COL[rk]; c.fillText(l2,tx,b.y+23); } }
+function realTap(x,y){ const h=REAL.hit.filter(q=>Math.hypot(q.x-x,q.y-y)<q.r).sort((a,b)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(b.x-x,b.y-y))[0]; if(!h) return; REAL.sel=h.id; REAL.tab="skill"; realPanel(); sfx.select&&sfx.select(); }
+/* ---------- the panel below the sky ---------- */
+function realPanel(){ const el=$("rlPanel"); if(!el) return; const tabs=`<div class="rl-tabs">${[["day","Сегодня"],["mine","Мои навыки"],["rew","Награды"]].map(([k,n])=>`<button class="${REAL.tab===k||(k==="day"&&REAL.tab==="skill"&&!REAL.sel)?"on":""}" data-t="${k}">${n}</button>`).join("")}</div>`;
+  let body=""; if(REAL.tab==="skill"&&REAL.sel) body=realSkillHTML(REAL.sel); else if(REAL.tab==="mine") body=realMineHTML(); else if(REAL.tab==="rew") body=realRewHTML(); else body=realDayHTML();
+  el.innerHTML=tabs+`<div class="rl-body">${body}</div>`; el.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{ REAL.tab=b.dataset.t; REAL.sel=null; realPanel(); });
+  realWire(el); }
+function realDayHTML(){ const L=typeof hubList==="function"?hubList():(P.day?P.day.gates:[]); const left=L.filter(g=>!g.done).length;
+  const row=g=>{ const st=g.cleared?"✓ закрыты":g.done?"Врата открыты в Тенях":""; return `<div class="rl-q ${g.done?"done":""}" style="--c:${GT[g.type]?GT[g.type].color:"#9fd0ff"}"><i>${dIco(g)}</i><div><b>${g.name}</b><small>${amtText(g)} · ${SPHERES[g.sp]?SPHERES[g.sp].n:""}${g.story!==undefined?" · сюжет":""}</small></div>
+    ${g.done?`<em>${st}</em>`:`${g.story===undefined&&!g.city&&P.day&&P.day.rerolls>0&&P.day.gates.includes(g)?`<button class="btn small ghost rl-sw" data-sw="${g.id}" title="Заменить (осталось ${P.day.rerolls})">⇄</button>`:""}<button class="btn small primary" data-g="${g.id}">Начать</button>`}</div>`; };
+  return `<div class="rl-h">Дела на сегодня ${left?`· осталось ${left}`:"· всё сделано ✓"}<button class="chip ctx" id="rlCtx">${ico(CTX[ctxNow()].ic)} ${CTX[ctxNow()].s}</button></div><div class="rl-ql">${L.map(row).join("")}</div>
+    <div class="rl-h small">Свои навыки — запиши, что сделал</div><div class="rl-mine">${mySkills().map(s=>`<button class="rl-chip" data-log="${s.id}" style="--c:${SPHERES[s.sp].col}">${SPHERES[s.sp].ic} ${s.n}<small>${fmtHM(skMin(s.id))}</small></button>`).join("")}<button class="rl-chip add" id="rlAddSk">+ навык</button></div>
+    <div class="rl-note">Каждое дело даёт ману (на армию в Тенях) и опыт навыка. Дела дня открывают Врата в Тенях.</div>`; }
+function realSkillHTML(id){ const S=allSkills().find(s=>s.id===id); if(!S) return ""; const m=skMin(id), rk=skRank(m), nx=skNext(m), f=skForm(id), L=realState().last[id];
+  const prog=nx?Math.min(100,(m-SK_RANK["EDCBAS".indexOf(rk)][1])/(nx[1]-SK_RANK["EDCBAS".indexOf(rk)][1])*100):100; const cnt=realState().cnt[id];
+  const deeds=S.d?S.d.filter(k=>DEEDS[k]&&offerable(k)).slice(0,6):[];
+  return `<div class="rl-sk"><div class="rl-skh"><b>${S.n}</b><span class="rk" style="color:${RK_COL[rk]};border-color:${RK_COL[rk]}">${rk}</span></div>
+    <small>${SPHERES[S.sp].ic} ${SPHERES[S.sp].n}${S.own?" · твой навык":""}${S.unit&&cnt?` · всего ${cnt} ${S.unit}`:""}</small>
+    <div class="kv"><span>Часы</span><b>${fmtHM(m)}${nx?` · до ранга ${nx[0]}: ${fmtHM(nx[1]-m)}`:" · вершина"}</b></div><div class="pb"><u style="width:${prog}%;background:${RK_COL[rk]}"></u></div>
+    <div class="kv" style="margin-top:6px"><span>Форма</span><b style="color:${f>.9?"#6dffb0":f>.5?"#ffd166":"#ff8aa0"}">${Math.round(f*100)}%${L?` · последний раз ${daysSince(L)===0?"сегодня":daysSince(L)===1?"вчера":daysSince(L)+" дн. назад"}`:""}</b></div>
+    <div class="rl-note">${f<1?`Форма падает с 4-го дня без дела: звезда тускнеет, сила сферы в Тенях сейчас ${Math.round(formK(SPHERES[S.sp].stat)*100)}%. Часы и ранг остаются навсегда — одно занятие вернёт форму.`:"Ранги: E до 10 ч · D 10–30 · C 30–80 · B 80–200 · A 200–500 · S 500+. Новый ранг навыка откроет умение класса."}</div>
+    <div class="actions">${S.own?`<button class="btn primary" data-log="${S.id}">⏱ Записать занятие</button>`:deeds.length?deeds.slice(0,3).map(k=>`<button class="btn small ghost" data-do="${k}">${DEEDS[k].ic} ${DEEDS[k].n}</button>`).join(""):""}</div></div>`; }
+function realMineHTML(){ const L=mySkills(); return `<div class="rl-h">Мои навыки<button class="btn small primary" id="rlAddSk">+ навык</button></div>${L.length?L.map(s=>{ const m=skMin(s.id), rk=skRank(m); return `<div class="rl-q" style="--c:${SPHERES[s.sp].col}"><i>${SPHERES[s.sp].ic}</i><div><b>${s.n}</b><small>${SPHERES[s.sp].n} · ранг ${rk} · ${fmtHM(m)} · форма ${Math.round(skForm(s.id)*100)}%</small></div><button class="btn small primary" data-log="${s.id}">⏱</button></div>`; }).join(""):`<div class="rl-note">Заведи то, чем живёшь: «Репетиторство», «Монтаж», «Английский». Система сама поймёт, к какой сфере это относится.</div>`}`; }
+function realRewHTML(){ const R=realState(); const L=R.rew||[]; return `<div class="rl-h">Свои награды<button class="btn small primary" id="rlAddRw">+ награда</button></div>${L.length?L.map((w,i)=>{ const m=w.skill?skMin(w.skill):lifeTotal(); const S=w.skill?allSkills().find(s=>s.id===w.skill):null; const k=Math.min(1,m/(w.h*60));
+    return `<div class="rl-q ${w.done?"done":""}" style="--c:#ffd166"><i>🎁</i><div><b>${w.n}</b><small>${S?S.n:"все дела"} · ${fmtHM(m)} из ${w.h} ч</small><div class="pb"><u style="width:${k*100}%;background:#ffd166"></u></div></div>${w.done?`<em>заслужена ✓</em>`:`<button class="btn small ghost" data-rdel="${i}">✕</button>`}</div>`; }).join(""):`<div class="rl-note">Назначь себе настоящую награду: «100 часов зала → новые кроссовки». Игра покажет прогресс и скажет, когда ты её заслужил. Монеты игры на реальные вещи не меняются — это честная сделка с собой.</div>`}`; }
+function realWire(el){ el.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>{ if(anyBlocking()||hubBusy) return; const i=P.day.gates.findIndex(q=>q.id===b.dataset.sw); if(i>=0&&rerollGate(i)){ if(typeof hubGatesRebuild==="function") hubGatesRebuild(); if(typeof HUB!=="undefined") HUB.list=hubList(); realPanel(); toast("Система предложила другое. Осталось замен: "+P.day.rerolls); } });
+  el.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{ if(anyBlocking()||hubBusy) return; const g=(typeof hubList==="function"?hubList():P.day.gates).find(q=>q.id===b.dataset.g); if(g) openGate(g); });
+  el.querySelectorAll("[data-log]").forEach(b=>b.onclick=()=>{ if(anyBlocking()||hubBusy) return; realLogWindow(b.dataset.log); });
+  el.querySelectorAll("[data-do]").forEach(b=>b.onclick=()=>{ if(anyBlocking()||hubBusy) return; realDoDeed(b.dataset.do); });
+  const a=el.querySelector("#rlAddSk"); if(a) a.onclick=()=>{ if(!anyBlocking()) realNewSkill(); };
+  const r=el.querySelector("#rlAddRw"); if(r) r.onclick=()=>{ if(!anyBlocking()) realNewReward(); };
+  el.querySelectorAll("[data-rdel]").forEach(b=>b.onclick=()=>{ const R=realState(); R.rew.splice(+b.dataset.rdel,1); saveP(); realPanel(); });
+  const cx=el.querySelector("#rlCtx"); if(cx) cx.onclick=()=>{ if(!anyBlocking()&&!hubBusy) ctxWindow(false); }; }
+/* a built-in deed started from its star: becomes an extra quest (mana and skill hours, no Gate) */
+function realDoDeed(k){ const g=mkPersonalGate(k,70+Math.floor(Math.random()*20),1,{noMod:true}); g.id+=":x"+Date.now().toString(36); g.noGate=true; openGate(g); }
+/* ---------- logging your own skill: a timer (strict or free) or minutes you already did ---------- */
+function realLogWindow(id){ const S=mySkills().find(s=>s.id===id); if(!S) return; let mode=P.timerMode||"strict", mins=30;
+  modal({id:"rlog",title:S.n,icon:SPHERES[S.sp].ic,accent:SPHERES[S.sp].col,cls:"wide",closable:true,body:`<div class="holo-sub">${SPHERES[S.sp].n} · ранг ${skRank(skMin(id))} · ${fmtHM(skMin(id))}</div>
+    <div class="sec">Таймер</div><div class="rl-mode">${chipsHTML([["strict","","Строгий","пауза, если выйдешь из игры · мана ×2"],["free","","Свободный","просто считает время"]],{multi:false,sel:[mode]})}</div>
+    <div class="actions"><button class="btn primary big" id="lgT">⏱ Запустить таймер</button></div>
+    <div class="sec">Или уже сделал</div><div class="rl-mins">${chipsHTML([["15","","15 мин"],["30","","30 мин"],["45","","45 мин"],["60","","1 ч"],["90","","1.5 ч"],["120","","2 ч"]],{multi:false,sel:["30"]})}</div>
+    ${S.unit?`<div class="sec">Сколько ${S.unit} (по желанию)</div><input class="field" id="lgN" inputmode="numeric" maxlength="7" placeholder="например, 20">`:""}
+    <div class="actions"><button class="btn ghost" id="lgM">✓ Записать честно</button></div>`,
+    onMount:el=>{ wireChips(el); const cs=el.querySelectorAll(".chips"); const amount=()=>{ const v=el.querySelector("#lgN"); const n=v?parseInt(v.value,10):0; return n>0?n:0; };
+      el.querySelector("#lgT").onclick=async()=>{ mode=selOf(cs[0])[0]||"strict"; P.timerMode=mode; saveP(); const am=amount(); closeModal("rlog",true); const r=await realTimer(S,mode); if(r) realCommit(S,r.mins,r.strict,am); };
+      el.querySelector("#lgM").onclick=()=>{ mins=+(selOf(cs[1])[0]||30); const am=amount(); closeModal("rlog",true); realCommit(S,mins,false,am); }; }}); }
+function realTimer(S,mode){ return new Promise(res=>{ const strict=mode==="strict"; let sec=0, run=true, last=performance.now(), iv=null, lost=0;
+  const fmt=s=>`${Math.floor(s/3600)?Math.floor(s/3600)+":":""}${String(Math.floor(s/60)%60).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+  const vis=()=>{ if(strict&&document.hidden&&run){ run=false; lost++; } };
+  document.addEventListener("visibilitychange",vis);
+  modal({id:"rtim",title:S.n,icon:"⏱",accent:SPHERES[S.sp].col,cls:"wide",body:`<div class="holo-sub">${strict?"Строгий режим: выйдешь из игры — таймер встанет. Зато мана ×2.":"Свободный режим: таймер идёт, даже если ты выйдешь."}</div>
+    <div class="cam-count"><b id="rtT" style="font-size:64px">00:00</b><span id="rtS">идёт</span></div>
+    <div class="actions center"><button class="btn ghost" id="rtP">Пауза</button><button class="btn primary big" id="rtD">✓ Готово</button></div><div style="text-align:center;margin-top:6px"><button class="btn ghost small" id="rtX">Отмена</button></div>`,
+    onMount:el=>{ const tick=()=>{ const now=performance.now(); if(run) sec+=(now-last)/1000*(TEST?60:1); last=now; el.querySelector("#rtT").textContent=fmt(sec); el.querySelector("#rtS").textContent=run?"идёт":lost&&strict?"встал — ты выходил":"пауза"; };
+      iv=setInterval(tick,500); const fin=v=>{ clearInterval(iv); document.removeEventListener("visibilitychange",vis); closeModal("rtim"); res(v); };
+      el.querySelector("#rtP").onclick=()=>{ run=!run; last=performance.now(); el.querySelector("#rtP").textContent=run?"Пауза":"Дальше"; };
+      el.querySelector("#rtD").onclick=()=>{ tick(); const m=Math.round(sec/60); if(m<1){ toast("Меньше минуты — ещё немного","#ffd166"); return; } fin({mins:m,strict}); };
+      el.querySelector("#rtX").onclick=()=>fin(null); }}); }); }
+/* the session becomes a real deed: mana, experience, hours on the star (no Gate opens) */
+function realCommit(S,mins,strict,amount){ const g={ id:"sk:"+S.id+":"+Date.now().toString(36), deed:"task", skill:S.id, custom:"skill", name:S.n, ic:SPHERES[S.sp].ic, sp:S.sp, type:SPHERES[S.sp].type, amt:mins, unit:"мин", rank:"E", noGate:true, amount,
+    pre:{ok:true,app:!!strict,cam:false,t:mins*60} }; doDeed(g); }
+/* ---------- a new skill, a new reward ---------- */
+function realNewSkill(){ let sp="will";
+  modal({id:"rnew",title:"Свой навык",icon:"✦",cls:"wide",closable:true,body:`<div class="holo-text"><p>Чем ты живёшь? Работа, учёба, спорт, творчество — любое дело. Система сама поймёт, к какой сфере это относится.</p></div>
+    <input class="field" id="rnN" maxlength="28" placeholder="Например: Репетиторство, Монтаж, Английский">
+    <div class="sec">Сфера <small id="rnG" class="dim"></small></div>${chipsHTML(SPH_ORDER.map(k=>[k,ico(SPH_ICO[k]),SPHERES[k].n,"",SPHERES[k].col]),{multi:false,sel:[sp]})}
+    <div class="sec">Что ещё считать, кроме часов</div><div id="rnU">${chipsHTML([["","","только часы"],["слов","","слова"],["стр","","страницы"],["раз","","разы"],["₽","","₽ — только для себя"]],{multi:false,sel:[""]})}</div>
+    <div class="actions"><button class="btn primary" id="rnOk">Зажечь звезду</button></div>`,
+    onMount:el=>{ wireChips(el); const nm=el.querySelector("#rnN"); const sc=el.querySelectorAll(".chips")[0];
+      nm.addEventListener("input",()=>{ const g=skGuess(nm.value); el.querySelector("#rnG").textContent=nm.value.trim()?`— Система думает: ${SPHERES[g].n}`:""; sc.querySelectorAll(".chipbtn").forEach(b=>b.classList.toggle("on",b.dataset.k===g)); });
+      el.querySelector("#rnOk").onclick=()=>{ const n=nm.value.trim().replace(/[<>&"]/g,""); if(!n){ toast("Напиши название навыка"); return; } const s2=selOf(sc)[0]||skGuess(n); const u=selOf(el.querySelector("#rnU"))[0]||"";
+        const id=skAdd(n,s2,u); closeModal("rnew"); REAL.page=SPH_ORDER.indexOf(s2); REAL.sel=id; REAL.tab="skill"; realRefresh(); toast(`Новая звезда в созвездии «${SPH_SIGN[s2]}»`,SPHERES[s2].col); }; }}); }
+function realNewReward(){ modal({id:"rrew",title:"Своя награда",icon:"🎁",accent:"#ffd166",cls:"wide",closable:true,body:`<div class="holo-text"><p>Что ты подаришь себе, когда наработаешь часы?</p></div>
+    <input class="field" id="rwN" maxlength="40" placeholder="Например: новые кроссовки">
+    <div class="sec">За какой навык</div>${chipsHTML([["","","все дела"],...allSkills().filter(s=>s.own||skMin(s.id)>0).map(s=>[s.id,"",s.n])],{multi:false,sel:[""]})}
+    <div class="sec">Сколько часов</div><div id="rwH">${chipsHTML([["10","","10 ч"],["25","","25 ч"],["50","","50 ч"],["100","","100 ч"],["200","","200 ч"]],{multi:false,sel:["50"]})}</div>
+    <div class="actions"><button class="btn primary" id="rwOk">Назначить</button></div>`,
+    onMount:el=>{ wireChips(el); el.querySelector("#rwOk").onclick=()=>{ const n=el.querySelector("#rwN").value.trim().replace(/[<>&"]/g,""); if(!n){ toast("Напиши, что за награда"); return; } const sk=selOf(el.querySelectorAll(".chips")[0])[0]||""; const h=+(selOf(el.querySelector("#rwH"))[0]||50);
+      const R=realState(); R.rew=R.rew||[]; R.rew.push({n,skill:sk||null,h,born:todayKey()}); saveP(); closeModal("rrew"); REAL.tab="rew"; realPanel(); realRewardsCheck(); }; }}); }
+/* time in the Shadows and in life, by sphere */
+function realTimeWindow(){ const T=timeLines(); modal({id:"rtime",title:P.name||"Охотник",icon:"◈",closable:true,body:`${timeBlock()}<div class="sec">Жизнь по сферам</div>${SPH_ORDER.map(k=>`<div class="kv"><span>${SPHERES[k].ic} ${SPHERES[k].n}</span><b>${fmtHM(sphereMin(k))} · ранг ${skRank(sphereMin(k))}</b></div>`).join("")}
+  <div class="rl-note">Система ничего не запрещает — только честно показывает цифры.</div>`}); }
+
 /* ===== twin.js ===== */
 /* ================= THE DOUBLE: your own Shadow, made of your own «потом» =================
    It grows on empty days, shrinks on full ones, stands on your roof and taunts you with YOUR excuses.
@@ -6843,7 +7107,7 @@ function nextGate(){ if(!P.day) return null; const sg=storyGateToday(); return P
 /* ---------- HUD ---------- */
 function hubHud(){ hud(); const left=gatesLeft(), mins=minutesLeft(); const sg=storyGateToday();
   $("hubGoal").innerHTML=!P.onboarded?"":left?`<small>Сегодня</small><b>${left===3?"Три дела":left===2?"Осталось 2 дела":"Осталось одно дело"} · ~${mins} мин</b>`:sg&&!sg.cleared?`<small>Сюжет</small><b>Открылись ${sg.name}</b>`:P.day&&P.day.gates.some(g=>!g.cleared)?`<small>Дела сделаны ✓</small><b>Тени ждут внутри</b>`:`<small>Сегодня</small><b>Все Врата закрыты ✓</b>`;
-  const cx=CTX[ctxNow()]; $("chipCtx").innerHTML=`${ico(cx.ic)} ${cx.s} <u>сменить</u>`; storyChip(); const W=week(); $("hudWeek").textContent=$("hudWeek2").textContent=W.won?"✓":W.hp<=0?"бой!":Math.round(W.hp/W.max*100)+"%"; $("hubSpec").innerHTML=""; hubCard(true); }
+  const cx=CTX[ctxNow()]; $("chipCtx").innerHTML=`${ico(cx.ic)} ${cx.s} <u>сменить</u>`; storyChip(); const W=week(); $("hudWeek").textContent=$("hudWeek2").textContent=W.won?"✓":W.hp<=0?"бой!":Math.round(W.hp/W.max*100)+"%"; $("hubSpec").innerHTML=""; hubCard(true); if(typeof realRefresh==="function") realRefresh(); }
 window.__hubResize=(w,h)=>{ const a=w/h; HUB.lk=a<.8?{x:-.25,y:5.9}:{x:-2.2,y:6.2}; if(HUB.cam){ HUB.cam.aspect=a; HUB.cam.fov=a>1.9?50:a<.8?72:a<1.2?68:56; HUB.cam.updateProjectionMatrix(); } if(HUB.post) HUB.post.uniforms.res.value.set(w,h); };
 
 /* ===== flow.js ===== */
@@ -6873,7 +7137,7 @@ function gateCard(g){ const T=GT[g.type], S=SPHERES[g.sp]||{}, D=DEEDS[g.deed]||
 /* ---------- the deed ---------- */
 /* one deed, checked the way it should be */
 function checkDeed(g){ const D=DEEDS[g.deed]||{}; if(g.custom) return honorCheck(g); if(D.v==="cam"&&camAllowed()) return camCheck(g); if(D.v==="app") return appChallenge(g); if(D.v==="clock") return clockCheck(g); if(D.v==="day") return dayCheck(g); return honorCheck(g); }
-async function doDeed(g){ hubBusy=true; lifeMinInit(); let res=await checkDeed(g);
+async function doDeed(g){ hubBusy=true; lifeMinInit(); let res=g.pre||await checkDeed(g);
   if(!res||!res.ok){ hubBusy=false; if(MODE==="hub") hubHud(); return; }
   // a chain: the second deed right after the first
   if(g.chain){ toast(`🔗 Связка: теперь ${dIco({deed:g.chain.deed})} ${g.chain.name} · ${g.chain.amt}`,"#d2bdff"); await wait(700);
@@ -6883,13 +7147,14 @@ async function doDeed(g){ hubBusy=true; lifeMinInit(); let res=await checkDeed(g
   const fast=g.limit&&res.t&&res.t<=g.limit;
   g.done=true; g.verified=res.cam?"cam":res.app?"app":"honor"; g.opened=true; saveP();
   // real rewards come first: this is what you did in real life
-  const rw=gateReward(g); const T=GT[g.type]; const proof=res.cam||res.app; const xp=Math.round(rw.xp*(proof?1.25:1)*(fast?1.3:1)); P.stats[T.stat]=(P.stats[T.stat]||0)+rw.stat; P.energy=(P.energy||0)+1; addTotal(g.custom?"task":g.deed,g.amt); const dmin=deedMinutes(g.deed,g.amt); armyFeed(g,dmin); lifeAdd(g,dmin); const mg=manaAdd(proof?MANA.proof:MANA.deed);
+  const rw=gateReward(g); const T=GT[g.type]; const proof=res.cam||res.app; const xp=Math.round(rw.xp*(proof?1.25:1)*(fast?1.3:1)); P.stats[T.stat]=(P.stats[T.stat]||0)+rw.stat; P.energy=(P.energy||0)+1; addTotal(g.custom?"task":g.deed,g.amt); const dmin=deedMinutes(g.deed,g.amt); armyFeed(g,dmin); lifeAdd(g,dmin); const mg=manaAdd(proof?MANA.proof:MANA.deed); const skId=g.skill||SKILL_OF[g.deed]; realAdd(skId,res.t&&g.unit==="раз"?Math.max(dmin,Math.round(res.t/60)):dmin,g.amount);
   const st=streakOnDeed(); const wdmg=weekHit(g,res.cam); const ups=addXp(xp); hud(); campEvent("deed",g); if(g.main) campEvent("main",g); if(g.sp==="calm") campEvent("calm",g); if(g.custom) campEvent("custom",g); if(res.cam) campEvent("cam",g);
   await new Promise(r=>modal({id:"did",title:"Засчитано",icon:"✓",accent:"#6dffb0",body:`<div class="notif-text gold">${dIco(g)} ${g.name}: ${amtText(g)}${g.chain?` + ${dIco({deed:g.chain.deed})} ${g.chain.amt}`:""}<small>${res.cam?"подтвердила камера · опыт ×1.25":res.app?"проверено игрой · опыт ×1.25":"честное слово Охотника"}${fast?` · ⏱ уложился за ${fmtS(res.t)} · ×1.3`:g.limit&&res.t?" · не уложился во время":""}</small></div>
     <div class="kv mana"><span>Мана</span><b style="color:#6fb7ff">${mg>0?`+${mg}`:"полная"} · ${manaSummons()} ${plural(manaSummons(),"призыв","призыва","призывов")} армии</b></div><div class="kv"><span>Опыт</span><b>+${xp}</b></div><div class="kv"><span>${T.statName}</span><b>${P.stats[T.stat]} (+${rw.stat})</b></div><div class="kv"><span>Серия дней</span><b>🔥 ${P.streak}${st==="shield"?" · щит спас серию":st===true&&P.streak>1?" · +1":""}</b></div>
-    <div class="kv"><span>Всего в жизни</span><b>${totalLine(g)} · ⏱ ${fmtHM(lifeTotal())}</b></div>${wdmg?`<div class="kv"><span>Тень недели</span><b style="color:#ff8aa0">−${wdmg}</b></div>`:""}
+    <div class="kv"><span>${skId&&allSkills().find(s=>s.id===skId)?"Навык «"+allSkills().find(s=>s.id===skId).n+"»":"Всего в жизни"}</span><b>${skId?`${fmtHM(skMin(skId))} · ранг ${skRank(skMin(skId))}`:totalLine(g)} · ⏱ ${fmtHM(lifeTotal())}</b></div>${wdmg?`<div class="kv"><span>Тень недели</span><b style="color:#ff8aa0">−${wdmg}</b></div>`:""}
     <div class="actions"><button class="btn primary" id="dOk">Дальше</button></div>`,onMount:el=>el.querySelector("#dOk").onclick=()=>{ closeModal("did"); r(); }}));
   if(ups) await levelUpFx();
+  if(g.noGate){ hubBusy=false; if(MODE==="hub") hubHud(); return; }
   if(MODE==="hub"){ const o=hubObj(g); if(wdmg) weekBolt(o?o.G.position.clone().add(new THREE.Vector3(0,3,0)):null,wdmg); if(o){ o.pm.uniforms.uNear.value=1; sfx.gate(); } hubHud(); }
   if(g.urgent){ await urgentReward(g); hubBusy=false; await checkMilestones(); if(week().hp<=0&&MODE==="hub") hubGatesRebuild(); return; }
   if(week().hp<=0&&!week().won&&MODE==="hub"&&!HUB.weekly){ hubGatesRebuild(); toast("☾ Тень недели пала до нуля — её Врата открылись","#ff4f6a"); }
@@ -7027,13 +7292,13 @@ function helpWindow(){ modal({id:"help",title:"Как играть",icon:"?",cls
     <div class="holo-text" style="margin-top:12px"><p><b>Путь</b> — твой реальный прогресс: сколько сделал, серия дней, характеристики. <b>В город</b> — Врата у реальных мест, дойти можно только ногами.</p><p class="dim">Как приложение: iPhone — Safari → «Поделиться» → «На экран Домой». Android — Chrome → ⋮ → «Установить приложение».</p></div>`}); }
 
 /* ===== prologue.js ===== */
-/* ================= PROLOGUE «ТОЧКА Б»: you, a year from now, at the top → the fall → level 1 → stand up for real =================
-   The first two minutes are a feeling, not a manual: you hold the power, you lose it, you take the first real step back. */
+/* ================= PROLOGUE: you saw the Gates → the System shows you a memory of Hunter №0 at the top → his fall → level 1 → you stand up for real =================
+   The first two minutes are a feeling, not a manual: you hold the power through his eyes, watch it slip away, then take your own first real step. */
 const PRO_PATHS=[
-  { k:"body", n:"Сильным", d:"тело, которое слушается", ic:"fist", line:"Тридцать подтягиваний. Тело слушается с полуслова.", sp:["body"], col:[0xff5a3c,0x2a0800,"#ff8a5c"] },
-  { k:"free", n:"Свободным", d:"своё дело и свои деньги", ic:"bolt", line:"Своё дело. Свои деньги. Никто не решает за тебя.", sp:["will","focus"], col:[0xffc640,0x2a1800,"#ffd166"] },
-  { k:"mind", n:"Умным", d:"голова, которая думает быстрее всех", ic:"brain", line:"Две книги в месяц. Ты думаешь быстрее всех в комнате.", sp:["read","focus"], col:[0x4f8dff,0x050f3c,"#8fb8ff"] },
-  { k:"calm", n:"Спокойным", d:"без тревоги и без телефона в руке", ic:"lotus", line:"Ни тревоги, ни ленты в три ночи. Телефон больше не решает за тебя.", sp:["calm"], col:[0x2effa8,0x00281a,"#6dffb0"] } ];
+  { k:"body", n:"Силы", d:"тело, которое слушается", ic:"fist", line:"Он искал силы. Тысяча утр без пропуска — и тело стало оружием.", sp:["body"], col:[0xff5a3c,0x2a0800,"#ff8a5c"] },
+  { k:"free", n:"Свободы", d:"своё дело и свои деньги", ic:"bolt", line:"Он искал свободы. Своё дело, свои правила — никто не решал за него.", sp:["will","focus"], col:[0xffc640,0x2a1800,"#ffd166"] },
+  { k:"mind", n:"Ясности", d:"ум, который видит наперёд", ic:"brain", line:"Он искал ясности. Сотни книг — он видел ходы врагов наперёд.", sp:["read","focus"], col:[0x4f8dff,0x050f3c,"#8fb8ff"] },
+  { k:"calm", n:"Покоя", d:"без тревоги и без телефона в руке", ic:"lotus", line:"Он искал покоя. Ни страха, ни ленты в три ночи — только тишина и клинок.", sp:["calm"], col:[0x2effa8,0x00281a,"#6dffb0"] } ];
 const PRO={ on:false, skip:false, army:[], shadow:null, burst:[], aura:null, push:0 };
 const proFast=()=>PRO.skip||(TEST&&!window.__noAuto);
 function proEl(){ let el=$("pro"); if(el) return el; el=document.createElement("div"); el.id="pro"; el.className="pro";
@@ -7053,7 +7318,7 @@ function proChoose(){ return new Promise(res=>{ const el=$("proOpts"); el.classN
   el.querySelectorAll("button").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
   if(TEST&&!window.__noAuto) setTimeout(()=>pick(window.__proPick||0),120); }); }
 function proTick(){} function proClear(){}
-/* ---------- the playable prologue: you ARE the S-rank hunter a year from now ---------- */
+/* ---------- the playable prologue: a memory — you fight as Hunter №0, the strongest there was ---------- */
 const PRO_HINT=(t,ms)=>{ if(!PRO.skip) fpHint(t,ms); };
 function proWave(list,from,lvl){ const Z=WORLD.Z; return list.map((ty,k)=>{ const a=from.a+(k/list.length-.5)*from.spread; const r=Math.min(from.r+Math.random()*5,34); let x=PL.x-Math.sin(a)*r, z=PL.z-Math.cos(a)*r; const rr=Math.hypot(x,z); if(rr>36){ x*=36/rr; z*=36/rr; }
   const e=mkEnemy(ty,x,z,lvl,{awake:true,aggroK:4,hpK:ty==="brute"?2:1,dmgK:.6}); e.yaw=yawTo(x,z,PL.x,PL.z); fxSmoke(x,Z.h(x,z),z,0xff2a5a,8,2,1); return e; }); }
@@ -7061,8 +7326,9 @@ function proAlive(){ return FP.ents.filter(e=>e.alive&&!e.boss).length; }
 function proUntil(fn,max=60000,sweep){ return new Promise(r=>{ const t0=performance.now(); let lastN=-1, lastT=t0; const iv=setInterval(()=>{ const now=performance.now(); if(sweep){ const n=proAlive(); if(n!==lastN){ lastN=n; lastT=now; } else if(n>0&&n<=2&&now-lastT>9000){ FP.ents.forEach(e=>{ if(e.alive&&!e.boss) killEnemy(e,{}); }); fpSys("Армия добила остатки","good",2000); } } if(fn()||now-t0>max||!FP.on){ clearInterval(iv); r(); } },120); }); }
 async function prologueRun(){ PRO.on=true; PRO.skip=false; const el=proEl(); el.classList.add("on","black"); hubBusy=true; $("hubHud").classList.remove("on");
   await wait(proFast()?30:600); if(PRO.abort) return;
-  await proCap("Представь себя через год.",{ms:2200}); proCapOff();
-  proBig("Кем ты стал?","q"); const p=await proChoose(); proBig(""); P.proPath=p.k; saveP();
+  await proCap("Ты видишь Врата.",{ms:1700}); await proCap("Значит, и они видят тебя.",{ms:1900});
+  await proCap("Я — Система. Я покажу тебе одну память. Чужую.",{ms:2400}); proCapOff();
+  proBig("Чего ты ищешь?","q"); const p=await proChoose(); proBig(""); P.proPath=p.k; saveP();
   // ---- into the world: you, at the top ----
   fpInit(); const Z=wBuild(); Z.prologue=true; Z.markers=null; combatReset(); const armySize=16;
   PL.override={lvl:87,rank:"S",atk:1400,hp:12000,crit:.35,dash:3,flasks:5,label:"87 · S"}; plStats(); PL.hp=PL.max; PL.ult=0; FP.armyN=24; FP.allyLife=45; FP.allyDmgK=.1;
@@ -7071,7 +7337,7 @@ async function prologueRun(){ PRO.on=true; PRO.skip=false; const el=proEl(); el.
   await fpEnter(Z,{x:0,z:34,yaw:0},{instant:true}); fxEnsure(); PL.pitch=.1; raidMusic(true);
   for(let i=0;i<armySize;i++){ const a=mkAlly(PL.x+Math.cos(i/armySize*6.283)*4,PL.z+4+Math.sin(i/armySize*6.283)*2,i,{life:9999,dmgK:.06}); a.form={i,n:armySize}; }
   if(TEST&&!window.__noAuto) FP.bot=true; Z.leaveLabel="Пропустить пролог"; PRO.path=p; PRO.abort=false;
-  fpTitle("Это ты. Через год.",p.line,"gold big"); fpSys("[Система] Охотник ранга S · уровень 87","gold",5000); setTimeout(()=>fpSys(`[Система] Армия теней: ${armySize+312} · серия 365 дней`,"gold",5000),900);
+  fpTitle("ОХОТНИК №0","Чужая память. "+p.line,"gold big"); fpSys("[Система] Охотник №0 · ранг S · уровень 87","gold",5000); setTimeout(()=>fpSys(`[Система] Армия теней: ${armySize+312} · ни одного пропуска`,"gold",5000),900);
   await wait(proFast()?50:2600); fpTitle(""); if(PRO.abort) return;
   PRO_HINT(isTouch?"Левый палец — иди. Правый — смотри вокруг":"WASD — иди, мышь — смотри",4200); const sx=PL.x, sz=PL.z; await proUntil(()=>Math.hypot(PL.x-sx,PL.z-sz)>3,proFast()?300:7000); if(PRO.abort) return;
   // wave 1: they die from one strike
@@ -7085,30 +7351,30 @@ async function prologueRun(){ PRO.on=true; PRO.skip=false; const el=proEl(); el.
   await proUntil(()=>proAlive()===0,proFast()?50000:90000,true); if(PRO.abort) return;
   // the Colossus descends from the Gate
   fpSys("[Система] Врата ранга S открываются","bad",3000); await wait(proFast()?50:1200); FP.shake=1.2; tone(40,0,2.5,"sawtooth",.1,25); fxBeam(0,-6,0,p.col[0],90,2.2,8); if(PRO.abort) return;
-  const B=mkBoss(0,-6,{name:"Колосс Великих Врат",sub:"Год назад он бы тебя сломал",rank:"S",tint:p.col[0],variant:0,scale:3.6,yaw:0,hp:1400*55,lvl:90,wtype:"WILL",intro:2,summon:false,onDead:()=>{ PRO.bossDead=true; }});
+  const B=mkBoss(0,-6,{name:"Колосс Великих Врат",sub:"Страж Великих Врат",rank:"S",tint:p.col[0],variant:0,scale:3.6,yaw:0,hp:1400*55,lvl:90,wtype:"WILL",intro:2,summon:false,onDead:()=>{ PRO.bossDead=true; }});
   B.dmgB=4200; B.lift=45; B.prologue=true; FP.lock=B; fpTitle("Колосс Великих Врат","ранг S","boss"); setTimeout(()=>fpTitle(""),2600); setTimeout(()=>{ PRO_HINT("Красное на земле — туда ударит. Уйди «Рывком» и бей в ответ",4000); fpFocus("fpDash",4000); },2600);
   await proUntil(()=>PRO.bossDead,proFast()?90000:240000); if(!PRO.bossDead&&B.alive){ killEnemy(B,{}); await wait(2500); } if(PRO.abort) return;
-  raidMusic(false); await wait(proFast()?50:1500); fpTitle("ТЫ НА ВЕРШИНЕ","Одним движением. Как дышать.","gold big"); FP.allies.forEach(a=>{ a.tgt=null; }); await wait(proFast()?50:3000); fpTitle(""); if(PRO.abort) return;
+  raidMusic(false); await wait(proFast()?50:1500); fpTitle("ВЕРШИНА","Одним движением. Как дышать.","gold big"); FP.allies.forEach(a=>{ a.tgt=null; }); await wait(proFast()?50:3000); fpTitle(""); if(PRO.abort) return;
   await proFall(Z,p); } if(PRO.abort) return;
 /* the fall — you keep playing while everything slips away */
 async function proFall(Z,p){ const O=PL.override; const step=async(txt,cls,lvl,atk,hp,weak,kill,wave,ms)=>{ if(PRO.abort) return; fpSys(txt,cls,ms||4000); O.lvl=lvl; O.label=lvl+" · "+RANK_NAME(lvl); O.atk=atk; O.hp=hp; plStats(); PL.hp=Math.min(PL.hp,PL.max); PL.weak=weak;
     FP.allies.filter(a=>a.dis<=0).sort((a,b)=>Math.hypot(b.x-PL.x,b.z-PL.z)-Math.hypot(a.x-PL.x,a.z-PL.z)).slice(0,kill).forEach((a,k)=>{ setTimeout(()=>{ a.life=0; a.t=1; },k*140); }); if(wave) proWave(wave,{a:Math.random()*6,spread:5,r:9},lvl); tone(90,0,.8,"sawtooth",.05,40); await wait(proFast()?120:(ms||4000)); };
   Z.gate.material.uniforms.uOpen.value=.8; PRO_HINT("",0);
   await step("[Система] Пропущен 1 день","",74,900,9000,.1,4,null,3000);
-  await step("«Начнёшь с понедельника»","lord",52,300,4000,.25,6,["imp","imp","imp"],3600); toneP.uniforms.exposure.value=.95; bloom.strength=.55; Z.gate.material.uniforms.uOpen.value=.5;
+  await step("«Один день ничего не решает»","lord",52,300,4000,.25,6,["imp","imp","imp"],3600); toneP.uniforms.exposure.value=.95; bloom.strength=.55; Z.gate.material.uniforms.uOpen.value=.5;
   await step("[Система] Пропущена неделя","bad",31,90,1500,.45,10,["imp","imp","hound"],3600); Z.scene.fog.color.set(0x14141a); Z.scene.fog.density=.012;
-  await step("«Завтра. Потом. Когда будет настроение»","lord",12,25,600,.7,99,["imp","imp","imp","imp"],4200); toneP.uniforms.exposure.value=.75; bloom.strength=.3; Z.gate.material.uniforms.uOpen.value=.2; Z.beam.visible=false;
-  if(PRO.abort) return; O.lvl=1; O.label="1 · E"; O.atk=8; plStats(); PL.weak=.85; fpSys("[Система] Однажды ты перестал приходить","bad",6000); FP.lock=null;
+  await step("«Ты и так сильнейший. Отдохни ещё немного»","lord",12,25,600,.7,99,["imp","imp","imp","imp"],4200); toneP.uniforms.exposure.value=.75; bloom.strength=.3; Z.gate.material.uniforms.uOpen.value=.2; Z.beam.visible=false;
+  if(PRO.abort) return; O.lvl=1; O.label="1 · E"; O.atk=8; plStats(); PL.weak=.85; fpSys("[Система] Однажды он не пришёл","bad",6000); FP.lock=null;
   // the end: the world takes the last of it
   const iv=setInterval(()=>{ if(!FP.on||PL.dead){ clearInterval(iv); return; } PL.hp-=PL.max*.08; if(PL.hp<=0){ clearInterval(iv); fpHurt(9999,null,"fall"); } },220); }
 function proSkipPrologue(){ if(PRO.abort) return; PRO.abort=true; FP.bot=false; raidMusic(false); proAfterFall(PRO.path); }
 async function proAfterFall(p){ if(PRO.after) return; PRO.after=true; const el=proEl(); FP.bot=false; FP.allyDmgK=0; await wait(proFast()?50:1200); el.classList.add("on","black"); await wait(proFast()?30:900); fpLeave(); PL.override=null; plStats();
   toneP.uniforms.exposure.value=1.15; bloom.strength=.85; const Z=WORLD.Z; if(Z){ Z.scene.fog.color.set(0x0a0a1a); Z.scene.fog.density=.0058; Z.beam.visible=true; Z.beam.position.set(0,75,0); Z.beam.scale.set(1,1,1); Z.gate.position.set(0,150,0); Z.gate.scale.setScalar(1); Z.gate.material.uniforms.uCol.value.set(0xff3a5a); Z.gate.material.uniforms.uCol2.value.set(0x2a0010); Z.gate.material.uniforms.uOpen.value=1; Z.prologue=false; }
   showHub(); $("hubHud").classList.remove("on"); riftSystem(0);
-  await proCap("Так уже было. С Охотником №0 — лучшим из нас.",{ms:2600});
+  await proCap("Это был Охотник №0. Лучший из всех.",{ms:2400});
   await proCap("Он дошёл до вершины. А потом однажды не встал.",{ms:2600});
-  await proCap("Упасть может каждый. Я ищу тех, кто встаёт.",{ms:2800}); proCapOff();
-  riftSystem(.35); el.classList.remove("black"); proBig(`УРОВЕНЬ 1<small>это не конец. это начало</small>`,"lvl"); sfx.seal(); await wait(proFast()?30:1800); proBig("");
+  await proCap("Теперь Врата видишь ты. Я ищу тех, кто встаёт.",{ms:2800}); proCapOff();
+  riftSystem(.35); el.classList.remove("black"); proBig(`УРОВЕНЬ 1<small>твоя история начинается здесь</small>`,"lvl"); sfx.seal(); await wait(proFast()?30:1800); proBig("");
   PRO.done=p; if(PRO.resolve) PRO.resolve(p); }
 function prologue(){ return new Promise(res=>{ PRO.resolve=res; PRO.bossDead=false; PRO.after=false; prologueRun(); }); }
 /* the first real deed: stand up. The camera counts — or your honest word */
@@ -7186,7 +7452,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="1001-345e7f";
+const BUILD="1001-8a9a8f";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
@@ -7394,15 +7660,15 @@ let MODE="boot", T=0, last=performance.now(), started=false, cinematic=false;
 function clearLabels(){ $("gateLbls").innerHTML=""; hubLblMap.clear(); cityLblMap.clear(); }
 function postMode(hub){ renderPass.mat.uniforms.uStr.value=hub?0:1; bloom.strength=hub?.9:(isTouch?.7:.8); bloom.radius=.55; bloom.threshold=hub?.62:.4; toneP.uniforms.exposure.value=hub?.95:1.25; gradeP.enabled=!hub; if(HUB.post) HUB.post.enabled=hub; }
 function showHub(){ MODE="hub"; postMode(true); riftDiveEnd(); if(HUB.scene){ buildArmyRoof(); if(!HUB.twinS) buildTwin(); } renderPass.scene=HUB.scene; renderPass.camera=HUB.cam; clearLabels(); $("cityHud").classList.remove("on"); document.body.classList.remove("incity"); if(document.pointerLockElement) document.exitPointerLock();
-  $("hubHud").classList.toggle("on",!!P.onboarded); hubHud(); }
-function showCity(){ MODE="city"; postMode(false); renderPass.scene=scene; renderPass.camera=camera; clearLabels(); $("hubHud").classList.remove("on"); $("cityHud").classList.add("on"); document.body.classList.add("incity"); cityHint(); }
+  $("hubHud").classList.toggle("on",false); hubHud(); if(P.onboarded) realShow(); }
+function showCity(){ realHide(); MODE="city"; postMode(false); renderPass.scene=scene; renderPass.camera=camera; clearLabels(); $("hubHud").classList.remove("on"); $("cityHud").classList.add("on"); document.body.classList.add("incity"); cityHint(); }
 let idleT=0, secAcc=0, cityAcc=0, cmpAcc=0, fpsAcc=0, fpsN=0, qualityChecked=false;
 function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; T+=dt; UNI.time.value=T; if(started&&FP.on&&!FP.paused) playTick(dt);
   if(!dOn){
-    if(MODE==="hub") updateHub(dt,T);
+    if(MODE==="hub"&&!REAL.on) updateHub(dt,T);
     else if(MODE==="city"){ stepPlayer(dt); updateGates(dt,T); updateRoute(dt,T); updateSigns(dt,player.local.x,player.local.z); updateTraffic(dt); updateTowers(dt,T); cityLabels();
       cmpAcc+=dt; if(cmpAcc>.08){ cmpAcc=0; updateCompass(); } updateMinimap(dt); }
-    gradeP.uniforms.uTime.value=performance.now()/1000; composer.render(); }
+    if(!(MODE==="hub"&&REAL.on)){ gradeP.uniforms.uTime.value=performance.now()/1000; composer.render(); } }
   secAcc+=dt; if(secAcc>.6){ secAcc=0; if(MODE==="city"&&!dOn){ checkHex(); updateStreet(); cityHint(); updateHum(); towerProximity(); } }
   cityAcc+=dt; if(cityAcc>2){ cityAcc=0; if(MODE==="city") cityTick(); if(MODE==="hub"&&P.onboarded&&P.day&&P.day.d!==todayKey()&&!anyBlocking()&&!hubBusy&&!dOn) newDay();
     if(MODE==="hub"&&started&&P.onboarded&&!anyBlocking()&&!hubBusy&&!dOn){ idleT+=2; if(idleT>=20) maybeUrgent(); maybeCoach(); } else idleT=0; }
@@ -7428,7 +7694,7 @@ requestAnimationFrame(frame);
   if(P.onboarded){ const c=document.createElement("div"); c.className="cont"; const R=RANK_NAME(P.level||1);
     c.innerHTML=`<div class="cont-h">Продолжить</div><div class="cont-me"><b>${String(P.name||"Охотник").replace(/[<>&"]/g,"")}</b> · ур. ${P.level||1} · ранг ${R}</div>${timeBlock()}
       <div class="cont-mana"><i style="width:${Math.min(100,mana()/manaMax()*100)}%"></i><span>Мана ${Math.floor(mana())} / ${manaMax()} · ${manaSummons()} ${plural(manaSummons(),"призыв","призыва","призывов")} армии</span></div><div class="cont-b"></div>`;
-    ld.appendChild(c); bl=document.createElement("button"); bl.className="btn big life"; bl.id="enterLife"; bl.innerHTML=`Явь<small>жизнь · дела · навыки</small>`; b.innerHTML=`Тени<small>мир · Врата · армия</small>`; c.querySelector(".cont-b").append(bl,b); }
+    ld.appendChild(c); bl=document.createElement("button"); bl.className="btn big life"; bl.id="enterLife"; bl.innerHTML=`Реальность<small>жизнь · дела · навыки</small>`; b.innerHTML=`Тени<small>мир · Врата · армия</small>`; c.querySelector(".cont-b").append(bl,b); }
   else ld.appendChild(b);
   const h=document.createElement("div"); h.className="load-sub"; h.textContent="лучше в наушниках"; ld.appendChild(h);
   if(!P.onboarded){ const k=document.createElement("button"); k.className="btn ghost small"; k.id="lRestore"; k.textContent="Есть код прогресса"; k.onclick=()=>{ document.body.classList.add("preload"); backupWindow(); }; ld.appendChild(k); }
@@ -7436,7 +7702,7 @@ requestAnimationFrame(frame);
     ld.style.opacity=0; setTimeout(()=>ld.remove(),600); $("fade").style.opacity=0; started=true;
     if(!P.onboarded) awaken(); else if(life){ showHub(); hubHud(); welcomeBack(false); } else if(WORLD_HOME){ await enterWorld({force:true}); welcomeBack(false); } else welcomeBack(false); };
   b.onclick=()=>go(false); if(bl) bl.onclick=()=>go(true); })();
-window.__g={ get LIFE(){ return LIFE; }, wGridAsync, get WHG(){ return WHG; }, get WCOL(){ return WCOL; }, RGX:{RG_CAMPS,RG_CAVES,RG_VIL,RG_MASTERS,RG_SECRETS,RG_LORE,RG_RARE,RGN,rgnAt,rgState,mapWindow,caveEnter,vilTalk,errState,rgKeys,rgMeadow,finaleEnter}, WORLD, lifeSkin, viewGear, mana, manaAdd, manaUse, manaMax, armyReady, armyFree, runesSpawn, runesDrop, diffWindow, squadList, squadCap, sMerge, sRelease, sRite, sGain, fallHurt, ariseChance, timeLines, ultPress, wTravel, W_OBELISKS, wH, killEnemy, lifeRemnant, BKIT, mkShellAlly, shellBuild, armyWindow, lifeDrop, gearWindow, lifePower, lifeGoal, itemMake, itemTake, P, HUB, get MODE(){ return MODE; }, get gates(){ return gates; }, player, openGate, enterDungeon, THEMES, dungeonOf, FP, PL, FPI, fpPress, mkEnemy, mkBoss, fpEnter, fpLeave, get DG(){ return DG; }, CB, fpBestTarget, VM, viewAct, enterWorld, get WORLD(){ return WORLD; }, wMapWindow, planToday, hubGatesRebuild, showHub, enterCity, camp, week, maybeUrgent, checkMilestones, DEEDS, TIERS, deedAmount, mkPersonalGate, doDeed, addTotal, appChallenge, dayCheck, clockCheck, pathWindow, maybeTierUp, camp, storyScene, chapterCard, SEASON, storyIntro, storyAfterGate, storySide, storyWindow, morningRitual, eveningReport, ctxWindow, mainWindow, setCtx, twinDaily, maybeTwinBirth, shareCard, makeCard, backupCode, parseBackup, restoreBackup, backupWindow, feedbackWindow, installWindow, maybeInstallNudge, maybeCoach, perf, perfApply, diag, twinGate, buildTwin, twinWindow,
+window.__g={ get LIFE(){ return LIFE; }, mkAlly, shadowMist, REAL, proSkipPrologue, formK, statForm, plStats, get PL(){ return PL; }, realShow, realHide, realState, realCommit, realLogWindow, realNewSkill, realNewReward, mySkills, skMin, skRank, skForm, allSkills, wGridAsync, get WHG(){ return WHG; }, get WCOL(){ return WCOL; }, RGX:{RG_CAMPS,RG_CAVES,RG_VIL,RG_MASTERS,RG_SECRETS,RG_LORE,RG_RARE,RGN,rgnAt,rgState,mapWindow,caveEnter,vilTalk,errState,rgKeys,rgMeadow,finaleEnter}, WORLD, lifeSkin, viewGear, mana, manaAdd, manaUse, manaMax, armyReady, armyFree, runesSpawn, runesDrop, diffWindow, squadList, squadCap, sMerge, sRelease, sRite, sGain, fallHurt, ariseChance, timeLines, ultPress, wTravel, W_OBELISKS, wH, killEnemy, lifeRemnant, BKIT, mkShellAlly, shellBuild, armyWindow, lifeDrop, gearWindow, lifePower, lifeGoal, itemMake, itemTake, P, HUB, get MODE(){ return MODE; }, get gates(){ return gates; }, player, openGate, enterDungeon, THEMES, dungeonOf, FP, PL, FPI, fpPress, mkEnemy, mkBoss, fpEnter, fpLeave, get DG(){ return DG; }, CB, fpBestTarget, VM, viewAct, enterWorld, get WORLD(){ return WORLD; }, wMapWindow, planToday, hubGatesRebuild, showHub, enterCity, camp, week, maybeUrgent, checkMilestones, DEEDS, TIERS, deedAmount, mkPersonalGate, doDeed, addTotal, appChallenge, dayCheck, clockCheck, pathWindow, maybeTierUp, camp, storyScene, chapterCard, SEASON, storyIntro, storyAfterGate, storySide, storyWindow, morningRitual, eveningReport, ctxWindow, mainWindow, setCtx, twinDaily, maybeTwinBirth, shareCard, makeCard, backupCode, parseBackup, restoreBackup, backupWindow, feedbackWindow, installWindow, maybeInstallNudge, maybeCoach, perf, perfApply, diag, twinGate, buildTwin, twinWindow,
   get hits(){ return HUB.hits.length; }, info:()=>{ renderer.info.autoReset=false; renderer.info.reset(); composer.render(); const r={calls:renderer.info.render.calls,tris:renderer.info.render.triangles}; renderer.info.autoReset=true; return r; } };
 
 })();
