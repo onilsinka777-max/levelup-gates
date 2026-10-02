@@ -1,6 +1,6 @@
 /* LevelUp «Врата» — service worker: opens instantly, works offline, keeps the camera models after the first download.
    index.html: network first (updates arrive), cache as fallback. Everything else: cache first. */
-const V="5ea8b6138a", CORE="gates-core-"+V, RUN="gates-run-v1";
+const V="2bf50ad7a6", CORE="gates-core-"+V, RUN="gates-run-v1";
 const PRE=["./","./index.html","./manifest.json","./icon-192.png","./icon-512.png","./apple-touch-icon.png","./audio/amb.mp3","./audio/raid.mp3"];
 self.addEventListener("install",e=>{ e.waitUntil(caches.open(CORE).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting())); });
 self.addEventListener("activate",e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith("gates-core-")&&k!==CORE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
@@ -13,4 +13,4 @@ self.addEventListener("fetch",e=>{ const r=e.request; if(r.method!=="GET") retur
   // camera models, wasm, fonts, map tiles: cache first
   const heavy=/cdn\.jsdelivr\.net|storage\.googleapis\.com|fonts\.(googleapis|gstatic)\.com|tiles\.openfreemap\.org/.test(u.host)||u.origin===location.origin;
   if(!heavy) return;
-  e.respondWith(caches.match(r).then(hit=>hit||fetch(r).then(res=>{ if(res.ok||res.type==="opaque"){ const cp=res.clone(); caches.open(u.origin===location.origin?CORE:RUN).then(c=>c.put(r,cp)); } return res; }))); });
+  e.respondWith(caches.match(r).then(hit=>hit||fetch(r).then(res=>{ if(res.ok||res.type==="opaque"){ const cp=res.clone(); caches.open(u.origin===location.origin&&!u.pathname.includes("/audio/m/")?CORE:RUN).then(c=>c.put(r,cp)); } return res; }))); });
