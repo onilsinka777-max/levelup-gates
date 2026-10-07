@@ -708,18 +708,18 @@
   "rms": 0.08
  },
  "loc_r_pillars": {
-  "src": "Lost Frontier",
-  "a": 54.75,
-  "sim": 0.79,
-  "wave": 0.47,
+  "src": "Mountain Emperor",
+  "a": 5.05,
+  "sim": 0.96,
+  "wave": 0.97,
   "k": 1.0,
   "kind": "loc",
-  "gain": 0.543,
+  "gain": 0.587,
   "id": "loc_r_pillars",
   "ls": 0.3,
-  "le": 85.4175,
-  "len": 85.12,
-  "seam": 0.64,
+  "le": 64.3001,
+  "len": 64.0,
+  "seam": 0.98,
   "rms": 0.08
  },
  "loc_r_crystal": {
