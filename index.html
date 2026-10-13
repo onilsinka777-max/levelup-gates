@@ -18,7 +18,7 @@
   --sl:env(safe-area-inset-left);--sr:env(safe-area-inset-right);--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom);
   --u:clamp(9px,2.2vh,13px)}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);overflow:hidden;font-family:"Exo 2",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+html,body{height:100%;background:var(--bg);overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-touch-callout:none;-webkit-text-size-adjust:100%;font-family:"Exo 2",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
 input,textarea{user-select:text;-webkit-user-select:text}
 button{font-family:inherit;color:inherit}
 #scene{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block;touch-action:none}
@@ -1860,6 +1860,10 @@ body[data-frame]:not([data-frame=""]) #meChip{box-shadow:0 0 0 2px var(--frame),
 body[data-frame]:not([data-frame=""]) .cont-me{box-shadow:inset 0 0 0 2px var(--frame),0 0 14px var(--frame);padding:4px 8px}
 @media (max-width:520px){ .ec-opts{grid-template-columns:1fr} .ec-looks{grid-template-columns:repeat(2,1fr)} .ec-doors{grid-template-columns:repeat(3,1fr)} .hm-top{grid-template-columns:repeat(2,1fr)} .hm-tr{grid-template-columns:1fr}
   .hm-b{flex-wrap:wrap} .hm-b .btn{width:100%;flex-basis:100%} .ec-mrow{grid-template-columns:1fr} .ch-stage{height:128px} }
+
+/* 13.10: on a phone the page must never zoom or slide — inputs and scrolling lists keep their own gestures */
+input,textarea,select,.field{touch-action:manipulation}
+[style*="overflow"],.holo-inner,.scroll-t,.gbag,.clg,.gcard{touch-action:pan-y pan-x;overscroll-behavior:contain}
 </style>
 </head>
 <body>
@@ -33877,7 +33881,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="1013-v11k05";
+const BUILD="1013-v11k06";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
@@ -34029,6 +34033,14 @@ function perfApply(t,save=true){ perf.tier=Math.max(perf.tier,t);
 function perfTick(dt){ const ok=(MODE==="hub"&&!dOn)||(MODE==="fp"&&FP.on&&!anyBlocking()); if(!ok||perf.tier>=3||document.hidden) { perf.acc=perf.n=0; return; } perf.acc+=dt; perf.n++;
   if(perf.acc>4){ perf.fps=perf.n/perf.acc; perf.m=1; const bad=perf.fps<28; perf.acc=perf.n=0; if(bad){ perf.calm=0; perfApply(perf.tier+1); } } }
 if(LOWQ) perf.tier=2;
+
+/* 13.10 (Anton: «из-за свайпов сайт вечно приближает или сворачивает окна»): iOS ignores user-scalable=no — stop pinch, double-tap zoom and edge pulls by hand */
+(()=>{ if(typeof document==="undefined") return; const no=e=>{ e.preventDefault(); };
+  ["gesturestart","gesturechange","gestureend"].forEach(t=>document.addEventListener(t,no,{passive:false}));
+  const scrollable=el=>{ for(let n=el;n&&n!==document.body&&n.nodeType===1;n=n.parentElement){ if(/^(INPUT|TEXTAREA|SELECT)$/.test(n.tagName)) return true; const cs=getComputedStyle(n); if(/(auto|scroll)/.test(cs.overflowY+cs.overflowX)&&(n.scrollHeight>n.clientHeight+1||n.scrollWidth>n.clientWidth+1)) return true; } return false; };
+  document.addEventListener("touchmove",e=>{ if((e.touches&&e.touches.length>1)||!scrollable(e.target)) e.preventDefault(); },{passive:false});
+  let last=0; document.addEventListener("touchend",e=>{ const t=Date.now(); if(t-last<320&&!(e.target.closest&&e.target.closest("input,textarea,select"))) e.preventDefault(); last=t; },{passive:false});
+  document.addEventListener("dblclick",no,{passive:false}); })();
 
 /* ===== city.js ===== */
 /* ================= THE CITY: Gates at real places. You walk there with your own legs ================= */
