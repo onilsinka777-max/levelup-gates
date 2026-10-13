@@ -1589,7 +1589,8 @@ body.tl-on #ui{z-index:120}body.tl-on .shade{z-index:119}
 /* a phone held upright: the chips stand in a column at the right edge, above the second slot; the «act» prompt of a mage sits a little higher */
 @media (orientation:portrait) and (pointer:coarse){
   body.touch #fp .fp-btns .elem{width:42px;height:128px;right:calc(6px + var(--sr));bottom:calc(226px + var(--sb));border-radius:21px}
-  body.touch #fp .fp-btns .elem .sch{flex-direction:column}
+  body.touch #fp .fp-btns .elem .sch{flex-direction:row;flex-wrap:wrap;width:76px;gap:4px}
+  body.touch #fp .fp-btns .elem .sc{width:34px;height:34px}
   body.touch #fp.cls-mage .fp-act{bottom:calc(366px + var(--sb))}
 }
 /* a phone on its side: the school button stays where the landscape layout puts it (fp-wide: --x/--y), the chips are a row centred on it */
@@ -1948,6 +1949,52 @@ body.hud-edit #fp::before{content:"";position:absolute;inset:0;background:rgba(2
 .pk-own{margin:10px 0 0;font:600 12px "Exo 2";color:#9fb3cc}
 /* the pause menu: «Настройки» and «Кнопки»/«Клавиши» side by side */
 .menu-grid #fmSet:has(+#fmCtl2){grid-column:auto}.menu-grid #fmCtl2:nth-child(odd){grid-column:1/-1}
+/* ===== mage 13.10: the spheres — three cells over the crosshair, the wheel round the thumb, the first-time card, the dark sky of the special spells, the help list ===== */
+.fp-orbs{position:absolute;left:50%;top:calc(50% - 74px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:4}
+.fp-orbs.vis{opacity:1}
+.fp-orbs .oc{display:flex;gap:7px}
+.fp-orbs .oc i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1.5px solid rgba(220,236,255,.35);background:rgba(6,10,26,.45);color:#fff;transition:transform .12s}
+.fp-orbs .oc i.f{border-color:var(--c);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--c) 75%,#fff 10%),color-mix(in srgb,var(--c) 45%,#050814));box-shadow:0 0 12px var(--c),inset 0 0 6px rgba(255,255,255,.35);animation:orbIn .22s ease-out}
+.fp-orbs .oc i .ico{width:62%;height:62%;filter:drop-shadow(0 0 3px #000)}
+@keyframes orbIn{0%{transform:scale(1.7)}100%{transform:scale(1)}}
+.fp-orbs .on{font:800 13px/1 "Exo 2",system-ui;letter-spacing:.06em;color:var(--c,#fff);text-shadow:0 0 10px var(--c,#fff),0 1px 3px #000;white-space:nowrap}
+.fp-orbs .on.k-tri,.fp-orbs .on.k-trio{font-size:15px;text-transform:uppercase}
+.fp-orbs .on.no{color:#9aa6bd;text-shadow:0 1px 3px #000}
+.orb-wheel{position:fixed;width:192px;height:192px;z-index:70;pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .12s,transform .14s ease-out}
+.orb-wheel.on{opacity:1;transform:scale(1)}
+.orb-wheel svg{position:absolute;left:0;top:0;overflow:visible}
+.orb-wheel .ow-s{fill:color-mix(in srgb,var(--c) 22%,rgba(6,10,26,.62));stroke:color-mix(in srgb,var(--c) 70%,transparent);stroke-width:1.5;transition:fill .1s}
+.orb-wheel .ow-s.sel{fill:color-mix(in srgb,var(--c) 62%,rgba(6,10,26,.4));stroke:#fff;stroke-width:2.2;filter:drop-shadow(0 0 10px var(--c))}
+.orb-wheel .ow-c{fill:rgba(4,8,20,.72);stroke:rgba(220,236,255,.4);stroke-width:1.5}
+.orb-wheel .ow-i{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--c);transition:transform .1s}
+.orb-wheel .ow-i .ico{width:24px;height:24px;filter:drop-shadow(0 0 6px var(--c))}
+.orb-wheel .ow-i small{font:700 9.5px/1 "Exo 2",system-ui;color:#e8f4ff;text-shadow:0 1px 2px #000;margin-top:2px}
+.orb-wheel .ow-i.sel{transform:scale(1.25);color:#fff}
+.orb-wheel .ow-d{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:3px}
+.orb-wheel .ow-d i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(220,236,255,.4)}
+.orb-wheel .ow-d i.f{background:var(--c);border-color:#fff;box-shadow:0 0 8px var(--c)}
+.orb-wheel .ow-n{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font:800 13px/1 "Exo 2",system-ui;color:#fff;text-shadow:0 0 8px rgba(127,233,255,.8),0 1px 3px #000;padding:4px 9px;background:rgba(4,8,20,.7);border-radius:10px}
+.orb-wheel .ow-n.no{color:#9aa6bd}
+.orb-tip{position:absolute;left:50%;top:calc(64px + var(--st,0px));transform:translate(-50%,-12px);z-index:66;display:flex;align-items:center;gap:12px;width:min(560px,92vw);padding:10px 14px;background:rgba(4,10,26,.9);border:1px solid rgba(181,140,255,.6);box-shadow:0 0 24px rgba(154,77,255,.35);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:auto}
+.orb-tip.on{opacity:1;transform:translate(-50%,0)}
+.orb-tip .ot-w{position:relative;flex:none;width:74px;height:74px;border-radius:50%;background:rgba(10,14,34,.8);border:1px solid rgba(220,236,255,.25)}
+.orb-tip .ot-w i{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;color:var(--c);display:grid;place-items:center}.orb-tip .ot-w i .ico{width:20px;height:20px;filter:drop-shadow(0 0 5px var(--c))}
+.orb-tip .ot-w b{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;color:#b58cff;animation:otPulse 1.4s ease-in-out infinite}.orb-tip .ot-w b .ico{width:22px;height:22px}
+@keyframes otPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.orb-tip .ot-t{display:flex;flex-direction:column;gap:4px;font:500 12.5px/1.35 "Exo 2",system-ui;color:#dfe9ff}
+.orb-tip .ot-t>b{font:800 14px/1.2 "Exo 2",system-ui;color:#d9c4ff;letter-spacing:.04em}
+.orb-tip .ot-t kbd{display:inline-block;min-width:16px;padding:1px 4px;margin:0 1px;border-radius:4px;border:1px solid var(--c,#7fe9ff);color:var(--c,#fff);font:700 11px/1.2 "Exo 2",system-ui;text-align:center}
+.orb-tip .ot-x{flex:none;align-self:stretch;padding:0 12px;border:1px solid rgba(181,140,255,.6);background:rgba(154,77,255,.18);color:#fff;font:700 13px "Exo 2",system-ui;border-radius:8px}
+.orb-shade{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .5s;background:radial-gradient(ellipse at 50% 40%,rgba(30,8,40,.25),rgba(4,2,10,.72) 80%)}
+.orb-shade[data-k=polar]{background:radial-gradient(ellipse at 50% 30%,rgba(60,120,170,.12),rgba(6,14,40,.6) 85%)}
+.orb-shade.on{opacity:1}
+.oh{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.oh-r{display:grid;grid-template-columns:44px 1fr;column-gap:8px;align-items:center;padding:5px 8px;border-left:3px solid var(--c);background:rgba(10,16,40,.5)}
+.oh-r em{grid-row:span 2;display:flex;gap:2px;font-style:normal}.oh-r em i{width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.oh-r b{color:var(--c);font-size:14px}.oh-r small{color:#c8d4ea;font-size:12px;line-height:1.3}.oh-r small u{text-decoration:none;color:#ffb3c0}
+.oh-r.lk{opacity:.62;filter:saturate(.5)}
+@media (pointer:coarse){ body.touch.hud-edit .orb-wheel,body.touch.hud-edit .fp-orbs,body.touch.hud-edit .orb-tip{display:none} }
+@media (orientation:landscape) and (pointer:coarse){ body.touch .orb-tip{top:calc(46px + var(--st,0px));width:min(500px,66vw);padding:7px 10px;gap:9px}body.touch .orb-tip .ot-w{width:56px;height:56px}body.touch .orb-tip .ot-t{font-size:11.5px;line-height:1.3;gap:2px}body.touch .orb-tip .ot-t>b{font-size:13px}body.touch .orb-tip .ot-x{padding:0 9px;font-size:12px} }
 </style>
 </head>
 <body>
@@ -3264,13 +3311,14 @@ const NM={}; for(const k in NM_ALL){ const f=NM_ALL[k][NM_PICK[k]]||NM_ALL[k][0]
 const KB_ACT=[
   ["Движение",[["fwd","Вперёд","KeyW"],["back","Назад","KeyS"],["left","Влево","KeyA"],["right","Вправо","KeyD"],["run","Бег","ShiftLeft"]]],
   ["Бой",[["atk","Удар (держать — серия, заряд)","Mouse0"],["block","Блок · парирование","Mouse2"],["dash","Рывок","Space"],["skill","Умение класса","KeyQ"],["s2","Умение · слот 1","Digit1"],["s3","Умение · слот 2","Digit2"],
-    ["ult","Ульта","KeyR"],["army","Армия теней","KeyX"],["flask","Зелье","KeyF"],["lock","Цель (захват)","KeyT"],["elem","Школа мага","KeyV"]]],
+    ["ult","Ульта","KeyR"],["army","Армия теней","KeyX"],["flask","Зелье","KeyF"],["lock","Цель (захват)","KeyT"],["elem","Школа мага","KeyV"],
+    ["orb1","Маг: сфера огня","Digit3"],["orb2","Маг: сфера льда","Digit4"],["orb3","Маг: сфера тьмы","Digit5"],["orb4","Маг: сфера молнии","Digit6"]]],
   ["Мир",[["act","Действие · «Восстань»","KeyE"],["goal","Идти к цели","KeyG"],["mount","Теневой зверь","KeyZ"]]],
   ["Окна",[["menu","Меню и пауза","Tab"],["map","Карта мира","KeyM"],["gear","Вещи","KeyI"],["tree","Путь класса","KeyK"],["armyw","Окно армии","KeyB"],["help","Что делать · помощь","KeyH"],["guide","Управление","F1"]]] ];
 const KB_DEF={}, KB_NAME={}; KB_ACT.forEach(([g,L])=>L.forEach(([a,n,c])=>{ KB_DEF[a]=c; KB_NAME[a]=n; }));
 /* the code the old handlers know an action by */
 const KB_CANON={ fwd:"KeyW", back:"KeyS", left:"KeyA", right:"KeyD", run:"ShiftLeft", atk:"KeyJ", block:"ControlLeft", dash:"Space", skill:"KeyQ", s2:"Digit1", s3:"Digit2", ult:"KeyR", army:"KeyX",
-  flask:"KeyF", lock:"KeyT", elem:"KeyV", act:"KeyE", goal:"KeyG", mount:"KeyZ", menu:"Tab", map:"KeyM", gear:"KeyI", tree:"KeyK", armyw:"KeyB", help:"KeyH", guide:"F1" };
+  flask:"KeyF", lock:"KeyT", elem:"KeyV", orb1:"Digit3", orb2:"Digit4", orb3:"Digit5", orb4:"Digit6", act:"KeyE", goal:"KeyG", mount:"KeyZ", menu:"Tab", map:"KeyM", gear:"KeyI", tree:"KeyK", armyw:"KeyB", help:"KeyH", guide:"F1" };
 /* second keys of the standard set: they work while nobody took them */
 const KB_ALT={ KeyJ:"atk", ControlLeft:"block", KeyC:"block", ArrowUp:"fwd", ArrowDown:"back", ShiftRight:"run", Mouse1:"lock" };
 /* never taken: the browser or the game owns them */
@@ -5214,7 +5262,7 @@ function fpInput(){ const el=$("fp"); const btn=(id,k,hold)=>{ const b=$(id); b.
     if(typeof pcKey==="function"&&pcKey(e)) return; const k=kbCanon(e.code); if(k==="Space"||k==="Tab") e.preventDefault(); fpKeyDo(k,e,true); }); }
 /* one key (canonical code) of the fight. fromKey — the keyboard already asked the windows (pcKey) */
 function fpKeyDo(k,e,fromKey){ if(!fromKey&&typeof pcKeyC==="function"&&pcKeyC(k,e)) return; if(anyBlocking()||FP.paused||!FPI.hold) return;
-  if(k==="Space"){ fpPress("dash"); } if(k==="KeyQ") fpPress("skill"); if(k==="Digit1") fpPress("s2"); if(k==="Digit2") fpPress("s3"); if(k==="KeyX") fpPress("army"); if(k==="KeyV") fpPress("elem"); if(k==="KeyZ") fpPress("mount"); if(k==="ControlLeft"){ fpPress("block"); FPI.hold.block=true; } if(k==="KeyR") fpPress("ult"); if(k==="KeyF") fpPress("flask"); if(k==="KeyE") fpPress("act"); if(k==="KeyT") fpPress("lock"); if(k==="KeyJ"){ fpPress("atk"); FPI.hold.atk=true; } if(k==="KeyG"&&typeof lifeGoalTap==="function") lifeGoalTap(); if(/^Key[WASD]$/.test(k)&&typeof lifeAutoStop==="function") lifeAutoStop(); }
+  if(k==="Space"){ fpPress("dash"); } if(k==="KeyQ") fpPress("skill"); if(k==="Digit1") fpPress("s2"); if(k==="Digit2") fpPress("s3"); if(/^Digit[3-6]$/.test(k)&&typeof orbKeyIn==="function") orbKeyIn(+k[5]-2); /* the mage's spheres (fp-orbs.js): at once, not through the queue — three quick keys between two frames are three spheres */ if(k==="KeyX") fpPress("army"); if(k==="KeyV") fpPress("elem"); if(k==="KeyZ") fpPress("mount"); if(k==="ControlLeft"){ fpPress("block"); FPI.hold.block=true; } if(k==="KeyR") fpPress("ult"); if(k==="KeyF") fpPress("flask"); if(k==="KeyE") fpPress("act"); if(k==="KeyT") fpPress("lock"); if(k==="KeyJ"){ fpPress("atk"); FPI.hold.atk=true; } if(k==="KeyG"&&typeof lifeGoalTap==="function") lifeGoalTap(); if(/^Key[WASD]$/.test(k)&&typeof lifeAutoStop==="function") lifeAutoStop(); }
 function fpKeyUp(k){ if(!FPI.hold) return; if(k==="ControlLeft") FPI.hold.block=false; if(k==="KeyJ") FPI.hold.atk=false; }
 function defMoving(){ let mx=FPI.mx, mz=FPI.mz; if(keys.KeyW||keys.ArrowUp) mz+=1; if(keys.KeyS||keys.ArrowDown) mz-=1; if(keys.KeyA) mx-=1; if(keys.KeyD) mx+=1; return Math.hypot(mx,mz)>.35; }
 /* the words for the defence button, so hints read right on a phone and on a computer */
@@ -5442,7 +5490,7 @@ function pcCaps(){ if(isTouch) return; if(!CUR.caps&&$("fpMenu")){ CUR.caps=true
   old.forEach(b=>b.removeAttribute("data-hk")); L.forEach((b,i)=>{ b.dataset.hk=i+1; }); }
 /* the page «Управление» for a computer: every key in one place (the help book and the guide show it) */
 const PC_KEYS=()=>{ const K=a=>keyName(a,true); return [ ["Движение",[[K("move"),"идти"],["Мышь","смотреть"],[K("run"),"бег"],[K("dash"),"рывок"]]],
-  ["Бой",[[K("atk"),"удар"],[K("block"),"блок, перед ударом — парирование"],[K("skill"),"умение класса"],[K("s2")+" · "+K("s3"),"умения в двух слотах"],[K("ult"),"ульта класса"],[K("army"),"армия теней"],[K("elem"),"школа мага"],[K("flask"),"зелье"],[K("lock"),"захват цели"]]],
+  ["Бой",[[K("atk"),"удар"],[K("block"),"блок, перед ударом — парирование"],[K("skill"),"умение класса"],[K("s2")+" · "+K("s3"),"умения в двух слотах"],[K("ult"),"ульта класса"],[K("army"),"армия теней"],[K("elem"),"школа мага"],[["orb1","orb2","orb3","orb4"].map(K).join(" "),"маг: сферы огня, льда, тьмы, молнии ("+K("skill")+" — выпустить)"],[K("flask"),"зелье"],[K("lock"),"захват цели"]]],
   ["Мир",[[K("act"),"действие: говорить, отдохнуть, войти"],[K("goal"),"идти к цели"],[K("mount"),"теневой зверь"]]],
   ["Окна",[[K("menu"),"меню и пауза"],[K("map"),"карта мира"],[K("gear"),"вещи"],[K("tree"),"путь класса и умения в бою"],[K("armyw"),"армия"],[K("help"),"что делать · помощь"],[K("guide"),"управление"]]],
   ["Курсор",[["Alt (держать)","курсор для кнопок на экране"],["1…9","кнопки открытого окна"],["Esc","закрыть окно"],["клик / клавиша","вернуть прицел, если браузер его отпустил"]]] ]; };
@@ -5576,6 +5624,32 @@ let _stepD=0;
 function stepSfx(dt){ if(!FP.on||PL.dead||PL.mounted||PL.dashT>0||!PL.onGround){ _stepD=0; return; } if(PL.speed<1.2) return; _stepD+=PL.speed*dt; const L=PL.speed>6?2.5:1.9; if(_stepD>L){ _stepD=0; SFX.step(PL.speed>6); } }
 /* haptics: Android vibrates; iPhone has no vibration in the browser — there the screen punch and the sound carry the hit */
 function buzz(p){ if(P.noBuzz) return; try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+/* ================= THE MAGE'S FOUR VOICES (13.10, Anton: «звук холода очень дешёвый») =================
+   Each school has its own cast and its own hit, all synthesised like the rest (nz / tn above, a little random pitch):
+     fire  — a breath of flame (a low roar sweeping up) and a heavy thud with crackling embers;
+     ice   — glass: a short chord of high detuned chimes over a cold hiss, the hit is a crunch + shards ringing + a breath of wind;
+     dark  — a low hum of two detuned saws, a whisper on top; the hit is a deep drop;
+     storm — a crackle of tiny sparks and a buzz, the hit is a dry snap with a rumble of thunder.
+   MSFX.cast(el,k) / MSFX.hit(el,k) / MSFX.big(el,k) (the spheres and the ultimate) / MSFX.tink() — one grain of frost. Calls closer than 50 ms per kind are merged. */
+const _msT={};
+const msGap=(id,ms)=>{ const n=performance.now(); if(n-(_msT[id]||0)<ms) return false; _msT[id]=n; return true; };
+const MSFX={
+  cast(el,k=1){ if(!msGap("c"+el,el==="storm"?60:50)) return; const j=jit(.08);
+    if(el==="fire"){ nz(.28,260*j,1400*j,.05*k,"bandpass",.8); nz(.18,2200,900,.018*k,"highpass",.7,.04); tn(120*j,70*j,.22,.03*k,"sawtooth"); }
+    else if(el==="ice"){ [2637,3520,4699].forEach((f,i)=>tn(f*j*(1+(Math.random()-.5)*.012),f*j*.985,.22-.04*i,(.014-.003*i)*k,"triangle",i*.018)); nz(.22,7000,3600,.02*k,"highpass",.8); tn(1568*j,1760*j,.12,.01*k,"sine",.03); }
+    else if(el==="dark"){ tn(98*j,62*j,.32,.045*k,"sawtooth"); tn(147*j*1.01,92*j,.32,.022*k,"sawtooth"); nz(.28,1800*j,800,.016*k,"bandpass",5); }
+    else if(el==="storm"){ for(let i=0;i<4;i++) nz(.018+Math.random()*.02,5200*j,2600,.05*k,"highpass",.8,Math.random()*.08); tn(3200*j,700,.06,.012*k,"square"); tn(58,58,.12,.022*k,"sawtooth"); } },
+  hit(el,k=1){ if(!msGap("h"+el,55)) return; const j=jit(.1);
+    if(el==="fire"){ tn(95*j,40*j,.3,.1*k,"sine"); nz(.34,900*j,140,.08*k,"lowpass",.8); for(let i=0;i<3;i++) nz(.02,3200*j,1800,.025*k,"highpass",.8,.06+i*.05+Math.random()*.04); }
+    else if(el==="ice"){ nz(.06,4800*j,2200,.07*k,"bandpass",2); tn(190*j,90*j,.12,.05*k,"sine"); for(let i=0;i<3;i++){ const f=(3200+Math.random()*3000)*j; tn(f,f*.98,.14,.012*k,"triangle",.015+i*.03+Math.random()*.02); } nz(.35,1600,500,.012*k,"bandpass",1.4,.05); }
+    else if(el==="dark"){ tn(72*j,38*j,.34,.09*k,"sine"); tn(144*j,70*j,.2,.02*k,"sawtooth"); nz(.22,700,180,.05*k,"lowpass",.8); }
+    else if(el==="storm"){ nz(.05,7200*j,3200,.08*k,"highpass",.7); nz(.55,320*j,60,.06*k,"lowpass",.7,.03); tn(82*j,40*j,.4,.05*k,"sine",.02); } },
+  big(el,k=1){ const j=jit(.05);
+    if(el==="fire"){ tn(55*j,30,1.1,.14*k,"sine"); nz(1,1200,90,.11*k,"lowpass",.7); nz(.6,300,2600,.04*k,"bandpass",.6); for(let i=0;i<6;i++) nz(.03,3000,1500,.03*k,"highpass",.8,.15+i*.09); }
+    else if(el==="ice"){ nz(.12,5200,2400,.09*k,"bandpass",2); tn(150,70,.4,.08*k,"sine"); [2093,2637,3136,3951,4699].forEach((f,i)=>tn(f*j,f*j*.99,.6-.06*i,.016*k,"triangle",.03+i*.035)); nz(1.2,900,300,.03*k,"bandpass",1.5,.1); }
+    else if(el==="dark"){ tn(48*j,26,1.3,.13*k,"sine"); tn(96*j,48,1,.04*k,"sawtooth"); tn(97.5*j,49,1,.035*k,"sawtooth"); nz(1,500,80,.06*k,"lowpass",.7); nz(.7,2400,900,.015*k,"bandpass",6,.2); }
+    else if(el==="storm"){ nz(.08,8000,3600,.12*k,"highpass",.7); nz(1.4,420,40,.1*k,"lowpass",.6,.05); tn(70,32,1.1,.08*k,"sine",.03); for(let i=0;i<8;i++) nz(.02,6000,3000,.04*k,"highpass",.8,.1+Math.random()*.5); } },
+  tink(k=1){ if(!msGap("tk",70)) return; const f=(3400+Math.random()*3200); tn(f,f*.985,.16,.009*k,"triangle"); if(Math.random()<.4) tn(f*1.5,f*1.48,.1,.005*k,"sine",.02); } };
 
 /* ===== fp-music.js ===== */
 /* ---------- music: ONE track at any moment — a looped track per location (and per land of the world), a two-phase theme per boss ----------
@@ -10538,7 +10612,7 @@ function swingHit(S,name,k){ const col=SKIN(); const heavy=!!S.heavy; fxSlash(S.
   return hits; }
 function hitEnemy(e,dmg,o={}){ if(!e.alive) return; if(!o.ally&&!o.dot&&typeof stealthEnd==="function") stealthEnd(); if(RANK_ON) dmg*=gapOut(e,o); if(e.inv){ if(!o.ally&&!o.dot&&(e.invT||0)<FP.t){ e.invT=FP.t+.8; fpFloat(e.x,(e.y||0)+e.h*.7,e.z,e.invText||"не берёт","cut"); SFX.clang(); } return; } if(!o.ally&&PL.rallyT>0) dmg*=1.3; if(e.markT>FP.t) dmg*=1.2; if(!e.boss&&e2Block(e,o)){ dmg*=.12; o={...o,crit:false,push:.2,blocked:true}; } if(e.boss&&e.K&&e.K.onHit) dmg=e.K.onHit(e,dmg,o); dmg=Math.round(dmg); e.hp-=dmg; e.hitT=Math.max(e.hitT,o.ally?.25:1); if(!o.ally){ e.flinch=o.heavy||o.crit?1:.6; if(o.blocked||(e.armor&&!o.crit&&!o.heavy)) SFX.clang(); } const hy=(e.y||0)+e.h*.6;
   fpFloat(e.x,hy,e.z,o.ally?String(dmg):(o.crit?dmg+"!":String(dmg)),o.ally?"ally":o.fin?"fin":o.crit?"crit":"");
-  const hx=e.x+(PL.x-e.x)*.25, hz=e.z+(PL.z-e.z)*.25; fxSparks(hx,hy,hz,o.ally?0xb58cff:o.crit?0xffd166:SKIN().getHex(),o.crit?18:9,o.crit?7:5); fxInk(hx,hy,hz,o.crit?8:4,.4);
+  const hx=e.x+(PL.x-e.x)*.25, hz=e.z+(PL.z-e.z)*.25; fxSparks(hx,hy,hz,o.ally?0xb58cff:o.crit?0xffd166:SKIN().getHex(),o.crit?18:9,o.crit?7:5); if(!o.noInk) fxInk(hx,hy,hz,o.crit?8:4,.4); /* noInk: many small ticks of a spell (mage 13.10) — no ink cloud */
   if(!o.ally) PL.ult=Math.min(100,PL.ult+(e.boss?1.6:3.2)*(o.crit?1.5:1)*(PL.ultK||1));
   if(e.boss){ bossHit(e,dmg,o); }
   else { const dir=yawTo(PL.x,PL.z,e.x,e.z); const push=(o.push||1)*(e.T.poise?1.2:4.5); e.kb=[fwdX(dir)*push,fwdZ(dir)*push];
@@ -28230,10 +28304,12 @@ function fpBotHuman(dt,T,B){ const S=HB.S||hbNew(), C=HB.cfg; if(FPI.hold) FPI.h
   if(FP.botArmy&&typeof armyReady2==="function"&&armyReady2()&&FP.allies.filter(a=>!a.dead&&!a.sink).length===0) fpPress("army");
   /* a shooter does not have to walk in: he keeps shooting while he moves, and rests only at the end of every «away» stretch */
   const shoot=inn||(S.mode==="out"&&S.mT>1.3&&(PL.st||0)>10);
-  const ice=ranged&&elemNow()==="ice", iR=ice?(KL.iceReach||MGB.ice.range)+T.r:0; /* the stream of ice is HELD, from inside its reach (mage 06.10) */
+  const el0=ranged?elemNow():null, ice=ranged&&(el0==="ice"||el0==="storm"), iR=ice?(el0==="storm"?MGB.storm.range:(KL.iceReach||MGB.ice.range))+T.r:0; /* the stream of ice and the lightning are HELD, from inside their reach (mage 06.10, 13.10) */
+  const auto=ranged&&!ice&&MGB[el0]&&MGB[el0].auto; /* 13.10: fire and dark fly by themselves while held — the bot holds them like a thumb would */
   if(ranged){ const far=ice?iR-2:13, near=ice?Math.max(T.r+3,iR-7):8; if(!esc){ if(d>far+2) FPI.mz=1; else if(d<near) FPI.mz=-1; FPI.mx=S.side*(inn?.35:.7); }
     /* quick shots one after another (a tap every third of a second), every fifth one is drawn to the full */
     if(ice){ const on=!!(shoot&&!PL.drinkT&&d<iR+.5); if(FPI.hold){ if(on&&!KL.drawing) fpPress("atk"); FPI.hold.atk=on; } }
+    else if(auto){ const on=!!(shoot&&!PL.drinkT&&d<26); if(FPI.hold){ if(on&&!KL.drawing) fpPress("atk"); FPI.hold.atk=on; } }
     else if(shoot&&!PL.drinkT&&d<26){ if(KL.drawing){ S.holdT=(S.holdT||0)+dt; if(KL.draw>=.97||S.holdT>1.6){ FPI.hold.atk=false; S.fire=FP.t; } }
       else if(KL.fireCd<=0&&FPI.hold&&FP.t-S.fire>.36){ S.shots=(S.shots||0)+1; if(S.shots%5===0){ FPI.hold.atk=true; S.holdT=0; } else { FPI.hold.atk=false; S.fire=FP.t; } fpPress("atk"); } }
     else if(FPI.hold){ FPI.hold.atk=false; } }
@@ -29429,7 +29505,7 @@ function realRankLine(){ const el=$("rlRk"); if(!el) return; const i=rankIdx(), 
    Every class plays its own way and has a weakness (the numbers live in CLS_TRAIT below):
      assassin  — a hit in the back, skills heal him; less health, a weak block
      warrior   — the rage bar → the berserk; the only 90% block; spends stamina faster
-     mage      — three schools (fire, ice, dark), each with its own basic attack
+     mage      — four schools (fire, ice, dark, lightning), each with its own basic attack; the class skill is the spheres (fp-orbs.js)
      commander — «Генерал»: the shadows always walk with him; his own blows are weaker */
 Object.assign(ICON_P,{
   bow:'<path d="M6 3c7 2.5 9.5 8 0 18M6 3v18M4 12h15M16 9.5l3 2.5-3 2.5"/>',
@@ -29457,13 +29533,15 @@ Object.assign(ICON_P,{
   helm:'<path d="M5 15v-3a7 7 0 0114 0v3M5 15h14v3l-3 2H8l-3-2zM12 5v10M9 15v-3h6v3"/>',
   armor:'<path d="M8 3L4 5.5v6L6 13v8h12v-8l2-1.5v-6L16 3l-4 3z"/>' });
 
-/* the three schools of the mage (Anton, 05.10: lightning is gone). Each school has its own basic attack — see MGB in fp-skills.js */
-const ELEM={ fire:{ n:"Огонь", c:0xff6a2a, css:"#ff8a4a", ic:"fire", d:"держи — копится огненный шар: взрыв по площади" },
+/* the four schools of the mage (Anton, 05.10: lightning was gone; 13.10: «добавить 4-ю стихию — молнию» — it is back, as the school of speed and chains).
+   Each school has its own basic attack — see MGB in fp-skills.js; the four are also the four spheres (fp-orbs.js) */
+const ELEM={ fire:{ n:"Огонь", c:0xff6a2a, css:"#ff8a4a", ic:"fire", d:"держи — огненные шары летят один за другим: взрыв по площади, враги горят" },
   ice:{ n:"Лёд", c:0x8fdcff, css:"#9fe2ff", ic:"snow", d:"держи — поток льда: бьёт без остановки, замедляет и морозит" },
-  dark:{ n:"Тьма", c:0x9a4dff, css:"#b58cff", ic:"void", d:"снаряды вытягивают здоровье врага в тебя" } };
-const ELEM_ORDER=["fire","ice","dark"];
+  dark:{ n:"Тьма", c:0x9a4dff, css:"#b58cff", ic:"void", d:"держи — сгустки тьмы лечат тебя и накладывают порчу: третья рвёт врага" },
+  storm:{ n:"Молния", c:0xffe14a, css:"#ffe66d", ic:"bolt", d:"держи — молния бьёт мгновенно и прыгает по врагам, коротко оглушает" } };
+const ELEM_ORDER=["fire","ice","dark","storm"];
 // every land has a weakness: fire melts the snow, ice holds the ash, lightning runs through the swamp water
-const LAND_WEAK={ snow:{ fire:1.5, ice:.5 }, ash:{ ice:1.5, fire:.5 }, swamp:{}, wastes:{} };
+const LAND_WEAK={ snow:{ fire:1.5, ice:.5 }, ash:{ ice:1.5, fire:.5 }, swamp:{ storm:1.5 }, wastes:{} };
 /* what makes each class itself, in numbers (read by fp-skills.js and the class files; the texts are built from them) */
 const CLS_TRAIT={ assassin:{ hp:-15, block:.5, skLeech:.12, back:3 }, warrior:{ block:.9, stK:1.25 }, mage:{ block:.6 }, commander:{ block:.7, atk:-10, ally:15 } };
 
@@ -29472,10 +29550,10 @@ const KLS={
     perk:"Шкала ярости копится, когда тебя бьют и когда удары ложатся в блок. Полная — Берсерк: 15 с урон +75%, по тебе −75%. Блок держит 90% — так умеет только воин. Слабость: силы уходят на четверть быстрее",
     sk:[ { id:"ram", h:"Таран", n:"Таран", ic:"ram", cd:7, d:"Рывок вперёд на 8 м: сбивает и ранит всех на пути" } ],
     ult:{ id:"berserk", h:"Берсерк", n:"Берсерк", ic:"fist", cost:60, d:"Наполняет шкалу ярости сразу, не дожидаясь ударов и остывания: Берсерк начинается сейчас — 15 с урон +75%, по тебе −75%, замедление не берёт" } },
-  mage:{ play:"Издалека, тремя школами: огонь, лёд и тьма. У каждой своя атака", n:"Маг", ic:"orb", col:"#b58cff", c3:0xb58cff, src:"Учёба, чтение, языки, острый ум", wpn:"три школы магии",
-    perk:"Три школы, меняешь в бою. Огонь — заряженный шар со взрывом. Лёд — поток, что замедляет и морозит. Тьма — снаряды, что лечат тебя. Маны на 50% больше, ульты дешевле",
-    sk:[ { id:"burst", h:"Взрыв", n:"Взрыв стихии", ic:"orb", cd:5, d:"Огонь — шар со взрывом · Лёд — копьё насквозь, морозит · Тьма — три клинка, что лечат тебя" } ],
-    ult:{ id:"element", h:"Сердце", n:"Сердце стихии", ic:"meteor", cost:50, d:"Огонь — метеор · Лёд — буран · Тьма — бездна, что стягивает врагов" } },
+  mage:{ play:"Издалека, четырьмя стихиями: огонь, лёд, тьма, молния. Сферы — свои заклинания из трёх стихий", n:"Маг", ic:"orb", col:"#b58cff", c3:0xb58cff, src:"Учёба, чтение, языки, острый ум", wpn:"четыре стихии",
+    perk:"Четыре стихии, меняешь в бою. Огонь — шары со взрывом. Лёд — поток, что морозит. Тьма — лечит тебя. Молния — цепь по врагам. Сферы: набери три стихии — выйдет одно из 20 заклинаний",
+    sk:[ { id:"orbs", h:"Сферы", n:"Сферы", ic:"orb", cd:1, d:"Набери до трёх сфер стихий и выпусти: какой стихии больше — та и форма заклинания, вторая даёт свойство, три одинаковые — сильная версия, три разные — особое заклинание. 20 наборов" } ],
+    ult:{ id:"element", h:"Сердце", n:"Сердце стихии", ic:"meteor", cost:50, d:"Огонь — звёздный удар · Лёд — буран · Тьма — бездна, что стягивает врагов · Молния — гроза. Набранные сферы идут в ульту: её стихия — какой больше, остальные добавляют свои свойства" } },
   assassin:{ play:"Быстро и тихо: два кинжала, удар в спину — втрое, умения лечат", n:"Ассасин", ic:"dagger", col:"#ffd166", c3:0xffd166, src:"Дисциплина: дела, режим", wpn:"парные кинжалы",
     perk:`Удар в спину — ×${CLS_TRAIT.assassin.back}. Умения лечат тебя на ${Math.round(CLS_TRAIT.assassin.skLeech*100)}% от своего урона. Крит чаще на 10%. Слабость: здоровья на ${-CLS_TRAIT.assassin.hp}% меньше, блок держит только ${CLS_TRAIT.assassin.block*100}%`,
     sk:[ { id:"step", h:"Шаг в тень", n:"Шаг в тень", ic:"dagger", cd:6, d:`Мгновенно оказываешься за спиной цели. Следующий удар — в спину: ×${CLS_TRAIT.assassin.back}` } ],
@@ -29619,7 +29697,7 @@ const TREE_MAX=120, BR_MAX=40, CAP_NEED=35, TIER_NEED=[0,6,12,20,28];
 const TREE={}, BUILDS={}, ACT={}, HK={}, TVD={};
 const KIND_N={ skill:"умение", mod:"приём", stat:"", cap:"вершина" };
 const OF_N={ dash:"Рывок", combo:"Серия ударов", heavy:"Тяжёлый удар", block:"Блок", parry:"Парирование", skill:"Умение класса", ult:"Ульта", crit:"Крит", potion:"Зелье", army:"Тени", stealth:"Невидимость", poison:"Яд", rage:"Ярость", fin:"Оглушённый босс", dodge:"Уклон",
-  bolt:"Снаряд", charge:"Заряженный снаряд", elem:"Стихия", shot:"Выстрел", draw:"Тетива", spear:"Копьё", order:"Приказ" };
+  bolt:"Снаряд", charge:"Заряженный снаряд", elem:"Стихия", orbs:"Сферы", shot:"Выстрел", draw:"Тетива", spear:"Копьё", order:"Приказ" };
 Object.assign(ICON_P,{
   fan:'<path d="M12 21L4.5 6.5M12 21l0-17M12 21l7.5-14.5M3.5 8.5l2-4 2.5 3M10.5 5.5L12 2l1.5 3.5M16 7.500l2.5-3 2 4"/>',
   clone:'<circle cx="8.500" cy="6.500" r="2.500"/><path d="M3.500 20v-5a5 5 0 0110 0v5"/><circle cx="16.500" cy="8" r="2" stroke-dasharray="2 2"/><path d="M16 12.500c2.800 0 4.500 2 4.500 4.500v3" stroke-dasharray="2 2"/>',
@@ -30288,11 +30366,13 @@ const WR_UP={ bloodrage:r=>`весь урон ${pct(rk(WR.bloodrage.dmg,r))}`, w
 for(const k in WR_UP) ACT[k].up=WR_UP[k];
 
 /* ===== fp-tree-mage.js ===== */
-/* ================= THE MAGE: five branches × 40 points (Anton, 05.10: three schools — fire, ice, dark) =================
+/* ================= THE MAGE: five branches × 40 points (Anton, 05.10: three schools — fire, ice, dark; 13.10: lightning is the fourth, the class skill is the spheres — fp-orbs.js) =================
+   13.10: the nodes that changed «Взрыв стихии» became the nodes of the spheres (m_star, m_glacier, m_hole, m_wrath open the strong sets, m_trio3 — the special ones);
+   «Покров» is «Гроза» now (the lightning node lives there). Old saves get the points of the removed nodes back (mgTreeFix, fp-orbs.js).
    Пламя — the fireball and the fire bow: his main destructive power · Лёд — the stream of frost, the cloak, the wall: slows, freezes, shatters
    Тьма — drain, the curse, the reaping that restores all health · Покров — the blink, the barrier, time · Слияние — mastery of switching the schools.
    The basic attack follows the school in the hands (MGB in fp-skills.js): fire — a charged ball that bursts; ice — a held stream; dark — bolts that drain.
-   The class skill is «Взрыв стихии» (Q), the ultimate is «Сердце стихии» (R); both follow the school too (key V / the small button).
+   The class skill is the spheres (Q, fp-orbs.js), the ultimate is «Сердце стихии» (R): it follows the spheres in the hands or the school (key V / the small chips).
    A skill of a school branch does not ask which school is in the hands: the fire bow is fire even while the stream is ice.
    Not touched here: a crit is ×2, mana is only for the ultimate and the army; a boss cannot be slowed, rooted or frozen solid —
    against a boss every «hold» of this tree is a loss of balance instead. */
@@ -30321,7 +30401,7 @@ const MG={
   dashcost:5, block:.05, blockCost:8, parryWin:.02, quick:8, fore:8, ultCost:2, potion:[2,4,6], spellSlow:.25, capEcho:.6, capEchoT:1,
   cdAll:2, swap:[15,30,45], swapT:4, crit:.01, reson:[2,4,6], resonT:4, steam:.15, castSpd:2, burstSwap:[6,5,4], ultUp:10, mana2:2, capTri:{ t:5, fire:25, ice:15, dark:2 } };
 skTune(MG,"mage",{ curse:["dps"], barrier:["pop"], soulreap:[] });
-const MGC={ fire:0xff6a2a, ice:0x8fdcff, dark:0x9a4dff };
+const MGC={ fire:0xff6a2a, ice:0x8fdcff, dark:0x9a4dff, storm:0xffe14a };
 const mage=()=>clsActive()==="mage";
 
 /* ---------- helpers ---------- */
@@ -30492,7 +30572,7 @@ treeDef("mage",{ br:[
     { id:"m_pool", k:"mod", of:"charge", t:2, max:3, n:"Горящая земля", ic:"fire", d:r=>`Полностью заряженный огненный шар оставляет огонь на земле: ${MG.poolR} м, ${MG.poolT} с, ${xk(rk(MG.pool,r)*2)} атаки в секунду` },
     { id:"m_fuel", k:"stat", t:2, max:3, n:"Запал", ic:"bolt", fx:{st:MG.st}, d:r=>`Выносливость +${MG.st*r}` },
     { id:"m_meteor", k:"skill", sk:"meteor", t:3, max:4 },
-    { id:"m_napalm", k:"mod", of:"skill", t:3, max:3, n:"Напалм", ic:"bomb", d:r=>`Огненный «Взрыв стихии» оставляет на месте взрыва огонь: ${MG.napalmR} м на ${rk(MG.napalm,r)} с` },
+    { id:"m_star", k:"mod", of:"orbs", t:2, max:3, n:"Звездопад", ic:"comet", d:r=>`Открывает сферы огонь + огонь + огонь — «Звездопад»: дождь метеоров на врагов впереди, земля горит${r>1?`. Он сильнее на ${20*(r-1)}%`:""}${r>=3?", ждёт на 4 с меньше":""}` },
     { id:"m_trail", k:"mod", of:"dash", t:4, max:3, n:"Огненный след", ic:"dash", d:r=>`Рывок оставляет за тобой огонь на ${rk(MG.trail,r)} с (${MG.trailR} м): кто гонится — горит` },
     { id:"m_force", k:"stat", t:4, max:4, n:"Сила пламени", ic:"orb", fx:{atk:MG.atk}, d:r=>`Весь урон ${pct(MG.atk*r)}` },
     { id:"m_detonate", k:"skill", sk:"detonate", t:5, max:4 },
@@ -30505,17 +30585,17 @@ treeDef("mage",{ br:[
     { id:"m_frost", k:"mod", of:"bolt", t:2, max:3, n:"Долгий выдох", ic:"snow", d:r=>`Поток льда достаёт на ${rk(MG.streamR,r)} м дальше, а холод держится на врагах на ${+(MG.streamSlow*r).toFixed(1)} с дольше` },
     { id:"m_thick", k:"stat", t:2, max:3, n:"Толстый лёд", ic:"armor", fx:{armor:MG.armor}, d:r=>`Ты получаешь на ${+(MG.armor*r).toFixed(1)}% меньше урона` },
     { id:"m_icewall", k:"skill", sk:"icewall", t:3, max:4 },
-    { id:"m_lance", k:"mod", of:"skill", t:3, max:3, n:"Ледяное копьё", ic:"spear", d:r=>`Ледяной «Взрыв стихии» приковывает к месту каждого обычного врага, которого пробил: ${rk(MG.lance,r)} с` },
+    { id:"m_glacier", k:"mod", of:"orbs", t:2, max:3, n:"Ледник", ic:"wall", d:r=>`Открывает сферы лёд + лёд + лёд — «Ледник»: ряды ледяных шипов бегут вперёд, обычных врагов замораживают, босса покрывают льдом${r>1?`. Он сильнее на ${20*(r-1)}%`:""}${r>=3?", ждёт на 4 с меньше":""}` },
     { id:"m_icedash", k:"mod", of:"dash", t:4, max:3, n:"Ледяной шаг", ic:"dash", d:r=>`Рывок оставляет холод там, где ты стоял: враги в ${MG.iceDashR} м стынут, обычные замедлены на ${rk(MG.iceDash,r)} с` },
     { id:"m_vital", k:"stat", t:4, max:4, n:"Холодная кровь", ic:"heart", fx:{hp:MG.hp}, d:r=>`Здоровье ${pct(MG.hp*r)}` },
     { id:"m_shatter", k:"skill", sk:"shatter", t:5, max:4 },
     { id:"m_brittle", k:"mod", of:"elem", t:5, max:3, n:"Хрупкость", ic:"crack", d:r=>`Замёрзшие и покрытые инеем враги получают от тебя на ${MG.brittle*r}% больше урона` },
     { id:"m_winter", k:"stat", t:5, max:4, n:"Долгая зима", ic:"timer", fx:{freezeT:MG.freezeT}, d:r=>`Обычные враги стоят замороженными на ${+(MG.freezeT*r).toFixed(2)} с дольше, элита и редкие — на ${+(MG.freezeT*r*.5*MGB.ice.freezeElite/MGB.ice.freeze).toFixed(2)} с` },
-    { id:"m_cap_cryo", k:"cap", cap:"absZero", n:"Абсолютный ноль", ic:"snow", d:()=>`Лёд не тает — он лопается. Заморозка сошла сама: ${xk(MG.capZero)} атаки врагу, соседи в ${MG.capZeroR} м покрываются инеем. А «Взрыв стихии» раскалывает замороженного сразу — ${xk(MG.capZero)} атаки всем вокруг` } ] },
+    { id:"m_cap_cryo", k:"cap", cap:"absZero", n:"Абсолютный ноль", ic:"snow", d:()=>`Лёд не тает — он лопается. Заморозка сошла сама: ${xk(MG.capZero)} атаки врагу, соседи в ${MG.capZeroR} м покрываются инеем. А заклинание сфер раскалывает замороженного сразу — ${xk(MG.capZero)} атаки всем вокруг` } ] },
   { id:"hex", n:"Тьма", ic:"void", d:"Чужая жизнь — твоя: жатва, проклятия и призванные твари", nodes:[
     { id:"m_soulreap", k:"skill", sk:"soulreap", t:1, max:4 },
     { id:"m_thirst", k:"stat", t:1, max:4, n:"Жажда", ic:"flask", fx:{leech:MG.leech}, d:r=>`Любое заклинание лечит на ${+(MG.leech*100*r).toFixed(1)}% от урона` },
-    { id:"m_blades", k:"mod", of:"skill", t:2, max:3, n:"Клинки тьмы", ic:"dagger", d:r=>`Тёмный «Взрыв стихии» бросает ${3+MG.blades*r} ${plural(3+MG.blades*r,"клинок","клинка","клинков")} вместо трёх` },
+    { id:"m_hole", k:"mod", of:"orbs", t:2, max:3, n:"Чёрная дыра", ic:"void", d:r=>`Открывает сферы тьма + тьма + тьма — «Чёрная дыра»: 4 с стягивает врагов, рвёт их и лечит тебя, потом схлопывается${r>1?`. Она сильнее на ${20*(r-1)}%`:""}${r>=3?", ждёт на 4 с меньше":""}` },
     { id:"m_deep", k:"stat", t:2, max:3, n:"Глубокий запас", ic:"bolt", fx:{mana:MG.mana}, d:r=>`Запас маны ${pct(MG.mana*r)}` },
     { id:"m_curse", k:"skill", sk:"curse", t:3, max:4 },
     { id:"m_drain", k:"mod", of:"bolt", t:3, max:3, n:"Пиявка", ic:"blood", d:r=>`Тёмные снаряды возвращают тебе ${Math.round(rk(MG.drain,r)*100)}% урона здоровьем вместо ${Math.round(MGB.dark.leech*100)}%` },
@@ -30525,32 +30605,32 @@ treeDef("mage",{ br:[
     { id:"m_abyss", k:"mod", of:"ult", t:5, max:3, n:"Голод бездны", ic:"void", d:r=>`«Сердце стихии» тьмы — бездна — лечит тебя на ${rk(MG.abyss,r)}% здоровья в секунду за каждого врага внутри (до ${MG.abyssN})` },
     { id:"m_soul", k:"stat", t:5, max:4, n:"Чужая жизнь", ic:"heart", fx:{killheal:1}, d:r=>`Каждое убийство лечит на ${r}% здоровья` },
     { id:"m_cap_hex", k:"cap", cap:"retinue", n:"Свита мертвеца", ic:"arise", d:()=>`Враг, умерший проклятым или от тьмы, встаёт твоей тенью на ${MG.capShade.life} с (до ${MG.capShade.n} сразу, удар ${xk(MG.capShade.dmg)} атаки). Против босса тень встаёт за каждые ${MG.capShade.hits} попаданий тьмой` } ] },
-  { id:"veil", n:"Покров", ic:"barrier", d:"Мерцание, барьер и власть над временем", nodes:[
+  { id:"veil", n:"Гроза", ic:"storm", d:"Молния, мерцание, барьер и власть над временем", nodes:[
     { id:"m_blink", k:"skill", sk:"blink", t:1, max:4 },
     { id:"m_step", k:"stat", t:1, max:4, n:"Лёгкий шаг", ic:"dash", fx:{dashcost:MG.dashcost}, d:r=>`Рывок тратит на ${MG.dashcost*r}% меньше сил` },
     { id:"m_ward", k:"mod", of:"block", t:2, max:3, n:"Щит мага", ic:"shield", fx:{block:MG.block,blockcost:MG.blockCost}, d:r=>`Блок держит ${Math.round((CLS_TRAIT.mage.block+MG.block*r)*100)}% урона вместо ${CLS_TRAIT.mage.block*100}% и тратит на ${MG.blockCost*r}% меньше сил` },
     { id:"m_react", k:"stat", t:2, max:3, n:"Реакция", ic:"eye", fx:{parrywin:MG.parryWin}, d:r=>`Окно парирования длиннее на ${(MG.parryWin*r).toFixed(2)} с` },
     { id:"m_barrier", k:"skill", sk:"barrier", t:3, max:4 },
-    { id:"m_quick", k:"mod", of:"skill", t:3, max:3, n:"Скорый взрыв", ic:"orb", fx:{cd1:MG.quick}, d:r=>`«Взрыв стихии» перезаряжается на ${MG.quick*r}% быстрее` },
+    { id:"m_wrath", k:"mod", of:"orbs", t:2, max:3, n:"Гнев небес", ic:"storm", fx:{chain:1}, d:r=>`Открывает сферы молния ×3 — «Гнев небес»: восемь молний с неба по врагам вокруг. Молния атаки прыгает ещё на ${r} ${plural(r,"врага","врага","врагов")}${r>1?`. «Гнев небес» сильнее на ${20*(r-1)}%`:""}${r>=3?", ждёт на 4 с меньше":""}` },
     { id:"m_fore", k:"mod", of:"dodge", t:4, max:3, n:"Предвидение", ic:"eye", fx:{dodgecrit:MG.fore}, d:r=>`После идеального уклона 2.5 с весь урон ${pct(MG.fore*r)}, а «Мерцание» сразу готово` },
     { id:"m_thrift", k:"stat", t:4, max:4, n:"Экономия", ic:"orb", fx:{ultcost:MG.ultCost}, d:r=>`Ульта перезаряжается на ${MG.ultCost*r*(typeof ULT!=="undefined"?ULT.thrift:3)} с быстрее` },
     { id:"m_timestop", k:"skill", sk:"timestop", t:5, max:4 },
     { id:"m_clarity", k:"mod", of:"potion", t:5, max:3, n:"Ясность", ic:"flask", d:r=>`Зелье возвращает всю выносливость и сокращает перезарядку всех умений на ${rk(MG.potion,r)} с` },
     { id:"m_viscous", k:"stat", t:5, max:4, n:"Вязкое время", ic:"snow", fx:{spellslow:MG.spellSlow}, d:r=>`Любой снаряд замедляет обычного врага на ${+(MG.spellSlow*r).toFixed(2)} с` },
-    { id:"m_cap_veil", k:"cap", cap:"echo", n:"Эхо времени", ic:"swap", d:()=>`«Взрыв стихии» через ${MG.capEchoT} с повторяется сам — в ту же сторону, ${Math.round(MG.capEcho*100)}% силы` } ] },
-  { id:"prism", n:"Слияние", ic:"swap", d:"Мастер трёх школ: меняешь их на ходу, и каждая смена бьёт", nodes:[
+    { id:"m_cap_veil", k:"cap", cap:"echo", n:"Эхо времени", ic:"swap", d:()=>`Заклинание сфер через ${MG.capEchoT} с повторяется само — ${Math.round(MG.capEcho*100)}% силы (сильное и особое — ${Math.round(MG.capEcho*50)}%)` } ] },
+  { id:"prism", n:"Слияние", ic:"swap", d:"Мастер стихий: меняешь их на ходу, каждая смена бьёт, особые заклинания сфер сильнее", nodes:[
     { id:"m_cycle", k:"skill", sk:"cycle", t:1, max:4 },
     { id:"m_drill", k:"stat", t:1, max:4, n:"Выучка", ic:"timer", fx:{cdall:MG.cdAll}, d:r=>`Умения перезаряжаются на ${MG.cdAll*r}% быстрее` },
-    { id:"m_swap", k:"mod", of:"elem", t:2, max:3, n:"Смена школы", ic:"swap", d:r=>`Первая атака после смены школы сильнее на ${rk(MG.swap,r)}% (шар, снаряд или первые 2 с потока). Успей за ${MG.swapT} с` },
+    { id:"m_swap", k:"mod", of:"elem", t:2, max:3, n:"Смена школы", ic:"swap", d:r=>`Первая атака после смены школы сильнее на ${rk(MG.swap,r)}% (шар, снаряд, первые 2 с потока или молнии). Успей за ${MG.swapT} с` },
     { id:"m_focus", k:"stat", t:2, max:3, n:"Сосредоточенность", ic:"eye", fx:{crit:MG.crit}, d:r=>`Шанс крита +${+(MG.crit*100*r).toFixed(1)}%` },
     { id:"m_converge", k:"skill", sk:"converge", t:3, max:4 },
     { id:"m_reson", k:"mod", of:"elem", t:3, max:3, n:"Резонанс", ic:"orb", d:r=>`Враг, задетый одной школой, ${MG.resonT} с получает от другой школы на ${rk(MG.reson,r)}% больше урона` },
     { id:"m_steam", k:"mod", of:"elem", t:4, max:3, n:"Пар", ic:"smoke", fx:{combo:MG.steam}, d:r=>`Огонь по замороженному — «Пар»: ${xk(2+MG.steam*r)} урона вместо ×2` },
-    { id:"m_hands", k:"stat", t:4, max:4, n:"Быстрые руки", ic:"dash", fx:{castspd:MG.castSpd}, d:r=>`Снаряды и поток льда бьют на ${MG.castSpd*r}% чаще` },
-    { id:"m_burstswap", k:"mod", of:"skill", t:5, max:3, n:"Взрыв по кругу", ic:"orb", d:r=>`Смена школы сразу возвращает «Взрыв стихии» — не чаще раза в ${rk(MG.burstSwap,r)} с` },
+    { id:"m_hands", k:"stat", t:4, max:4, n:"Быстрые руки", ic:"dash", fx:{castspd:MG.castSpd}, d:r=>`Снаряды, поток льда и молния бьют на ${MG.castSpd*r}% чаще` },
+    { id:"m_trio3", k:"mod", of:"orbs", t:5, max:3, n:"Три стихии", ic:"orb", fx:{trio:10,triocd:1.5}, d:r=>`Особые заклинания сфер (три разные стихии) сильнее на ${10*r}% и ждут на ${+(1.5*r).toFixed(1)} с меньше` },
     { id:"m_ultup", k:"mod", of:"ult", t:5, max:3, n:"Большое сердце", ic:"meteor", fx:{ultdur:MG.ultUp}, d:r=>`«Сердце стихии» сильнее на ${MG.ultUp*r}%` },
     { id:"m_well", k:"stat", t:5, max:5, n:"Источник", ic:"bolt", fx:{mana:MG.mana2}, d:r=>`Запас маны ${pct(MG.mana2*r)}` },
-    { id:"m_cap_prism", k:"cap", cap:"trinity", n:"Триединство", ic:"swap", d:()=>`Каждая смена школы на ${MG.capTri.t} с усиливает новую: огненный шар копится на ${MG.capTri.fire}% быстрее, поток льда бьёт на ${MG.capTri.ice}% чаще, тьма лечит вдвое` } ] } ] },
+    { id:"m_cap_prism", k:"cap", cap:"trinity", n:"Триединство", ic:"swap", d:()=>`Каждая смена школы на ${MG.capTri.t} с усиливает новую: огненный шар копится на ${MG.capTri.fire}% быстрее, поток льда и молния бьют на ${MG.capTri.ice}% чаще, тьма лечит вдвое` } ] } ] },
  [ {n:"Пиромант",d:"огненный шар и лук",br:["pyro","prism","veil"],slots:["firebow","meteor"]},
    {n:"Криомант",d:"держит и раскалывает",br:["cryo","veil","hex"],slots:["cloak","shatter"]},
    {n:"Чернокнижник",d:"жатва и твари",br:["hex","cryo","prism"],slots:["soulreap","curse"]} ]);
@@ -30558,7 +30638,7 @@ treeDef("mage",{ br:[
 /* ---------- mods: how the moves change ---------- */
 const triOn=el=>mage()&&tcap("trinity")&&FP.t<(KL.triT||0)&&elemNow()===el;
 tvDyn("draw",()=>triOn("fire")?MG.capTri.fire:0);
-tvDyn("castspd",()=>triOn("ice")?MG.capTri.ice:0);
+tvDyn("castspd",()=>triOn("ice")||triOn("storm")?MG.capTri.ice:0);
 /* the first attack after a change of school (the mod «Смена школы») */
 const swapK=()=>{ const r=tr("m_swap"); return r&&FP.t<(KL.swapT||0)?1+rk(MG.swap,r)/100:1; };
 /* the ball / the bolt before it flies */
@@ -30567,19 +30647,15 @@ hook("cast",(q,el,full,k)=>{ if(!mage()||q.fin) return; let r; const sk=swapK();
   if(el==="dark"){ r=tr("m_drain"); if(r) q.leech=rk(MG.drain,r)*(full?1.3:1); if(triOn("dark")) q.leech*=MG.capTri.dark; } });
 /* the stream of ice before it blows */
 hook("breath",X=>{ if(!mage()) return; const r=tr("m_frost"); if(r){ X.range+=rk(MG.streamR,r); X.hold+=MG.streamSlow*r; } const sk=swapK(); if(sk>1){ X.dmg*=sk; if(KL.swapT>FP.t+2) KL.swapT=FP.t+2; } });
-/* «Взрыв стихии» before it flies */
-hook("burst",(X,el)=>{ if(!mage()) return; let r;
-  if(el==="fire"){ r=tr("m_napalm"); if(r) X.o.onBoom=p=>mgFire(p.x,p.z,MG.napalmR,rk(MG.napalm,r),MG.napalmDmg); }
-  if(el==="ice"){ r=tr("m_lance"); if(r){ const sec=rk(MG.lance,r); X.o.onHit=e=>{ if(e.alive) mgRoot(e,sec); }; } }
-  if(el==="dark"){ r=tr("m_blades"); if(r) X.n=3+MG.blades*r; } });
-/* the capstone of «Покров»: the burst repeats itself a second later */
-hook("skill",id=>{ if(id!=="burst"||!mage()||!tcap("echo")||KL.echoing) return;
-  after(MG.capEchoT,()=>{ KL.echoing=true; const a0=PL.atk; PL.atk=a0*MG.capEcho*skx("mage").dmg; try{ fpFloat(PL.x+fwdX(PL.yaw)*2,PL.y+1.7,PL.z+fwdZ(PL.yaw)*2,"ЭХО","crit"); SKILL_FN.burst(); } finally{ PL.atk=a0; KL.echoing=false; } }); });
+/* the capstone of «Гроза»: a sphere spell repeats itself a moment later (13.10: «Взрыв стихии» became the spheres) */
+hook("orbs",S=>{ if(!mage()||!tcap("echo")||KL.echoing) return;
+  after(MG.capEchoT,()=>{ KL.echoing=true; try{ fpFloat(PL.x+fwdX(PL.yaw)*2,PL.y+1.7,PL.z+fwdZ(PL.yaw)*2,"ЭХО","crit"); orbRun(S,S.kind==="tri"||S.kind==="trio"?MG.capEcho*.5:MG.capEcho); } finally{ KL.echoing=false; } }); });
+/* the lightning of the attack strikes a little farther along the chain with «Гнев небес» (tv chain — also the old elemApply chain) */
 /* what a hit of a spell brings: the mark of darkness, the resonance of two schools, the shattering of the frozen */
 hook("hit",(e,dmg,o)=>{ if(!mage()) return; const el=o.elem; let r;
   if(el==="dark"){ e.darkT=FP.t+4; if(e.boss&&tcap("retinue")&&!o.stream){ KL.darkN=(KL.darkN||0)+1; if(KL.darkN>=MG.capShade.hits){ KL.darkN=0; mgShade(e.x+Math.sin(FP.t*7)*(e.r+1.5),e.z+Math.cos(FP.t*7)*(e.r+1.5)); } } }
   if(el&&e.alive){ const S=e.sch||(e.sch={}); r=tr("m_reson"); if(r){ let other=false; for(const k in S) if(k!==el&&FP.t<S[k]) other=true; if(other){ const d=dotEnemy(e,dmg*rk(MG.reson,r)/100,{dot:true}); if(d>0&&!o.stream&&FP.t>(e.resT||0)){ e.resT=FP.t+.8; fpFloat(e.x,(e.y||0)+e.h+.2,e.z,"резонанс","dot"); } } } S[el]=FP.t+MG.resonT; }
-  if(tcap("absZero")&&e.alive&&e.fx&&e.fx.frozen>0&&o.src==="burst"&&FP.t>(e.frozeAt||0)+.12) mgZero(e,true); });
+  if(tcap("absZero")&&e.alive&&e.fx&&e.fx.frozen>0&&o.src==="orb"&&FP.t>(e.frozeAt||0)+.12) mgZero(e,true); });
 /* the capstone of «Лёд»: the ice does not just melt — it bursts. all — «Взрыв стихии» broke it: everyone around is hit; else (it let go by itself) only the frozen one, the neighbours are covered with rime */
 function mgZero(e,all){ if(e.fx) e.fx.frozen=0; unfreeze(e); const ex=e.x, ez=e.z; fxRing(ex,ez,e.y||0,0x9fe2ff,.3,MG.capZeroR,.4,.8); fxSparks(ex,(e.y||0)+e.h*.6,ez,0xdff2ff,26,8,.28); tone(2200,0,.2,"square",.03,400); if(typeof mgCrack==="function") mgCrack(1); fpFloat(ex,(e.y||0)+e.h+.4,ez,"РАСКОЛ","fin");
   near(ex,ez,MG.capZeroR).forEach(x=>{ if(x===e) spHit(x,MG.capZero,null,{power:1.5,push:2,pose:8,src:"zero"}); else if(all) spHit(x,MG.capZero,"ice",{power:1.5,push:2,pose:8,src:"zero"}); else elemApply(x,"ice",1.5); }); }
@@ -30589,7 +30665,7 @@ hook("dmgk",(k,e)=>{ if(!mage()) return; let r=tr("m_ash"); if(r&&e.fx&&e.fx.bur
 hook("hurt",(dmg,from,kind)=>{ if(!mage()||!from) return; if(from.curseT>FP.t) dmg*=1-MG.curse.weak/100; const w=tv("hexweak"); if(w&&from.darkT>FP.t) dmg*=1-w/100; return dmg; });
 /* a change of school */
 hook("elem",el=>{ if(!mage()) return; let r=tr("m_swap"); if(r) KL.swapT=FP.t+MG.swapT; if(tcap("trinity")){ KL.triT=FP.t+MG.capTri.t; fxRing(PL.x,PL.z,PL.y,ELEM[el].c,.4,3,.4,.8); }
-  r=tr("m_burstswap"); if(r&&KL.cd[0]>0&&FP.t>(KL.bsT||0)){ KL.bsT=FP.t+rk(MG.burstSwap,r); KL.cd[0]=0; fpSys("Взрыв по кругу: «Взрыв стихии» готов","good",1400); } });
+});
 /* the dash */
 hook("dash",()=>{ if(!mage()) return; let r=tr("m_trail"); if(r) mgFire(PL.x,PL.z,MG.trailR,rk(MG.trail,r),MG.trailDmg);
   r=tr("m_icedash"); if(r){ fxRing(PL.x,PL.z,PL.y,0x9fe2ff,.3,MG.iceDashR,.4,.7); near(PL.x,PL.z,MG.iceDashR).forEach(e=>{ elemApply(e,"ice",1.2); if(!e.boss) e.slowT=Math.max(e.slowT||0,rk(MG.iceDash,r)); }); }
@@ -31182,11 +31258,16 @@ const near=(x,z,r)=>FP.ents.filter(e=>e.alive&&!e.ghost&&Math.hypot(e.x-x,e.z-z)
 function aoe(x,z,r,dmg,o={}){ const L=near(x,z,r); L.forEach(e=>{ const d=Math.hypot(e.x-x,e.z-z); const pushDir=yawTo(x,z,e.x,e.z); if(o.elem) clsHit(e,dmg,{...o}); else hitEnemy(e,dmg,{...o}); if(o.stag&&e.alive&&!e.boss){ e.stag=Math.max(e.stag||0,o.stag); } if(o.pull&&!e.boss){ e.kb=[-fwdX(pushDir)*o.pull,-fwdZ(pushDir)*o.pull]; } }); return L; }
 function groundAhead(dist){ const T=FP.lock&&FP.lock.alive?FP.lock:fpBestTarget(dist+8,.6); if(T) return {x:T.x,z:T.z,T}; let x=PL.x+fwdX(PL.yaw)*dist, z=PL.z+fwdZ(PL.yaw)*dist; return {x,z,T:null}; }
 
-/* ---------- the mage's basic attack: every school has its own (Anton, 05.10) ----------
-   FIRE — hold: a fireball forms for MGB.fire.form seconds; released, it flies and bursts over an area (a tap is only a spark).
-   ICE  — hold: a stream of frost — damage several times a second to everyone in a narrow cone, a slow, cold that freezes.
-   DARK — bolts that drain: a share of the damage comes back as health; a held one drains more. */
-const MGB={ fire:{ form:1.5, tap:.8, full:4.2, aoe:4, aoeK:.8, cd:.32 }, ice:{ every:.2, cd:.2, dmg:.5, range:12, arc:.6,   /* the stream: a tick every 0.2 s, ×0.5 of the attack, 12 m, a cone 0.6 rad wide */
+/* ---------- the mage's basic attack: every school has its own (Anton, 05.10; 13.10 — four schools, «огонь и тьму подтянуть до льда») ----------
+   FIRE  — hold: a fireball forms for MGB.fire.form s and FLIES BY ITSELF when it is full, the next one starts forming at once (a thumb holds, it does not tap);
+           it bursts over an area and sets everyone in it on fire. Let go earlier — a smaller ball; a quick click — a spark.
+   ICE   — hold: a stream of frost — damage several times a second to everyone in a narrow cone, a slow, cold that freezes (fp-mage.js).
+   DARK  — hold: a clot of darkness forms and flies by itself, homing; it drains (a share of the damage is health) and puts «порчу» on the enemy:
+           every stack — he hits weaker; the third one tears him (MGB.dark.mark) and heals you.
+   STORM — hold: lightning strikes the target at once several times a second and jumps to the enemies near him; every few strikes stun
+           an ordinary enemy for a moment, a boss loses balance (fp-mage.js: stormStrike). You walk faster while casting it. */
+const MGB={ fire:{ form:.95, tap:.8, full:2.55, aoe:4.5, aoeK:.85, cd:.3, auto:true, hold:.05, autoCd:.06 },
+  ice:{ every:.2, cd:.2, dmg:.5, range:12, arc:.6,   /* the stream: a tick every 0.2 s, ×0.5 of the attack, 12 m, a cone 0.6 rad wide */
     ramp:[.8,1.4],         /* the damage of a tick by the cold on the target: none → full */
     side:.5,               /* those in the cone who are not the target it holds take this share (and freeze this much slower) */
     frost:10, hold:.9,     /* cold per tick (of 100) on the target; the cold does not melt this long after the last touch, then −15 a second */
@@ -31197,26 +31278,42 @@ const MGB={ fire:{ form:1.5, tap:.8, full:4.2, aoe:4, aoeK:.8, cd:.32 }, ice:{ e
     rime:{ dur:6, wind:1.25, move:.7, pose:50, hit:10 },   /* a boss at 100, «оледенение»: seconds; wind-ups ×; walking speed ×; balance lost faster by %; balance lost at once */
     ground:{ r:2.2, life:3, slow:.5, sec:.8, every:3, max:8 },   /* ice on the ground: radius, seconds it lies, the slow and how long it stays on the one who ran over it, a patch every N ticks, the pool */
     assist:1.1, assistPc:.7, bend:.3,   /* soft aim: the stream takes the enemy inside this cone (phone / mouse) and turns to him by at most this angle */
-    numT:.5 },             /* damage numbers of the stream are merged into one per enemy this often */ dark:{ form:1, dmg:.9, full:2.4, leech:.25, fullLeech:.4, cd:.32 } };
+    numT:.5 },             /* damage numbers of the stream are merged into one per enemy this often */
+  dark:{ form:.8, dmg:.9, full:2.2, leech:.25, fullLeech:.4, cd:.3, auto:true, hold:.05, autoCd:.06,
+    mark:{ max:3, t:6, weak:.08, burst:1.5, heal:.04 } },   /* «порча»: stacks (of a full clot or a dark sphere), seconds it lasts, he hits weaker by this per stack; the third tears him: ×burst of the attack, you heal this share of your health */
+  storm:{ every:.28, cd:.28, dmg:.52, range:14, arc:.9, chain:4, chainR:7, chainK:.7, stunN:4, stun:.45, pose:1.5, move:.85, assist:1.2, assistPc:.8 } };
+/* (the stream of ice and the strikes of lightning are held: no charge, the button does it while it is down) */
+const mgHeld=el=>el==="ice"||el==="storm";
 const isRanged=()=>clsActive()==="mage";
 function rangedInput(q){ if(PL.drinkT>0||PL.dead) { q.atk=false; return; }
-  if(q.atk){ q.atk=false; if(FPI.hold&&FPI.hold.atk){ if(!KL.drawing){ KL.drawing=true; KL.draw=0; viewAct("charge",.3); } } else rangedFire(.25); } }
+  if(q.atk){ q.atk=false; if(FPI.hold&&FPI.hold.atk){ if(!KL.drawing){ KL.drawing=true; KL.draw=0; KL.drawT0=FP.t; viewAct("charge",.3); } } else rangedFire(.25); } }
 function rangedTick(dt){ if(!isRanged()||KL.fbow){ KL.drawing=false; if(isRanged()) FPI.q.atk=false; return; } const q=FPI.q; rangedInput(q);
+  const busy=FP.t<(KL.orbBusy||0); /* a sphere spell is leaving the hands: the attack waits a moment */
   if(KL.drawing){ const el=elemNow();
-    if(el==="ice"){ KL.draw=KL.ice&&FP.t-(KL.ice.lastT||-9)<.5?(KL.ice.pow||0)*.3:0; /* the orbs in the hands swell a little with the cold on the target — not enough to hide the jet */ if(KL.fireCd<=0) rangedFire(.25); }
-    else { const was=KL.draw; KL.draw=Math.min(1,KL.draw+dt*(1+tv("draw")/100)/MGB[el].form); if(KL.draw>=1&&was<1){ KL.fullAt=FP.t; tone(el==="fire"?240:160,0,.12,"sine",.03,el==="fire"?480:320); } }
-    PL.busyMove=Math.min(PL.busyMove||1,Math.min(1,.55+tv("drawmove"))); if(HK.drawing) hkRun("drawing",dt);
-    if(KL.drawing&&!(FPI.hold&&FPI.hold.atk)){ KL.drawing=false; if(el!=="ice") rangedFire(Math.max(.25,KL.draw)); KL.draw=0; } } }
+    if(el==="ice"){ KL.draw=KL.ice&&FP.t-(KL.ice.lastT||-9)<.5?(KL.ice.pow||0)*.3:0; /* the orbs in the hands swell a little with the cold on the target — not enough to hide the jet */ if(KL.fireCd<=0&&!busy) rangedFire(.25); }
+    else if(el==="storm"){ KL.draw=.15+Math.random()*.1; if(KL.fireCd<=0&&!busy) rangedFire(.25); }
+    else { const B=MGB[el]; const was=KL.draw; if(!busy) KL.draw=Math.min(1,KL.draw+dt*(1+tv("draw")/100)/B.form); if(KL.draw>=1&&was<1){ KL.fullAt=FP.t; tone(el==="fire"?240:160,0,.12,"sine",.03,el==="fire"?480:320); }
+      /* held past full: it flies by itself and the next one starts forming */
+      if(B.auto&&KL.draw>=1&&FP.t-(KL.fullAt||0)>=B.hold&&KL.fireCd<=0&&!busy){ rangedFire(1); KL.draw=0; KL.fireCd=Math.min(KL.fireCd,B.autoCd); } }
+    PL.busyMove=Math.min(PL.busyMove||1,Math.min(1,(el==="storm"?MGB.storm.move:.55)+tv("drawmove"))); if(HK.drawing) hkRun("drawing",dt);
+    /* let go: a quick press is a spark, a ball formed past half flies; a half-formed one is let go quietly (holding means «keep casting», letting go — «stop») */
+    if(KL.drawing&&!(FPI.hold&&FPI.hold.atk)){ KL.drawing=false; if(!mgHeld(el)&&(FP.t-(KL.drawT0||0)<.25||KL.draw>=.5)) rangedFire(Math.max(.25,KL.draw)); KL.draw=0; } } }
 /* a boss on his knees: the next spell is the finisher (the mage has it like the blade: weapon ×FIN_K, once per window) */
 function rangedFin(){ const B=FP.boss; return B&&B.alive&&B.st==="stag"&&!B.finDone&&Math.hypot(B.x-PL.x,B.z-PL.z)<B.r+40?B:null; }
 function rangedFire(k){ if(KL.fireCd>0) return; const B=rangedFin(); if(B){ fxSlow(.35,.7); fpMhsfx("ДОБИВАНИЕ","crit","#ffd166"); } castBolt(B?1:k,B); }
 /* the hook «cast» (q,el,full,k) gets the projectile BEFORE it flies — the tree's mods rewrite it */
-function castBolt(k,fin){ const el=elemNow(), E=ELEM[el], B=MGB[el]; if(el==="ice"&&!fin){ iceBreath(); return null; }
+function castBolt(k,fin){ const el=elemNow(), E=ELEM[el], B=MGB[el]; if(el==="ice"&&!fin){ iceBreath(); return null; } if(el==="storm"&&!fin){ stormStrike(); return null; }
   KL.fireCd=B.cd*(1-tv("castspd")/100); const full=k>=.95, kk=Math.max(0,(k-.25)/.75); const A=aimDir({speed:34}); const crit=PL.counterT>0||Math.random()<PL.crit; let q;
-  if(el==="dark") q={kind:"bolt",d:A.d,speed:full?30:38,life:1.5,dmg:PL.atk*(full?B.full:B.dmg*(1+kk*.9)),crit,col:E.c,elem:"dark",power:full?1.5:1,size:full?1.5:.8,trail:full?.6:.35,leech:full?B.fullLeech:B.leech,homing:A.T,push:full?2.5:1,pose:full?10:4,full,T:A.T};
-  else q={kind:"bolt",d:A.d,speed:full?26:38,life:1.6,dmg:PL.atk*(B.tap!=null?B.tap+(B.full-B.tap)*Math.pow(kk,1.2):1)*(full?1+tv("charge")/100:1),crit,col:E.c,elem:el,power:.6+kk*.9,size:.8+kk*1.1,trail:.35+kk*.35,aoe:el==="fire"&&kk>=.4?B.aoe*(.5+.5*kk):0,aoeK:B.aoeK||.8,push:1+kk*2.5,pose:4+kk*8,full,T:A.T};
+  if(el==="dark") q={kind:"bolt",d:A.d,speed:full?30:38,life:1.5,dmg:PL.atk*(full?B.full:B.dmg*(1+kk*.9)),crit,col:E.c,elem:"dark",power:full?1.5:1,size:full?1.5:.8,trail:full?.6:.35,leech:full?B.fullLeech:B.leech,homing:A.T,push:full?2.5:1,pose:full?10:4,full,T:A.T,onHit:full?(e=>darkMark(e)):null};
+  else if(el==="storm") q={kind:"bolt",d:A.d,speed:60,life:1,dmg:PL.atk*2,crit,col:E.c,elem:"storm",power:1,size:1,trail:.4,homing:A.T,push:1,pose:6,full:true,T:A.T};
+  else q={kind:"bolt",d:A.d,speed:full?28:38,life:1.6,dmg:PL.atk*(B.tap!=null?B.tap+(B.full-B.tap)*Math.pow(kk,1.2):1)*(full?1+tv("charge")/100:1),crit,col:E.c,elem:el,power:.6+kk*.9,size:.8+kk*1.1,trail:.35+kk*.35,aoe:el==="fire"&&kk>=.4?B.aoe*(.5+.5*kk):0,aoeK:B.aoeK||.8,push:1+kk*2.5,pose:4+kk*8,full,T:A.T};
   if(fin){ q.fin=true; q.homing=fin; q.aoe=0; } if(HK.cast) hkRun("cast",q,el,full,k); const p=mkPP(q);
-  viewAct(full?"cast2":"cast"); tone(full?180:520,0,.18,"sine",.035,full?90:900); if(full&&el==="fire"){ FP.shake=Math.min(1,FP.shake+.25); noiseBurst(.2,300,.06); } if(PL.counterT>0) PL.counterT=0; return p; }
+  viewAct(full?"cast2":"cast"); if(typeof MSFX!=="undefined") MSFX.cast(el,full?1:.5); else tone(full?180:520,0,.18,"sine",.035,full?90:900); if(full&&el==="fire"){ FP.shake=Math.min(1,FP.shake+.18); } if(PL.counterT>0) PL.counterT=0; return p; }
+/* «порча» of the dark school: a full clot (or a dark sphere) adds a stack; he hits you weaker by MGB.dark.mark.weak a stack; the third tears him */
+function darkMark(e,n){ if(!e||!e.alive) return; const M=MGB.dark.mark; if(!(e.hexT>FP.t)) e.hexN=0; e.hexN=Math.min(M.max,(e.hexN||0)+(n||1)); e.hexT=FP.t+M.t; const hy=(e.y||0)+e.h+.35;
+  if(e.hexN>=M.max){ e.hexN=0; e.hexT=0; const d=dotEnemy(e,PL.atk*M.burst*treeDmgK(e)*(1+tv("elem")/100),{dot:true}); if(!PL.dead) PL.healLeft+=PL.max*M.heal; fxInk(e.x,(e.y||0)+e.h*.6,e.z,18,e.r*1.4,0x07040d,.9); fxSparks(e.x,(e.y||0)+e.h*.6,e.z,0xb58cff,18,6,.24); fxRing(e.x,e.z,e.y||0,0x9a4dff,.3,e.r+2,.35,.7);
+    fpFloat(e.x,hy,e.z,"ПОРЧА +"+d,"fin"); if(typeof MSFX!=="undefined") MSFX.hit("dark",1.4); if(e.boss) bossPose(e,8); KL.hexBurst=(KL.hexBurst||0)+1; KL.hexD=(KL.hexD||0)+d; return; }
+  fpFloat(e.x,hy,e.z,"порча "+"I".repeat(e.hexN),"dot"); }
 /* the stream of ice — iceBreath, iceHit: fp-mage.js (the cold, the freeze, the jet) */
 
 /* ---------- the three skills ---------- */
@@ -31224,6 +31321,7 @@ function castBolt(k,fin){ const el=elemNow(), E=ELEM[el], B=MGB[el]; if(el==="ic
 function clsSkillPress(i){ if(PL.dead||PL.drinkT>0) return; if(PL.silT>0){ fpHint("Приговор: умения молчат ещё "+Math.ceil(PL.silT)+" с",1400); return; } const c=clsActive();
   if(!c){ if(i===0){ skillPress(); return; } fpHint("Умения открывает класс. Класс пробуждается от 10 часов навыков в Реальности",2600); return; }
   if(i>0){ slotPress(i-1); return; }
+  if(c==="mage"&&typeof orbPress==="function"){ orbPress(); return; } /* 13.10: the mage's class skill is the spheres (fp-orbs.js) */
   const S=clsSkills(c)[0];
   if(KL.cd[0]>0){ fpHint(`${S.n} · ещё ${Math.ceil(KL.cd[0])} с`,1000); return; }
   const mul=(1+tv("sk1")/100)*skx(c).dmg; KL.skK=KL.skK||{}; KL.skK[S.id]=mul; const a0=PL.atk; PL.atk=a0*mul; let ok; try{ ok=SKILL_FN[S.id]&&SKILL_FN[S.id](S); } finally{ PL.atk=a0; } if(ok===false) return;
@@ -31269,13 +31367,8 @@ function clsUltPress(){ ultPress(); }
 const ULT_FN={
   /* the warrior's mana button fills the rage bar at once: the Berserk begins now (the bar itself — fp-tree-warrior.js) */
   warrior(k){ berserkStart(k>1?1.2:1,true); },
-  mage(k){ const el=elemNow(); fpMhsfx({fire:"МЕТЕОР",ice:"БУРАН",dark:"БЕЗДНА"}[el],"finish",ELEM[el].css);
-    if(el==="fire"){ const G=groundAhead(14); const r=7*(k>1?1.25:1); const tele=fxTele("circle",G.x,G.z,null,{r,dur:1.1,col:0xff6a2a}); tele.own=1; tone(60,0,1.2,"sawtooth",.06,200);
-      after(1.1,()=>{ tele.kill(); if(PL.dead) return; fxBeam(G.x,G.z,null,0xff6a2a,24,.6,3); fxRing(G.x,G.z,null,0xff8a3a,.5,r*1.2,.7,.8); fxSparks(G.x,FP.zone.h(G.x,G.z)+1,G.z,0xff8a3a,60,12,.4); FP.shake=1.4; fxImpact(1); noiseBurst(.6,90,.12);
-        near(G.x,G.z,r).forEach(e=>clsHit(e,PL.atk*8*k,{elem:"fire",power:2,push:6,pose:30,heavy:true,src:"ult"})); if(HK.ultHit) hkRun("ultHit","fire",G.x,G.z,r,k); },true); }
-    else if(el==="ice") KL.zones.push(mkZone({ult:"ice",k,x:PL.x,z:PL.z,follow:true,r:8*(k>1?1.2:1),dur:6,every:.5,col:0x9fe2ff,fn:(Z)=>near(PL.x,PL.z,Z.r).forEach(e=>clsHit(e,PL.atk*.7*k,{elem:"ice",power:.8,push:.3,pose:3})),fx:(Z)=>{ for(let i=0;i<6;i++){ const a=Math.random()*6.283, r=Math.random()*Z.r; fxEmit(FX.glow,PL.x+Math.cos(a)*r,PL.y+3+Math.random()*2,PL.z+Math.sin(a)*r,-2,-4,1,.8,.18,.7,.9,1,0,1); } }}));
-    else { const G=groundAhead(10); KL.zones.push(mkZone({ult:"dark",k,x:G.x,z:G.z,r:9,dur:4,every:.3,col:0x9a4dff,ring:true,fn:(Z)=>near(Z.x,Z.z,Z.r).forEach(e=>{ clsHit(e,PL.atk*.6*k,{elem:"dark",power:.5,leech:.3,push:0,pose:3}); if(!e.boss){ const d=Math.hypot(Z.x-e.x,Z.z-e.z); if(d>.8){ e.x+=(Z.x-e.x)/d*Math.min(d,2.2); e.z+=(Z.z-e.z)/d*Math.min(d,2.2); } } }),
-      fx:(Z)=>{ for(let i=0;i<5;i++){ const a=Math.random()*6.283, r=2+Math.random()*Z.r; fxEmit(FX.glow,Z.x+Math.cos(a)*r,FP.zone.h(Z.x,Z.z)+.5+Math.random(),Z.z+Math.sin(a)*r,-Math.cos(a)*r*1.4,.5,-Math.sin(a)*r*1.4,.6,.3,.6,.3,1,0,1); } }})); } },
+  /* «Сердце стихии» (13.10): from the spheres in the hands (the school there is more of; the others add their properties) or from the school of the attack — mgUlt, fp-orbs.js */
+  mage(k){ mgUlt(k); },
   assassin(k){ stealthStart(STEALTH_T*k); fpMhsfx("НЕВИДИМОСТЬ","dodge","#ffd166"); fpHint(`Тебя не видят ${Math.round(STEALTH_T*k)} с (босс — ${STEALTH_BOSS} с). Первый удар — крит, и ты снова на виду`,3200); fxSmoke(PL.x,PL.y,PL.z,0x2a2040,24,2); tone(900,0,.8,"sine",.03,200); },
   /* the Commander's own ultimate — «Приказ: ни шагу назад» (fp-tree-commander.js). The army itself is on the army button, like for every class */
   commander(k){ cmdOrder(k); } };
@@ -31339,7 +31432,7 @@ function elemSwitch(to){ if(!elemSwitchOn()) return; const i=ELEM_ORDER.indexOf(
 const MGS={ shield:.3,       /* «Щит мага»: this share of a blow goes to stamina instead of health */
   shieldSt:1,                /* stamina paid for every 1% of the health bar the shield takes */
   shieldKeep:30 };           /* the shield never takes stamina below this: a dash (22) is always affordable */
-KLS.mage.perk=`Три школы, меняешь в бою одним касанием. Огонь — заряженный шар со взрывом. Лёд — поток: чем дольше держишь на враге, тем сильнее бьёт, замедляет и замораживает. Тьма — снаряды, что лечат тебя. Щит мага: ${Math.round(MGS.shield*100)}% каждого удара гасит выносливость, а не здоровье. Маны на 50% больше, ульта дешевле`;
+KLS.mage.perk=`Четыре стихии, меняешь в бою одним касанием. Огонь — шары со взрывом, враги горят. Лёд — поток: замедляет и замораживает. Тьма — лечит тебя и накладывает порчу. Молния — бьёт сразу и прыгает по врагам. Сферы: три стихии — одно из 20 заклинаний. Щит мага: ${Math.round(MGS.shield*100)}% каждого удара гасит выносливость, а не здоровье`;
 const MGX={ jet:null, storm:null, ring:null, shells:[], pads:[], padI:0, snd:null, wind:null, noise:null };
 const MG_ICE=new THREE.Color(0x9fe2ff);
 const _mf=new THREE.Vector3(), _mr=new THREE.Vector3(), _mu=new THREE.Vector3(), _mo=new THREE.Vector3(), _mw=new THREE.Vector3();
@@ -31388,7 +31481,7 @@ hook("frozen",e=>{ if(!e||e.boss) return; const I=MGB.ice; mgShell(e,true); e._i
   const hy=(e.y||0)+e.h*.55; fxSparks(e.x,hy,e.z,0xdff6ff,14,6,.2); fxRing(e.x,e.z,e.y||0,0x9fe2ff,.2,e.r+1.6,.35,.6); mgCrack(1); FP.shake=Math.min(1,FP.shake+.22); fxStop(.035); buzz([10,24,18]); KL.iceFroze=(KL.iceFroze||0)+1; });
 /* the ice let go by itself: an ordinary enemy keeps a part of the cold (he is still slow and freezes again sooner); an elite starts from nothing */
 hook("thaw",e=>{ if(!e||e.boss||!e.alive||!e.fx) return; if(!mgBig(e)&&!(e.fx.chill>0)){ e.fx.chill=MGB.ice.thaw; e.fx.chillHold=FP.t+MGB.ice.hold; mgColdAdd(e); } });
-function mgCrack(k){ noiseBurst(.09,5200,.07*k); noiseBurst(.22,1700,.05*k); tone(2400,0,.16,"triangle",.035*k,900); tone(160,0,.2,"sine",.05*k,70); }
+function mgCrack(k){ noiseBurst(.09,5200,.07*k); noiseBurst(.22,1700,.05*k); tone(160,0,.2,"sine",.05*k,70); MSFX.hit("ice",1.2*k); for(let i=0;i<4;i++){ const f=2400+Math.random()*3600; tn(f,f*.97,.3+Math.random()*.2,.014*k,"triangle",.02+i*.04); } }
 /* «РАСКОЛ»: the first real blow into a frozen creature. The stream's own ticks and small burns do not count */
 function mgIcedTick(dt){ const L=KL.iced; if(!L||!L.length) return; const I=MGB.ice;
   for(let i=L.length-1;i>=0;i--){ const e=L[i], F=e.fx, m=e._shell; if(!e.alive||e.gone||!F||!(F.frozen>0)){ mgShell(e,false); L.splice(i,1); continue; }
@@ -31413,14 +31506,14 @@ tvDyn("stagger",()=>mage()&&FP.rimeK>1?MGB.ice.rime.pose:0);
 
 /* ---------- the stream ---------- */
 /* whom the stream holds: the locked one, else the one you look at (a wide soft cone); the one it already holds is kept a little longer */
-function mgFocus(X){ const I=MGB.ice, S=KL.ice||(KL.ice={}); const half=(isTouch?I.assist:I.assistPc)/2; let best=null, bs=1e9;
+function mgFocus(X,S0){ const I=MGB.ice, S=S0||KL.ice||(KL.ice={}); const half=(X.half!=null?X.half:(isTouch?I.assist:I.assistPc))/2; let best=null, bs=1e9;
   for(const e of FP.ents){ if(!e.alive||e.ghost) continue; const d=Math.hypot(e.x-PL.x,e.z-PL.z); if(d>X.range+e.r) continue; if(Math.abs((e.y||0)-PL.y)>2.6+e.h*.3) continue;
     const a=Math.abs(wrapA(yawTo(PL.x,PL.z,e.x,e.z)-PL.yaw))-Math.atan2(e.r,Math.max(.5,d)); if(a>half) continue; const s=Math.max(0,a)*4+d*.06-(e===FP.lock?2:0)-(e===S.focus?.5:0)+(e.st==="idle"?.6:0); if(s<bs){ bs=s; best=e; } }
   return best; }
 /* one breath of the stream (rangedTick calls it MGB.ice.every seconds apart while the attack is held). The hook «breath» (X) may widen or strengthen it */
 function iceBreath(){ const B=MGB.ice, S=KL.ice||(KL.ice={}); KL.fireCd=B.cd*(1-tv("castspd")/100); KL.iceN=(KL.iceN||0)+1;
   const X={range:B.range,arc:B.arc,dmg:B.dmg,frost:B.frost,hold:B.hold,side:B.side}; if(HK.breath) hkRun("breath",X); KL.iceReach=X.range;
-  if(!(FP.t-(S.lastT||-9)<.5)){ S.t0=FP.t; S.gT=0; viewAct("cast",.3); noiseBurst(.18,3000,.04); } S.lastT=FP.t; S.range=X.range;
+  if(!(FP.t-(S.lastT||-9)<.5)){ S.t0=FP.t; S.gT=0; viewAct("cast",.3); MSFX.cast("ice",.9); } S.lastT=FP.t; S.range=X.range;
   const T=mgFocus(X); S.focus=T; let yaw=PL.yaw; if(T) yaw+=clamp(wrapA(yawTo(PL.x,PL.z,T.x,T.z)-PL.yaw),-B.bend,B.bend); S.yaw=yaw;
   const L=inCone(X.range,X.arc,yaw); if(T&&!L.includes(T)) L.push(T); let n=0;
   for(const e of L){ const main=e===T||!T, k=mgChillK(e), crit=Math.random()<PL.crit; iceHit(e,PL.atk*X.dmg*(B.ramp[0]+(B.ramp[1]-B.ramp[0])*k)*(main?1:X.side)*(crit?CRIT_K:1),X,crit,main); n++; }
@@ -31436,6 +31529,28 @@ function iceHit(e,dmg,X,crit,main){ if(!e.alive) return; const W=LAND_WEAK[landA
 function mgNum(e,d,crit){ if(!(e._iN>0)){ e._iN=0; e._iC=false; e._iT=FP.t+MGB.ice.numT; (KL.iceNum||(KL.iceNum=[])).push(e); } e._iN+=d; if(crit) e._iC=true; }
 function mgNumTick(){ const L=KL.iceNum; if(!L||!L.length) return; for(let i=L.length-1;i>=0;i--){ const e=L[i]; if(e.alive&&FP.t<e._iT) continue; const big=mgChillK(e)>=.7||e._iC;
     fpFloat(e.x+(Math.random()-.5)*.5,(e.y||0)+e.h*.74,e.z+(Math.random()-.5)*.5,Math.round(e._iN)+(e._iC?"!":""),big?"ice big":"ice"); e._iN=0; L.splice(i,1); } }
+
+/* ---------- the strikes of lightning (13.10): the held attack of the fourth school ----------
+   Every MGB.storm.every s (rangedTick) a bolt from the hands strikes the enemy you look at — at once, no flight — and jumps on to MGB.storm.chain
+   enemies near him (×chainK). Every stunN-th strike on one ordinary enemy stuns him for a moment; a boss loses balance a little with every strike.
+   The hook «strike» (X) may widen it (the tree adds chains). */
+const _ms=new THREE.Vector3();
+function stormHand(){ const c=FP.cam; if(!c) return [PL.x,PL.y+1.4,PL.z]; _mf.set(0,0,-1).applyQuaternion(c.quaternion); _mr.set(1,0,0).applyQuaternion(c.quaternion); _mu.set(0,1,0).applyQuaternion(c.quaternion); const port=c.aspect<.8;
+  _ms.copy(c.position).addScaledVector(_mf,1.1).addScaledVector(_mr,(KL.stormN%2?-1:1)*(port?.1:.24)).addScaledVector(_mu,-.32); /* a little ahead of the hands: the glow at the start of a bolt must not sit on the lens */ return [_ms.x,_ms.y,_ms.z]; }
+function stormStrike(){ const B=MGB.storm, S=KL.storm||(KL.storm={}); KL.fireCd=B.cd*(1-tv("castspd")/100); KL.stormN=(KL.stormN||0)+1;
+  const X={range:B.range,half:isTouch?B.assist:B.assistPc,dmg:B.dmg,chain:B.chain+tv("chain"),chainR:B.chainR,stun:B.stun}; if(HK.strike) hkRun("strike",X);
+  if(!(FP.t-(S.lastT||-9)<.5)){ viewAct("cast",.25); } S.lastT=FP.t;
+  const L=FP.lock&&FP.lock.alive&&Math.hypot(FP.lock.x-PL.x,FP.lock.z-PL.z)<X.range+FP.lock.r?FP.lock:null; const T=L||mgFocus(X,S); S.focus=T; const h=stormHand();
+  if(!T){ const a=PL.yaw, px=PL.x+fwdX(a)*9, pz=PL.z+fwdZ(a)*9, py=PL.y+1.2-Math.sin(PL.pitch||0)*6; fxBolt([h,[px,py,pz]],0xffe14a,.1,.05); if(KL.stormN%2) MSFX.cast("storm",.6); S.hitN=0; return; }
+  const crit=PL.counterT>0||Math.random()<PL.crit; const d0=PL.atk*X.dmg; const ty=(T.y||0)+T.h*.6; const tx=T.x, tz=T.z;
+  fxBolt([h,[tx,ty,tz]],0xffe14a,.12,.06); fxBolt([h,[tx+(Math.random()-.5)*.3,ty+(Math.random()-.5)*.3,tz+(Math.random()-.5)*.3]],0xfff8d0,.08,.04); fxSparks(tx,ty,tz,0xfff1a0,4,5,.14);
+  stHit(T,d0,crit,X); let from=T, n=1; const hit=new Set([T]);
+  for(let i=0;i<X.chain;i++){ let best=null, bd=X.chainR; for(const e of FP.ents){ if(!e.alive||e.ghost||hit.has(e)) continue; const d=Math.hypot(e.x-from.x,e.z-from.z)-e.r; if(d<bd){ bd=d; best=e; } } if(!best) break;
+    hit.add(best); fxBolt([[from.x,(from.y||0)+from.h*.6,from.z],[best.x,(best.y||0)+best.h*.6,best.z]],0xfff0a0,.14,.05); stHit(best,d0*B.chainK,false,X); from=best; n++; }
+  S.hitN=n; if(PL.counterT>0) PL.counterT=0; FP.shake=Math.max(FP.shake,.03+.015*n); if(KL.stormN%2) MSFX.cast("storm",.7+.1*n); if(KL.stormN%3===0) buzz(5); }
+function stHit(e,dmg,crit,X){ if(!e.alive) return; e._chainLock=true; const d=clsHit(e,dmg,{elem:"storm",power:.3,push:.25,pose:MGB.storm.pose,crit,src:"storm",stream:true,noInk:true})||0; /* a held attack like the stream of ice: bosses that read «a stream» (the Hermit) count it so */ e._chainLock=false;
+  if(e.alive){ e._stN=(e._stN||0)+1; if(e._stN%MGB.storm.stunN===0){ if(e.boss) bossPose(e,3); else { stun(e,X.stun); fxSparks(e.x,(e.y||0)+e.h*.8,e.z,0xfff6c0,8,3,.12); } } }
+  KL.stormD=(KL.stormD||0)+d; return d; }
 
 /* a soft round puff (a smooth fall-off, no bright core): the mist of the jet */
 function mgSoftTex(){ if(MGX.softT) return MGX.softT; const c=document.createElement("canvas"); c.width=c.height=64; const x=c.getContext("2d"); const g=x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,"rgba(255,255,255,1)"); g.addColorStop(.22,"rgba(255,255,255,.62)"); g.addColorStop(.5,"rgba(255,255,255,.2)"); g.addColorStop(.78,"rgba(255,255,255,.04)"); g.addColorStop(1,"rgba(255,255,255,0)"); x.fillStyle=g; x.fillRect(0,0,64,64); return MGX.softT=new THREE.CanvasTexture(c); }
@@ -31514,13 +31629,13 @@ function mgCloakHold(Z){ const C=MG.cloak; for(const e of FP.ents){ if(!e.alive|
 
 /* ---------- two looped voices: the hiss of the stream (rises with the cold on the target) and the wind of the storm ---------- */
 function mgVoice(){ const a=audio(); if(!a||muted) return null; if(!MGX.noise){ const len=Math.floor(a.sampleRate*1.7), b=a.createBuffer(1,len,a.sampleRate), d=b.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1; MGX.noise=b; }
-  const s=a.createBufferSource(); s.buffer=MGX.noise; s.loop=true; const f=a.createBiquadFilter(); f.type="bandpass"; f.Q.value=.9; f.frequency.value=1800; const g=a.createGain(); g.gain.value=.0001; s.connect(f).connect(g).connect(fbus()||master()); s.start(); return {a,s,f,g}; }
-function mgVoiceEnd(V){ if(!V) return; try{ V.g.gain.setTargetAtTime(.0001,V.a.currentTime,.07); V.s.stop(V.a.currentTime+.5); if(V.o){ V.og.gain.setTargetAtTime(.0001,V.a.currentTime,.07); V.o.stop(V.a.currentTime+.5); } }catch(err){} }
+  const s=a.createBufferSource(); s.buffer=MGX.noise; s.loop=true; const f=a.createBiquadFilter(); f.type="bandpass"; f.Q.value=1.6; f.frequency.value=1800; const g=a.createGain(); g.gain.value=.0001; s.connect(f).connect(g).connect(fbus()||master()); s.start(); return {a,s,f,g}; }
+function mgVoiceEnd(V){ if(!V) return; try{ V.g.gain.setTargetAtTime(.0001,V.a.currentTime,.07); V.s.stop(V.a.currentTime+.5); if(V.o){ V.og.gain.setTargetAtTime(.0001,V.a.currentTime,.07); V.o.stop(V.a.currentTime+.5); if(V.o2) V.o2.stop(V.a.currentTime+.5); } }catch(err){} }
 function mgSoundTick(){ const now=performance.now(); if(now-(MGX.sndT||0)<40) return; MGX.sndT=now; const S=KL.ice; const live=!!(S&&FP.t-(S.lastT||-9)<MGB.ice.every+.12&&!PL.dead); let V=MGX.snd;
   if(!live){ if(V){ mgVoiceEnd(V); MGX.snd=null; } }
-  else { if(!V){ V=MGX.snd=mgVoice(); if(V){ try{ V.o=V.a.createOscillator(); V.o.type="triangle"; V.og=V.a.createGain(); V.og.gain.value=.0001; V.o.connect(V.og).connect(fbus()||master()); V.o.start(); }catch(err){ V.o=null; } } }
+  else { if(!V){ V=MGX.snd=mgVoice(); if(V){ try{ V.o=V.a.createOscillator(); V.o.type="sine"; V.o2=V.a.createOscillator(); V.o2.type="sine"; V.og=V.a.createGain(); V.og.gain.value=.0001; V.o.connect(V.og); V.o2.connect(V.og); V.og.connect(fbus()||master()); V.o.start(); V.o2.start(); /* two pure high voices a little apart: a cold shimmer, not a buzz */ }catch(err){ V.o=null; } } }
     /* every change also plans its own fade a moment later: if the fight stops ticking (a pause, a window on top) the voice dies by itself */
-    if(V){ const k=S.pow||0, hit=S.hitN>0?1:.55, t=V.a.currentTime; mgGain(V.g.gain,(.035+.05*k)*hit,t,.05); V.f.frequency.setTargetAtTime(1700+2700*k,t,.08); if(V.o){ V.o.frequency.setTargetAtTime(520+620*k,t,.1); mgGain(V.og.gain,S.hitN>0?.003+.013*k:.0001,t,.06); } } }
+    if(V){ const k=S.pow||0, hit=S.hitN>0?1:.55, t=V.a.currentTime; mgGain(V.g.gain,(.03+.04*k)*hit,t,.05); V.f.frequency.setTargetAtTime(2600+3400*k+400*Math.sin(FP.t*3.1),t,.08); if(V.o){ V.o.frequency.setTargetAtTime(1760+700*k,t,.1); V.o2.frequency.setTargetAtTime(1766+712*k+6*Math.sin(FP.t*7),t,.1); mgGain(V.og.gain,S.hitN>0?.002+.006*k:.0001,t,.06); } if(S.hitN>0&&Math.random()<.25+.45*k) MSFX.tink(.7+.8*k); } }
   const W=MGX.wind; if(W){ const t=W.a.currentTime; W.f.frequency.setTargetAtTime(520+260*Math.sin(FP.t*1.9)+150*Math.sin(FP.t*5.3),t,.1); mgGain(W.g.gain,.085,t,.3); } }
 function mgGain(p,v,t,tc){ try{ p.cancelScheduledValues(t); p.setTargetAtTime(v,t,tc); p.setTargetAtTime(.0001,t+.45,.12); }catch(err){} }
 function mgWind(on){ if(on){ if(MGX.wind) return; const W=MGX.wind=mgVoice(); if(W){ W.f.Q.value=1.6; W.f.frequency.value=520; } } else if(MGX.wind){ mgVoiceEnd(MGX.wind); MGX.wind=null; } }
@@ -31537,6 +31652,349 @@ hook("tick",dt=>{ if(FPI.elemTo){ const k=FPI.elemTo; FPI.elemTo=null; if(!PL.de
 hook("reset",()=>{ (KL.cold||[]).forEach(mgColdOff); KL.cold=[]; (KL.iced||[]).forEach(e=>mgShell(e,false)); KL.iced=[]; KL.iceNum=[]; KL.ice={}; FP.rimeK=1; KL.rimeHud=null; const el=$("fpBoss"); if(el) el.classList.remove("rime");
   MGX.shells.forEach(m=>{ m.visible=false; m.user=null; }); MGX.pads.forEach(p=>{ p.life=0; p.m.visible=false; }); if(MGX.jet){ MGX.jet.on=0; MGX.jetK=0; MGX.jet.pts.visible=false; } if(MGX.storm){ MGX.storm.on=MGX.storm.want=0; MGX.stormK=0; MGX.storm.pts.visible=MGX.storm.ring.visible=MGX.storm.wall.visible=false; } mgWind(false); if(MGX.snd){ mgVoiceEnd(MGX.snd); MGX.snd=null; } });
 
+/* ===== fp-orbs.js ===== */
+/* ================= THE SPHERES OF THE MAGE (13.10, Anton: «за мага хочется чуть более интересный геймплей — комбинации сфер, как в старой Magicka»)
+   The class skill of the mage is no longer «Взрыв стихии»: the mage gathers up to THREE spheres of the four schools and lets them go — one spell.
+   The order does not matter, the HANDFUL does: 20 sets of three (4 of three alike, 12 of two + one, 4 of three different). One rule makes them guessable:
+     · the school there is more of gives the FORM:   fire — a cone of flame · ice — a fan of lances · dark — a vortex that drags · lightning — a beam and a chain;
+     · the second school gives a PROPERTY:            fire — it burns · ice — it freezes · dark — it heals you and puts «порчу» · lightning — it chains and stuns;
+     · three alike — the STRONG version of the school (wow, a long wait of its own): Звездопад, Ледник, Чёрная дыра, Гнев небес;
+     · three different — four SPECIAL spells: Шторм, Затмение, Кара, Полярная ночь.
+   Fewer than three spheres is a small spell: the first sphere gives the form, the second its property (ORB.small — its power).
+   The price is a cooldown and stamina — never mana (mana only comes from real deeds): every set waits on its own (ORB.kind[…].cd), and the button
+   waits a moment after any spell (gcd, the ring on «Сферы»). Strong sets — longer.
+   CONTROLS. Phone: the class button is «Сферы». Hold it — four sectors of the schools open round the finger; slide over them — spheres are gathered
+   (back to the centre and out again — the same school once more); let go — the spell. Let go in the centre with none — nothing. A quick tap —
+   the last set again (or the spheres already gathered). Computer: keys P.set.keys orb1…orb4 (3 4 5 6 by default) add a sphere, the class key (Q) lets
+   them go; nothing gathered — the last set again. Over the crosshair: three cells in the colours of the schools and the name of the set.
+   The tree of the mage opens the strong sets (a node in each school branch, the lightning one is in «Гроза») and the special ones come with the points of the path
+   (ORB.trioPts) — a newcomer starts with the 12 sets of two + one and the small spells.
+   The «Сердце стихии» (mgUlt) takes the spheres in the hands: the school there is more of decides, the others add their properties.
+   Every number is in ORB / ORBN below. The bot gathers sets by itself (orbBot). */
+const ORB_CH={ fire:"f", ice:"i", dark:"d", storm:"s" }, ORB_OF={ f:"fire", i:"ice", d:"dark", s:"storm" }, ORB_ORD="fids";
+const ORB={ max:3,
+  kind:{ small:{ cd:3, gcd:1.2, st:6 }, pair:{ cd:8, gcd:3, st:12 }, trio:{ cd:18, gcd:3, st:20 }, tri:{ cd:26, gcd:3, st:26 } },
+  big:16,                                 /* after a strong or a special spell every other strong or special one waits at least this long (no chain of «wow» one after another) */
+  small:[.42,.68],                       /* the power of a spell of one / two spheres (of a set of three) */
+  trioPts:{ fis:3, fid:6, fds:10, ids:15 },   /* the points of the mage's path that open the special spells */
+  busy:.35,                              /* the basic attack waits this long after a spell leaves the hands */
+  tap:260, move:14, dead:24, arm:34, ring:92 };   /* phone: a tap (ms, px of movement); the wheel: the dead centre, where a sector starts, the drawn radius (px) */
+/* the numbers of the spells: dmg — of the attack (×1.2 class tuning of skills, ×«sk1» of the tree) */
+const ORBN={ cone:{ len:9.5, arc:1.15, dmg:1.45, at:[.05,.24], burn:1.5 },                 /* fire: two waves of flame in a cone */
+  lance:{ n:5, spread:.065, dmg:.8, speed:46, power:1.3 },                                   /* ice: a fan of piercing lances, each freezes (power — cold) */
+  vortex:{ speed:8, life:1.7, r:3.2, pull:4.8, every:.25, dmg:.34, end:1.1, endR:4.2, leech:.25 },   /* dark: a sphere that floats on, drags and gnaws, then implodes */
+  beam:{ len:22, w:1.3, dmg:3.2, chain:3, chainR:8, chainK:.55, stun:.7 },                    /* lightning: a beam through everyone, then a chain */
+  prop:{ burn:1.5, frost:40, leech:.3, chainK:.5, stun:.6 },                                   /* the property of the second school */
+  star:{ n:6, r:7, rr:3.2, dmg:1.4, last:2.6, lastR:4.5, dur:2.4, fall:.6 },                       /* Звездопад: meteors, the last one in the middle */
+  glacier:{ len:16, w:4.8, rows:8, dmg:4, freeze:3, pose:25, gap:.06, life:1.8 },             /* Ледник: rows of ice spikes running forward */
+  hole:{ r:10, core:3.5, dur:4, every:.25, dmg:.28, rim:.1, leech:.25, end:2, endR:6, pull:9 }, /* Чёрная дыра */
+  wrath:{ n:8, dur:2, r:16, dmg:.95, chain:2, stun:1, pose:10 },                              /* Гнев небес: strikes from the sky */
+  tempest:{ dur:5, r:4.2, speed:3.2, every:.3, dmg:.32, pull:5.5 },                           /* Шторм: a whirlwind of fire, ice and lightning */
+  eclipse:{ r:8, delay:1.15, dmg:2.6, freeze:2.5, marks:2, pose:30, heal:.2 },                  /* Затмение */
+  kara:{ n:3, gap:.4, dmg:1.65, r:3.5, side:.5, heal:.2, stun:.8 },                           /* Кара: three pillars into one enemy */
+  polar:{ r:9, stun:3, dur:6, every:.5, dmg:.26, leech:.3, pose:35, frost:60 } };              /* Полярная ночь */
+const ORB_FORM={ fire:{ n:"Пламя", d:"конус огня перед тобой", s:"Вспышка" }, ice:{ n:"Копья", d:"веер ледяных копий насквозь", s:"Осколки" },
+  dark:{ n:"Воронка", d:"сфера тьмы плывёт вперёд, стягивает и грызёт врагов", s:"Сгусток" }, storm:{ n:"Луч", d:"молния насквозь и цепью дальше", s:"Искра" } };
+const ORB_PROP={ fire:"поджигает", ice:"морозит", dark:"лечит тебя и накладывает порчу", storm:"бьёт цепью и оглушает" };
+const ORB_SETS={
+  fff:{ n:"Звездопад", kind:"tri", el:"fire", d:"дождь метеоров на врагов впереди, последний — в середину; земля горит" },
+  iii:{ n:"Ледник", kind:"tri", el:"ice", d:"ряды ледяных шипов бегут вперёд: обычных врагов замораживают, босса покрывают льдом" },
+  ddd:{ n:"Чёрная дыра", kind:"tri", el:"dark", d:"4 с стягивает всех вокруг, рвёт их и лечит тебя, потом схлопывается" },
+  sss:{ n:"Гнев небес", kind:"tri", el:"storm", d:"восемь молний с неба по врагам вокруг, каждая прыгает дальше и оглушает" },
+  ffi:{ n:"Пар" }, ffd:{ n:"Чёрное пламя" }, ffs:{ n:"Плазма" },
+  fii:{ n:"Жгучий лёд" }, iid:{ n:"Кровавый лёд" }, iis:{ n:"Звонкий лёд" },
+  fdd:{ n:"Огненная воронка" }, idd:{ n:"Ледяная воронка" }, dds:{ n:"Грозовая воронка" },
+  fss:{ n:"Огненный луч" }, iss:{ n:"Ледяной луч" }, dss:{ n:"Чёрная молния" },
+  fis:{ n:"Шторм", kind:"trio", d:"смерч из огня, льда и молний идёт на врагов и затягивает их" },
+  fid:{ n:"Затмение", kind:"trio", d:"тьма накрывает врагов впереди: замораживает, поджигает и проклинает разом" },
+  fds:{ n:"Кара", kind:"trio", d:"три столба чёрного огня с молнией бьют в цель, оглушают и лечат тебя" },
+  ids:{ n:"Полярная ночь", kind:"trio", d:"вокруг тебя всё замирает; 6 с холод и тьма грызут врагов и лечат тебя" } };
+/* the twelve sets of two + one: the doubled letter is the form, the single one — the property */
+for(const k in ORB_SETS){ const S=ORB_SETS[k]; S.key=k; if(S.kind) continue; const c={}; for(const ch of k) c[ch]=(c[ch]||0)+1; const m=Object.keys(c).find(ch=>c[ch]===2), p=Object.keys(c).find(ch=>c[ch]===1);
+  S.kind="pair"; S.el=ORB_OF[m]; S.prop=ORB_OF[p]; S.d=`${ORB_FORM[S.el].d}; ${ORB_PROP[S.prop]}`; }
+const ORB_KEYS=["fff","iii","ddd","sss","ffi","ffd","ffs","fii","iid","iis","fdd","idd","dds","fss","iss","dss","fis","fid","fds","ids"];
+const ORB_TRI_NODE={ fire:"m_star", ice:"m_glacier", dark:"m_hole", storm:"m_wrath" };
+const orbKey=L=>L.map(e=>ORB_CH[e]).sort((a,b)=>ORB_ORD.indexOf(a)-ORB_ORD.indexOf(b)).join("");
+/* what a handful of spheres is: a set of three, or a small spell */
+function orbSpec(L){ if(!L||!L.length) return null; if(L.length>=3) return ORB_SETS[orbKey(L.slice(0,3))];
+  const main=L[0], prop=L.find(e=>e!==main)||null; return { key:"_"+orbKey(L), kind:"small", el:main, prop, pw:ORB.small[L.length-1], n:ORB_FORM[main].s+(prop?" · "+ORB_PROP[prop].split(" ")[0]:""), d:ORB_FORM[main].d }; }
+/* is a set open: two + one and the small ones always; the strong ones — their node of the tree; the special ones — the points of the path */
+function orbOpen(S){ if(!S) return false; if(typeof TEST!=="undefined"&&TEST&&window.__orbAll) return true;
+  if(S.kind==="tri") return (P.tree&&P.tree.mage&&(P.tree.mage[ORB_TRI_NODE[S.el]]||0))>0; if(S.kind==="trio") return treePts("mage")>=ORB.trioPts[S.key]; return true; }
+function orbHow(S){ if(S.kind==="tri"){ const N=treeNode("mage",ORB_TRI_NODE[S.el]), B=N&&treeBr("mage",N.br); return `узел «${N?N.n:""}» в ветке «${B?B.n:""}»`; } if(S.kind==="trio") return `${ORB.trioPts[S.key]} ${plural(ORB.trioPts[S.key],"очко","очка","очков")} пути мага`; return ""; }
+const orbCol=el=>ELEM[el]?ELEM[el].c:0xffffff;
+const orbCss=el=>ELEM[el]?ELEM[el].css:"#fff";
+
+/* ---------- gathering and letting go ---------- */
+function orbAdd(el){ if(!mage()||PL.dead||!ELEM[el]) return; const L=KL.orbs||(KL.orbs=[]); if(L.length>=ORB.max) L.shift(); L.push(el); KL.orbT=FP.t;
+  tone(520+ELEM_ORDER.indexOf(el)*140+L.length*60,0,.09,"sine",.03,900+L.length*90); buzz(5); orbHudDraw(true); }
+/* the class key / a tap on «Сферы»: the gathered spheres, else the last set, else one sphere of the school in the hands */
+function orbPress(){ if(!mage()||PL.dead) return; if(FP.bot&&!FP.botOrbTap) return; /* the bot gathers its own sets (orbBot) */ const L=KL.orbs||[]; if(L.length) return orbCast();
+  KL.orbs=(KL.orbLast&&KL.orbLast.length?KL.orbLast:[elemNow()]).slice(); return orbCast(true); }
+function orbClear(){ KL.orbs=[]; orbHudDraw(true); }
+/* the multiplier of a sphere spell: the class tuning of skills, the tree's «sk1», the strong node of its school */
+function orbMulOf(S){ let k=skx("mage").dmg*(1+tv("sk1")/100); if(S.kind==="tri"){ const r=tr(ORB_TRI_NODE[S.el]); if(r>1) k*=1+.2*(r-1); } if(S.kind==="trio") k*=1+tv("trio")/100; return k; }
+function orbCdOf(S){ const K=ORB.kind[S.kind]; let cd=K.cd; if(S.kind==="tri"&&tr(ORB_TRI_NODE[S.el])>=3) cd-=4; if(S.kind==="trio") cd-=tv("triocd"); return Math.max(0,cd*Math.max(.4,1-(tv("cd1")+tv("cdall"))/100)); }
+function orbCast(repeat){ const L=KL.orbs||[]; if(!L.length||!mage()) return false; const S=orbSpec(L);
+  if(!orbOpen(S)){ fpHint(`«${S.n}» ещё закрыт — откроет ${orbHow(S)}`,2400); tone(160,0,.15,"square",.03,110); orbClear(); return false; }
+  if(PL.silT>0){ fpHint("Приговор: умения молчат ещё "+Math.ceil(PL.silT)+" с",1400); return false; } if(PL.drinkT>0){ if(repeat) KL.orbs=[]; return false; }
+  if(KL.cd[0]>0){ if(repeat) KL.orbs=[]; orbHudDraw(true); return false; }
+  const isBig=S.kind==="tri"||S.kind==="trio"; const left=Math.max((KL.orbCd&&KL.orbCd[S.key])||0,isBig?(KL.orbBig||0):0); if(left>0){ fpHint(`«${S.n}» · ещё ${Math.ceil(left)} с — набери другой набор`,1300); if(repeat) KL.orbs=[]; orbHudDraw(true); return false; }
+  const K=ORB.kind[S.kind]; if(!stUse(K.st*skx("mage").st)){ if(repeat) KL.orbs=[]; orbHudDraw(true); return false; }
+  KL.orbs=[]; KL.orbLast=L.slice(0,3); KL.orbN=(KL.orbN||0)+1; KL.orbUse=KL.orbUse||{}; KL.orbUse[S.key]=(KL.orbUse[S.key]||0)+1;
+  orbRun(S,1); (KL.orbCd||(KL.orbCd={}))[S.key]=orbCdOf(S); if(isBig) KL.orbBig=ORB.big; KL.orbCdMax=KL.orbCdMax||{}; KL.orbCdMax[S.key]=KL.orbCd[S.key];
+  KL.cd[0]=KL.cdMax[0]=K.gcd; KL.lastSkill=FP.t; KL.orbBusy=FP.t+ORB.busy; if(tv("skillst")) PL.st=Math.min(PL.stMax,PL.st+tv("skillst")); hkRun("skill","orbs"); if(HK.orbs) hkRun("orbs",S);
+  orbHudDraw(true); return true; }
+/* the spell itself (the echo of the tree calls it again with less power) */
+function orbRun(S,pw){ const a0=KL.orbMul; KL.orbMul=orbMulOf(S); KL.orbSpell=S.key; KL.orbDmg0=KL.orbDmg||0;
+  try{ const p=pw*(S.pw||1); viewAct("cast2",.45); if(S.kind==="tri") ORB_TRI[S.el](p); else if(S.kind==="trio") ORB_TRIO[S.key](p); else ORB_FORM_FN[S.el](p,S.prop,S);
+    const big=S.kind==="tri"||S.kind==="trio"; fpMhsfx(S.n.toUpperCase(),big?"finish":"crit",orbCss(S.el||ORB_OF[S.key[0]])); if(big) MSFX.big(S.el||"storm",1); else MSFX.cast(S.el,1.2); }
+  finally{ KL.orbMul=a0; } }
+/* a hit of a sphere spell: no crit (a stealth crit still works in clsHit), the element works */
+function orbHit(e,mult,el,o={}){ if(!e||!e.alive) return 0; const d=clsHit(e,PL.atk*mult*(KL.orbMul||1),{elem:el,power:o.power??1,push:o.push??1.5,pose:o.pose??5,src:"orb",leech:o.leech,heavy:o.heavy,noInk:o.tick})||0; KL.orbDmg=(KL.orbDmg||0)+d; return d; }
+/* the property of the second school on a creature already hit */
+function orbProp(e,prop,pw,dmg){ if(!prop||!e) return; const R=ORBN.prop;
+  if(prop==="fire"){ if(e.alive) elemApply(e,"fire",R.burn*Math.min(1.3,pw)); }
+  else if(prop==="ice"){ if(e.alive) mgFrost(e,R.frost*pw); }
+  else if(prop==="dark"){ if(dmg>0&&!PL.dead) PL.healLeft+=dmg*R.leech; if(e.alive) darkMark(e); }
+  else if(prop==="storm"){ if(e.alive){ orbStun(e,R.stun); orbChain(e,dmg*R.chainK,1); } } }
+function orbStun(e,sec){ if(!e||!e.alive) return; if(e.boss){ bossPose(e,sec*10); return; } stun(e,sec); }
+/* lightning that jumps from one creature on to the nearest ones */
+function orbChain(from,dmg,n,R=7,skip){ const hit=skip||new Set([from]); let f=from; for(let i=0;i<n;i++){ let best=null, bd=R; for(const e of FP.ents){ if(!e.alive||e.ghost||hit.has(e)) continue; const d=Math.hypot(e.x-f.x,e.z-f.z)-e.r; if(d<bd){ bd=d; best=e; } } if(!best) break;
+    hit.add(best); fxBolt([[f.x,(f.y||0)+f.h*.6,f.z],[best.x,(best.y||0)+best.h*.6,best.z]],0xfff0a0,.2,.06); best._chainLock=true; const d=clsHit(best,Math.max(1,dmg),{elem:"storm",power:.3,push:.5,pose:4,src:"orb",noInk:true})||0; best._chainLock=false; KL.orbDmg=(KL.orbDmg||0)+d; orbStun(best,.35); f=best; } return hit; }
+/* where a spell looks: the locked one, else the best in front; the yaw to him */
+function orbAim(range){ const T=skTarget(range||30,.9)||(FP.boss&&FP.boss.alive&&Math.hypot(FP.boss.x-PL.x,FP.boss.z-PL.z)<(range||30)+FP.boss.r?FP.boss:null); return { T, yaw:T?yawTo(PL.x,PL.z,T.x,T.z):PL.yaw }; }
+function orbHand(){ const c=FP.cam; if(!c) return { x:PL.x, y:PL.y+1.4, z:PL.z }; const f=new THREE.Vector3(0,0,-1).applyQuaternion(c.quaternion), u=new THREE.Vector3(0,1,0).applyQuaternion(c.quaternion); return { x:c.position.x+f.x*1.1-u.x*.3, y:c.position.y+f.y*1.1-u.y*.32, z:c.position.z+f.z*1.1-u.z*.3 }; }
+const _oc=new THREE.Color();
+/* a short-lived thing of the spells: tick(dt,t) until it says it is done (FX.list keeps it, a change of zone clears it) */
+/* end(nat): nat — it lived its life (the blast may happen); false — the zone was cleared (only clean up) */
+function orbFx(life,tick,end){ const it={ t:0, tick(dt){ this.t+=dt; if(!FP.zone){ this.kill(); return true; } tick(dt,this.t,this); if(this.t>=life){ this.kill(true); return true; } }, kill(nat){ if(this.dead) return; this.dead=true; if(end) end(!!nat); } }; FX.list.push(it); return it; }
+function orbSprite(col,size,add=true){ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:WGLOW,color:col,transparent:true,blending:add?THREE.AdditiveBlending:THREE.NormalBlending,depthWrite:false})); s.scale.set(size,size,1); FP.scene.add(s); return s; }
+function orbSpriteKill(s){ if(!s) return; if(s.parent) s.parent.remove(s); s.material.dispose(); }
+
+/* ---------- THE FOUR FORMS (two + one, and the small spells) ---------- */
+const ORB_PROPCOL={ fire:[1,.55,.2], ice:[.75,.92,1], dark:[.55,.25,1], storm:[1,.95,.5] };
+const ORB_FORM_FN={
+  /* FIRE — a cone of flame: two waves; the property colours the flame (steam, black fire, plasma) */
+  fire(pw,prop){ const C=ORBN.cone, A=orbAim(C.len+3), yaw=A.yaw, h=orbHand(); const pc=prop?ORB_PROPCOL[prop]:null; FP.shake=Math.min(1,FP.shake+.25); buzz([10,20,14]);
+    const seen=new Set(); const wave=()=>{ inCone(C.len,C.arc,yaw).forEach(e=>{ const d=orbHit(e,C.dmg*pw,"fire",{power:C.burn*Math.min(1,pw),push:2,pose:6,tick:seen.has(e)}); if(!seen.has(e)){ seen.add(e); orbProp(e,prop,pw,d); } else if(prop==="fire") elemApply(e,"fire",1); }); };
+    C.at.forEach(t=>after(t,wave));
+    /* the flame starts a step ahead of the hands (a glow at the lens would wash the whole screen white) and grows as it runs */
+    orbFx(.45,(dt,t)=>{ const n=Math.min(22,Math.round(20*dt/(1/60))); for(let i=0;i<n;i++){ const a=yaw+(Math.random()-.5)*C.arc, sp=12+Math.random()*8, up=(Math.random()-.3)*2.2, q=2.2+Math.random()*2.6; const k=Math.random();
+        const r=pc&&k<.45?pc[0]:.9, g=pc&&k<.45?pc[1]:.3+Math.random()*.3, b=pc&&k<.45?pc[2]:.07; fxEmit(FX.glow,PL.x+fwdX(a)*q,h.y-.25+(Math.random()-.5)*.4,PL.z+fwdZ(a)*q,fwdX(a)*sp,up,fwdZ(a)*sp,.38+Math.random()*.2,.2+Math.random()*.28,r,g,b,-1,.9); }
+      if(prop==="ice"&&Math.random()<.35){ const q=4.5+Math.random()*5, a=yaw+(Math.random()-.5)*C.arc; fxEmit(FX.glow,PL.x+fwdX(a)*q,PL.y+.5+Math.random()*1.4,PL.z+fwdZ(a)*q,fwdX(a)*3,1.2,fwdZ(a)*3,.6,.5+Math.random()*.4,.26,.3,.36,-.4,.7); } /* steam: faint and away from the eyes (additive, it never whitens the screen) */
+      if(prop==="dark"&&Math.random()<.6){ const q=3+Math.random()*5; fxInk(PL.x+fwdX(yaw)*q,h.y-.4,PL.z+fwdZ(yaw)*q,3,1.2,0x0a0612,.6); }
+      if(prop==="storm"&&Math.random()<dt*14){ const a=yaw+(Math.random()-.5)*C.arc, L=3+Math.random()*6; fxBolt([[h.x,h.y,h.z],[PL.x+fwdX(a)*L,PL.y+.6+Math.random()*1.2,PL.z+fwdZ(a)*L]],0xfff0a0,.12,.05); } }); },
+  /* ICE — a fan of lances through everyone; the property rides on each lance */
+  ice(pw,prop){ const L=ORBN.lance, A=aimDir({range:40,speed:L.speed}); const col=prop==="fire"?0xffc89a:prop==="dark"?0xc89aff:prop==="storm"?0xfff4b0:0x9fe2ff; const n=pw<.6?3:L.n;
+    for(let i=0;i<n;i++){ const d=A.d.clone().applyAxisAngle(_UP,(i-(n-1)/2)*L.spread); mkPP({kind:"spear",d,speed:L.speed,life:.95,dmg:PL.atk*L.dmg*pw*(KL.orbMul||1),col,elem:"ice",power:L.power,pierce:true,size:1.1,trail:.55,rad:.38,push:1.5,pose:5,src:"orb",
+      onHit:(e,p)=>{ KL.orbDmg=(KL.orbDmg||0)+p.o.dmg; orbProp(e,prop,pw*.5,p.o.dmg); if(prop==="fire") fxSparks(e.x,(e.y||0)+e.h*.6,e.z,0xffa060,6,4,.16); } }); }
+    MSFX.cast("ice",1.3); FP.shake=Math.min(1,FP.shake+.12); },
+  /* DARK — a vortex: floats on, drags ordinary enemies in and gnaws, then implodes */
+  dark(pw,prop){ const V=ORBN.vortex, A=orbAim(V.speed*V.life+4), h=orbHand(); let x=PL.x+fwdX(A.yaw)*1.5, z=PL.z+fwdZ(A.yaw)*1.5; const T=A.T; const col=prop==="fire"?0xff5a2a:prop==="ice"?0x8fc8ff:prop==="storm"?0xffe14a:0x9a4dff;
+    const core=orbSprite(0x0a0614,2.2*Math.max(.7,pw),false), glow=orbSprite(0x9a4dff,3.4*Math.max(.7,pw)), rim=orbSprite(col,2.4*Math.max(.7,pw)); let acc=0, zap=0, y=FP.zone.h(x,z)+1.3; const life=V.life*(pw<.6?.75:1);
+    orbFx(life,(dt,t)=>{ let dx=fwdX(A.yaw), dz=fwdZ(A.yaw); if(T&&T.alive){ const d=Math.hypot(T.x-x,T.z-z); if(d<1) dx=dz=0; else { dx=(T.x-x)/d; dz=(T.z-z)/d; } }
+      const nx=x+dx*V.speed*dt, nz=z+dz*V.speed*dt; if(!FP.zone.solid||!FP.zone.solid(nx,nz,.3,y)){ x=nx; z=nz; } y+=(FP.zone.h(x,z)+1.3-y)*Math.min(1,dt*6);
+      const s=1+Math.sin(t*20)*.08; core.position.set(x,y,z); glow.position.set(x,y,z); rim.position.set(x,y,z); core.scale.setScalar(2.2*s*Math.max(.7,pw)); rim.material.opacity=.6+.3*Math.sin(t*13);
+      for(let i=0;i<5;i++){ const a=Math.random()*6.283, r=1.5+Math.random()*2.5; fxEmit(FX.glow,x+Math.cos(a)*r,y+(Math.random()-.5)*1.4,z+Math.sin(a)*r,-Math.cos(a)*r*2.6,0,-Math.sin(a)*r*2.6,.35,.22,.55,.25,1,0,1); }
+      if(prop&&Math.random()<.5){ _oc.set(col); fxEmit(FX.glow,x+(Math.random()-.5),y+(Math.random()-.5),z+(Math.random()-.5),(Math.random()-.5)*2,1,(Math.random()-.5)*2,.4,.3,_oc.r,_oc.g,_oc.b,0,1); }
+      for(const e of FP.ents){ if(!e.alive||e.ghost||e.boss||!canPull(e)) continue; const d=Math.hypot(e.x-x,e.z-z); if(d<V.pull&&d>.6){ const k=Math.min(d-.6,6*dt); e.x+=(x-e.x)/d*k; e.z+=(z-e.z)/d*k; } }
+      acc-=dt; if(acc<=0){ acc=V.every; near(x,z,V.r).forEach(e=>{ const d=orbHit(e,V.dmg*pw,"dark",{power:.5,leech:V.leech,push:0,pose:2,tick:true}); if(prop==="fire"&&e.alive) elemApply(e,"fire",1); if(prop==="ice"&&e.alive) mgFrost(e,12*pw); if(prop==="dark"&&d>0) PL.healLeft+=d*.15; }); }
+      if(prop==="storm"){ zap-=dt; if(zap<=0){ zap=.45; const L=near(x,z,7); const e=L[Math.floor(Math.random()*L.length)]; if(e){ fxBolt([[x,y,z],[e.x,(e.y||0)+e.h*.6,e.z]],0xffe14a,.16,.06); const d=orbHit(e,.9*pw,"storm",{power:.3,pose:6,tick:true}); orbStun(e,.4); MSFX.cast("storm",.6); } } }
+      KL.vortexAt=[x,z]; },
+      nat=>{ orbSpriteKill(core); orbSpriteKill(glow); orbSpriteKill(rim); if(!nat||!FP.zone) return; const R=V.endR*(pw<.6?.8:1); fxRing(x,z,null,0x9a4dff,R,.3,.35,.9); fxRing(x,z,null,col,.3,R,.4,.7); fxInk(x,y,z,24,1.6,0x07040d,1); fxSparks(x,y,z,col,24,8,.28); FP.shake=Math.min(1,FP.shake+.3); MSFX.hit("dark",1.3);
+        near(x,z,R).forEach(e=>{ const d=orbHit(e,V.end*pw,"dark",{power:1,leech:V.leech,push:-2,pose:10}); orbProp(e,prop,pw,d); if(prop==="ice"&&e.alive) mgFreeze(e,2,8); if(prop==="fire"&&e.alive) elemApply(e,"fire",1.6); });
+        if(prop==="fire") mgFire(x,z,2.8,3,.12); }); },
+  /* LIGHTNING — a beam through everyone in a line, then a chain from the last one */
+  storm(pw,prop){ const B=ORBN.beam, A=orbAim(B.len), yaw=A.yaw, h=orbHand(); const len=pw<.6?B.len*.7:B.len; const L=inStrip(PL.x,PL.z,yaw,len,B.w).sort((a,b)=>Math.hypot(a.x-PL.x,a.z-PL.z)-Math.hypot(b.x-PL.x,b.z-PL.z));
+    let ex=PL.x+fwdX(yaw)*len, ez=PL.z+fwdZ(yaw)*len, ey=PL.y+1.2; if(A.T&&!L.length){ } if(L.length){ const f=L[L.length-1]; ex=f.x; ez=f.z; ey=(f.y||0)+f.h*.6; }
+    const col=prop==="fire"?0xffa040:prop==="ice"?0xbfeaff:prop==="dark"?0xb070ff:0xffe14a; for(let i=0;i<3;i++) fxBolt([[h.x,h.y,h.z],[ex,ey,ez]],i?0xfff8d8:col,.3+i*.06,.08);
+    for(let i=1;i<=6;i++){ const q=i/6; fxSparks(h.x+(ex-h.x)*q,h.y+(ey-h.y)*q,h.z+(ez-h.z)*q,col,3,3,.14); } fxBeam(ex,ez,null,col,6,.4,.8); flash(); FP.shake=Math.min(1,FP.shake+.35); buzz([8,16,10]); MSFX.hit("storm",1.2);
+    const hit=new Set(); let last=null; L.forEach(e=>{ hit.add(e); const d=orbHit(e,B.dmg*pw,"storm",{power:.3,push:1.5,pose:8}); orbStun(e,B.stun); orbProp(e,prop,pw,d); last=e; });
+    if(last&&pw>=.6) orbChain(last,PL.atk*B.dmg*B.chainK*pw*(KL.orbMul||1),B.chain,B.chainR,hit);
+    if(prop==="fire"){ for(let i=1;i<=3;i++){ const q=Math.min(len,Math.hypot(ex-PL.x,ez-PL.z))*i/3.4; mgFire(PL.x+fwdX(yaw)*q,PL.z+fwdZ(yaw)*q,1.6,3,.1); } }
+    if(prop==="ice"){ for(let i=1;i<=4;i++){ const q=Math.min(len,Math.hypot(ex-PL.x,ez-PL.z))*i/4.2; mgGround(PL.x+fwdX(yaw)*q,PL.z+fwdZ(yaw)*q); } } } };
+
+/* ---------- THREE ALIKE: the strong version of each school ---------- */
+const ORB_SPIKES=[];
+function orbSpike(){ let m=ORB_SPIKES.find(q=>!q.busy); if(!m){ if(ORB_SPIKES.length>=40) return null; const g=new THREE.ConeGeometry(.55,1,6,1); g.translate(0,.5,0); const mesh=new THREE.Mesh(g,mgShellMat()); mesh.frustumCulled=false; mesh.renderOrder=7; m={mesh,busy:false}; ORB_SPIKES.push(m); }
+  m.busy=true; if(m.mesh.parent!==FP.scene) FP.scene.add(m.mesh); m.mesh.visible=true; return m; }
+const ORB_TRI={
+  /* Звездопад: meteors fall on the enemies ahead (or round the point), the last and biggest one into the middle; the ground burns */
+  fire(pw){ const S=ORBN.star, G=groundAhead(14), cx=G.x, cz=G.z; const foes=near(cx,cz,S.r+2).sort(()=>Math.random()-.5); FP.shake=Math.min(1,FP.shake+.3);
+    for(let i=0;i<S.n;i++){ const last=i===S.n-1; let x,z; if(last){ x=cx; z=cz; } else if(foes.length){ const f=foes[i%foes.length]; x=f.x+(Math.random()-.5)*1.5; z=f.z+(Math.random()-.5)*1.5; } else { const a=Math.random()*6.283, r=Math.sqrt(Math.random())*S.r; x=cx+Math.cos(a)*r; z=cz+Math.sin(a)*r; }
+      const R=last?S.lastR:S.rr, t0=i*S.dur/S.n; after(t0,()=>orbMeteor(x,z,R,(last?S.last:S.dmg)*pw,last,S.fall)); } },
+  /* Ледник: rows of ice spikes run forward from the mage; every ordinary enemy they touch freezes, a boss gets «оледенение» */
+  ice(pw){ const G=ORBN.glacier, A=orbAim(G.len), yaw=A.yaw, tx=Math.cos(yaw), tz=-Math.sin(yaw); const hit=new Set(); MSFX.big("ice",1.2); FP.shake=Math.min(1,FP.shake+.4); buzz([16,30,20]);
+    for(let r=0;r<G.rows;r++){ const dist=2+r*(G.len-2)/(G.rows-1); after(r*G.gap,()=>{ const cx=PL.x+fwdX(yaw)*dist, cz=PL.z+fwdZ(yaw)*dist; const n=3;
+      for(let k=0;k<n;k++){ const off=(k-(n-1)/2)*G.w/n+(Math.random()-.5)*.6, x=cx+tx*off, z=cz+tz*off, y=FP.zone.h(x,z); const S=orbSpike(); if(!S) continue; const hh=2+Math.random()*1.6+r*.12, w=.8+Math.random()*.5; S.mesh.position.set(x,y-.2,z); S.mesh.rotation.set((Math.random()-.5)*.5,Math.random()*6.283,(Math.random()-.5)*.5); S.mesh.scale.set(w,.01,w);
+        orbFx(G.life,(dt,t)=>{ const k2=Math.min(1,t/.1), out=t>G.life-.35?(G.life-t)/.35:1; S.mesh.scale.set(w*(.6+.4*out),hh*k2*(.3+.7*out),w*(.6+.4*out)); },nat=>{ S.mesh.visible=false; S.busy=false; if(nat&&FP.zone) fxSparks(x,y+1,z,0xdff6ff,6,4,.18); }); }
+      fxSparks(cx,FP.zone.h(cx,cz)+.5,cz,0xdff6ff,10,6,.2); if(r%2===0) MSFX.hit("ice",.8);
+      inStrip(PL.x+fwdX(yaw)*(dist-1.2),PL.z+fwdZ(yaw)*(dist-1.2),yaw,2.4,G.w).forEach(e=>{ if(hit.has(e)) return; hit.add(e); orbHit(e,G.dmg*pw,"ice",{power:2,push:0,pose:G.pose,heavy:true}); if(e.alive) mgFreeze(e,G.freeze,G.pose); }); }); } },
+  /* Чёрная дыра: drags everyone near into itself for 4 s, tears them and heals the mage, then collapses */
+  dark(pw){ const H=ORBN.hole, G=groundAhead(12), x=G.x, z=G.z, y=FP.zone.h(x,z)+1.8; const core=orbSprite(0x000000,3.2,false), halo=orbSprite(0x9a4dff,6), ring=orbSprite(0xffffff,4.4); core.material.opacity=.95; let acc=0, rt=0; MSFX.big("dark",1.2); FP.shake=Math.min(1,FP.shake+.3);
+    const tele=fxTele("circle",x,z,null,{r:H.r,dur:H.dur,col:0x9a4dff}); tele.own=1; /* a red-ring helper lives until it is killed: killed at the end below */
+    orbFx(H.dur,(dt,t)=>{ const s=1+.08*Math.sin(t*14), g=Math.min(1,t*3); core.position.set(x,y,z); halo.position.set(x,y,z); ring.position.set(x,y,z); core.scale.setScalar(3.2*s*g); halo.scale.setScalar(6.5*g*(1+.15*Math.sin(t*5))); ring.scale.setScalar(4.6*g); ring.material.opacity=.25+.15*Math.sin(t*9); ring.material.color.setRGB(.7+.3*Math.sin(t*3),.5,1);
+      for(let i=0;i<9;i++){ const a=Math.random()*6.283, r=2+Math.random()*(H.r-2); fxEmit(FX.glow,x+Math.cos(a)*r,y-1.2+Math.random()*2.6,z+Math.sin(a)*r,-Math.cos(a)*r*1.6+Math.sin(a)*4,0,-Math.sin(a)*r*1.6-Math.cos(a)*4,.5,.24,.6,.3,1,0,1); }
+      if(Math.random()<dt*6) fxInk(x+(Math.random()-.5)*2,y,z+(Math.random()-.5)*2,4,1,0x07040d,.8); rt-=dt; if(rt<=0){ rt=.5; fxRing(x,z,null,0x9a4dff,H.r,1,.5,.6); }
+      for(const e of FP.ents){ if(!e.alive||e.ghost||e.boss||!canPull(e)) continue; const d=Math.hypot(e.x-x,e.z-z); if(d<H.r+e.r&&d>.8){ const k=Math.min(d-.8,H.pull*dt*(1.2-d/H.r)); e.x+=(x-e.x)/d*k; e.z+=(z-e.z)/d*k; e.slowT=Math.max(e.slowT||0,.3); } }
+      acc-=dt; if(acc<=0){ acc=H.every; near(x,z,H.r).forEach(e=>{ const d=Math.hypot(e.x-x,e.z-z); orbHit(e,(d<H.core+e.r?H.dmg:H.rim)*pw,"dark",{power:.4,leech:H.leech,push:0,pose:2,tick:true}); }); } },
+      nat=>{ orbSpriteKill(core); orbSpriteKill(halo); orbSpriteKill(ring); tele.kill(); if(!nat||!FP.zone) return; fxRing(x,z,null,0xffffff,H.endR,.2,.3,.9); fxRing(x,z,null,0x9a4dff,.3,H.endR*1.2,.5,.8); fxInk(x,y,z,40,2.4,0x07040d,1.2); fxSparks(x,y,z,0xd8b8ff,40,12,.32); flash(); FP.shake=1.2; fxImpact(.8); if(typeof wowStop==="function") wowStop(.08,1); MSFX.big("dark",1.4);
+        near(x,z,H.endR).forEach(e=>orbHit(e,H.end*pw,"dark",{power:1.2,leech:H.leech,push:4,pose:14,heavy:true})); }); },
+  /* Гнев небес: eight strikes from the sky on the enemies round the mage — each jumps on and stuns */
+  storm(pw){ const W=ORBN.wrath; flash(); MSFX.big("storm",1.2); const foes=near(PL.x,PL.z,W.r).sort((a,b)=>(b.boss?1:0)-(a.boss?1:0));
+    for(let i=0;i<W.n;i++) after(i*W.dur/W.n,()=>{ const L=near(PL.x,PL.z,W.r); let e=L.length?L[i%L.length]:null; let x,z; if(e){ x=e.x; z=e.z; } else { const a=Math.random()*6.283, r=4+Math.random()*8; x=PL.x+Math.cos(a)*r; z=PL.z+Math.sin(a)*r; }
+      const y=FP.zone.h(x,z), top=y+22; const pts=[[x+(Math.random()-.5)*6,top,z+(Math.random()-.5)*6]]; for(let k=1;k<5;k++) pts.push([x+(Math.random()-.5)*2.5*(1-k/5),top-(top-y)*k/5,z+(Math.random()-.5)*2.5*(1-k/5)]); pts.push([x,y+(e?e.h*.6:0),z]);
+      fxBolt(pts,0xfff4c0,.32,.1); fxBolt(pts.map(p=>[p[0]+(Math.random()-.5)*.4,p[1],p[2]+(Math.random()-.5)*.4]),0xffe14a,.26,.06); fxBeam(x,z,null,0xffe14a,10,.35,.9); fxRing(x,z,null,0xfff0a0,.3,3,.3,.8); fxSparks(x,y+.5,z,0xfff0a0,16,8,.22); FP.shake=Math.min(1.2,FP.shake+.3); if(i%2===0) flash(); MSFX.hit("storm",1.1);
+      if(e&&e.alive){ const d=orbHit(e,W.dmg*pw,"storm",{power:.3,push:2,pose:W.pose,heavy:true}); orbStun(e,W.stun); orbChain(e,d*.5,W.chain,7); } }); } };
+/* one meteor: a red circle, a burning stone from the sky, the blast */
+function orbMeteor(x,z,R,mult,big,fall){ if(!FP.zone) return; const y=FP.zone.h(x,z); const tele=fxTele("circle",x,z,null,{r:R,dur:fall,col:0xff6a2a}); tele.own=1; const st=orbSprite(0xff8a3a,big?3:2), x0=x+6, y0=y+26, z0=z+3;
+  orbFx(fall,(dt,t)=>{ const k=t/fall; st.position.set(x0+(x-x0)*k,y0+(y-y0)*k,z0+(z-z0)*k); for(let i=0;i<3;i++) fxEmit(FX.glow,st.position.x,st.position.y,st.position.z,(Math.random()-.5)*2,2+Math.random()*2,(Math.random()-.5)*2,.5,big?1.2:.8,1,.45+Math.random()*.3,.1,-.5,.8); },
+    nat=>{ orbSpriteKill(st); tele.kill(); if(!nat||!FP.zone) return; fxBeam(x,z,null,0xff6a2a,big?22:12,.5,big?3:1.8); fxRing(x,z,null,0xff8a3a,.4,R*1.2,.5,.85); fxSparks(x,y+1,z,0xff8a3a,big?50:26,big?12:9,.34); fxSmoke(x,y+.3,z,0x3a2010,big?20:10,2.5,R); FP.shake=Math.min(1.4,FP.shake+(big?.9:.45)); fxImpact(big?1:.5); MSFX.hit("fire",big?1.6:1.1); if(big){ flash(); if(typeof wowStop==="function") wowStop(.07,1.2); }
+      near(x,z,R).forEach(e=>orbHit(e,mult,"fire",{power:1.6,push:big?6:4,pose:big?18:10,heavy:true})); if(big) mgFire(x,z,R*.8,4,.15); }); }
+
+/* ---------- THREE DIFFERENT: the special spells ---------- */
+const ORB_TRIO={
+  /* Шторм (огонь + лёд + молния): a whirlwind walks on the enemies, drags them in; fire, ice and lightning take turns */
+  fis(pw){ const T=ORBN.tempest, A=orbAim(26); let x=PL.x+fwdX(A.yaw)*3, z=PL.z+fwdZ(A.yaw)*3; let acc=0, turn=0; MSFX.big("storm",.9); MSFX.big("ice",.6);
+    orbFx(T.dur,(dt,t)=>{ const tg=A.T&&A.T.alive?A.T:null; let dx=fwdX(A.yaw), dz=fwdZ(A.yaw); if(tg){ const d=Math.hypot(tg.x-x,tg.z-z); if(d<1) dx=dz=0; else { dx=(tg.x-x)/d; dz=(tg.z-z)/d; } }
+      const nx=x+dx*T.speed*dt, nz=z+dz*T.speed*dt; if(!FP.zone.solid||!FP.zone.solid(nx,nz,.3,PL.y)){ x=nx; z=nz; } const y=FP.zone.h(x,z);
+      for(let i=0;i<14;i++){ const h=Math.random()*6, a=t*7+Math.random()*6.283, r=(.6+h*.55)*(.8+Math.random()*.3); const c=i%3, col=c===0?[1,.5,.15]:c===1?[.7,.9,1]:[1,.95,.45]; fxEmit(FX.glow,x+Math.cos(a)*r,y+h,z+Math.sin(a)*r,-Math.sin(a)*r*5,1.5,Math.cos(a)*r*5,.35,.3+h*.04,col[0],col[1],col[2],0,1); }
+      if(Math.random()<dt*5) fxBolt([[x,y+5.5,z],[x+(Math.random()-.5)*3,y+.4,z+(Math.random()-.5)*3]],0xffe14a,.14,.05); if(Math.random()<dt*2) fxRing(x,z,null,0xbfeaff,.5,T.r,.5,.5);
+      for(const e of FP.ents){ if(!e.alive||e.ghost||e.boss||!canPull(e)) continue; const d=Math.hypot(e.x-x,e.z-z); if(d<T.pull&&d>.8){ const k=Math.min(d-.8,4.5*dt); e.x+=(x-e.x)/d*k; e.z+=(z-e.z)/d*k; } }
+      acc-=dt; if(acc<=0){ acc=T.every; const el=["fire","ice","storm"][turn++%3]; near(x,z,T.r).forEach(e=>{ const d=orbHit(e,T.dmg*pw,el,{power:el==="fire"?1.2:el==="ice"?.6:.3,push:0,pose:4,tick:true}); if(el==="storm"&&e.alive) orbStun(e,.3); }); if(el==="storm") MSFX.cast("storm",.7); } }); },
+  /* Затмение (огонь + лёд + тьма): the sky goes black over the enemies ahead; a moment later all of it at once */
+  fid(pw){ const E=ORBN.eclipse, G=groundAhead(14), x=G.x, z=G.z, y=FP.zone.h(x,z); const sun=orbSprite(0xff7a2a,7), moon=orbSprite(0x000000,5.2,false); moon.material.opacity=.97; orbShade(E.delay+.7); MSFX.big("dark",1); const tele=fxTele("circle",x,z,null,{r:E.r,dur:E.delay,col:0x9a4dff}); tele.own=1;
+    orbFx(E.delay+.5,(dt,t)=>{ const k=Math.min(1,t/E.delay); sun.position.set(x,y+9,z); moon.position.set(x+(1-k)*3.5,y+9,z); sun.scale.setScalar(6+3*k+Math.sin(t*20)*.3*k); sun.material.color.setRGB(1,.45+.3*k,.15+.6*k);
+      if(Math.random()<.8){ const a=Math.random()*6.283, r=E.r*(.3+Math.random()*.7); fxEmit(FX.glow,x+Math.cos(a)*r,y+.2,z+Math.sin(a)*r,0,1.2,0,.8,.35,.5,.2,1,0,1); } },()=>{ orbSpriteKill(sun); orbSpriteKill(moon); tele.kill(); });
+    after(E.delay,()=>{ if(!FP.zone) return; flash(); fxRing(x,z,null,0xffffff,.3,E.r,.35,.9); fxRing(x,z,null,0x9fe2ff,.5,E.r*1.1,.5,.7); fxRing(x,z,null,0xff8a3a,.3,E.r*.8,.45,.7); fxRing(x,z,null,0x9a4dff,E.r,.3,.6,.9); fxInk(x,y+1,z,40,E.r*.8,0x07040d,1.3); fxSparks(x,y+1,z,0xdff6ff,30,10,.28); fxSparks(x,y+1,z,0xff8a3a,30,10,.28);
+      FP.shake=1.3; fxImpact(1); if(typeof wowStop==="function") wowStop(.09,1.3); if(typeof wowSlow==="function") wowSlow(.5,.35); MSFX.big("ice",1.2); MSFX.big("fire",.8);
+      near(x,z,E.r).forEach(e=>{ const d=orbHit(e,E.dmg*pw,"dark",{power:1,leech:0,push:3,pose:E.pose,heavy:true}); if(!PL.dead) PL.healLeft+=d*E.heal; if(e.alive){ elemApply(e,"fire",2); mgFreeze(e,E.freeze,E.pose); darkMark(e,E.marks); } }); }); },
+  /* Кара (огонь + тьма + молния): three pillars of black fire with lightning into one enemy */
+  fds(pw){ const K=ORBN.kara, A=orbAim(28); let T=A.T; const G=T?{x:T.x,z:T.z}:groundAhead(14); MSFX.big("dark",.8);
+    for(let i=0;i<K.n;i++) after(i*K.gap,()=>{ if(!FP.zone) return; const x=T&&T.alive?T.x:G.x, z=T&&T.alive?T.z:G.z, y=FP.zone.h(x,z); fxBeam(x,z,null,0x2a0a20,16,.55,2.2); fxBeam(x,z,null,0xff5a1a,16,.45,1.3); fxBeam(x,z,null,0x9a4dff,18,.4,.7);
+      const top=y+20, pts=[[x,top,z]]; for(let k=1;k<5;k++) pts.push([x+(Math.random()-.5)*1.6,top-(top-y)*k/5,z+(Math.random()-.5)*1.6]); pts.push([x,y+1,z]); fxBolt(pts,0xffe14a,.3,.1);
+      fxRing(x,z,null,0xff6a2a,.3,K.r,.35,.8); fxInk(x,y+1,z,14,1.2,0x07040d,.9); fxSparks(x,y+1,z,0xff8a3a,24,9,.26); FP.shake=Math.min(1.3,FP.shake+.5); fxImpact(.6); if(i===K.n-1) flash(); MSFX.hit("storm",1.2); MSFX.hit("fire",1);
+      near(x,z,K.r).forEach(e=>{ const main=e===T||!T; const d=orbHit(e,K.dmg*pw*(main?1:K.side),"fire",{power:1.4,push:main?2:3,pose:main?10:5,heavy:true}); if(!PL.dead) PL.healLeft+=d*K.heal; orbStun(e,K.stun); }); }); },
+  /* Полярная ночь (лёд + тьма + молния): round the mage everything stops; for 6 s cold and darkness gnaw at the enemies and feed the mage */
+  ids(pw){ const Pn=ORBN.polar; orbShade(1.2,"polar"); flash(); MSFX.big("ice",1.3); MSFX.big("storm",.6); FP.shake=Math.min(1.2,FP.shake+.5); if(typeof wowSlow==="function") wowSlow(.5,.4);
+    fxRing(PL.x,PL.z,PL.y,0xdff6ff,.5,Pn.r,.6,.9); fxRing(PL.x,PL.z,PL.y,0x9a4dff,.5,Pn.r*.8,.8,.8); fxRing(PL.x,PL.z,PL.y,0xffe14a,.3,Pn.r*.6,.5,.7);
+    near(PL.x,PL.z,Pn.r).forEach(e=>{ orbHit(e,.8*pw,"ice",{power:.5,push:0,pose:Pn.pose}); if(!e.alive) return; if(e.boss){ mgFrost(e,Pn.frost); return; } mgFreeze(e,Pn.stun); stun(e,Pn.stun); });
+    const Z=mkZone({x:PL.x,z:PL.z,follow:true,ult:"ice",polar:true,r:Pn.r,dur:Pn.dur,every:Pn.every,col:0x9fe2ff,
+      fn:Z=>near(PL.x,PL.z,Z.r).forEach(e=>{ const d=orbHit(e,Pn.dmg*pw,"ice",{power:.35,push:0,pose:2,tick:true}); if(d>0&&!PL.dead) PL.healLeft+=d*Pn.leech; if(e.alive&&!e.boss) e.slowT=Math.max(e.slowT||0,.6); }),
+      fx:Z=>{ for(let i=0;i<4;i++){ const a=Math.random()*6.283, r=Math.random()*Z.r; const c=Math.random(); fxEmit(FX.glow,PL.x+Math.cos(a)*r,PL.y+3.5+Math.random()*2,PL.z+Math.sin(a)*r,0,-2.5,0,1.1,.16,c<.5?.8:.7,c<.5?.95:.5,1,0,1); }
+        if(Math.random()<.12){ const a=Math.random()*6.283; fxEmit(FX.glow,PL.x+Math.cos(a)*Z.r*.9,PL.y+.3,PL.z+Math.sin(a)*Z.r*.9,0,2.2,0,1.2,.9,.4,.9,.6,0,.9); } mgCloakHold(Z); }}); KL.zones.push(Z); mgStorm(true,Pn.r); } };
+/* the sky goes dark for a moment (Затмение, Полярная ночь): one overlay over the fight */
+function orbShade(sec,kind){ const fp=$("fp"); if(!fp) return; let el=$("orbShade"); if(!el){ el=document.createElement("i"); el.id="orbShade"; el.className="orb-shade"; fp.appendChild(el); } el.dataset.k=kind||""; el.classList.remove("on"); void el.offsetWidth; el.classList.add("on"); clearTimeout(orbShade.tm); orbShade.tm=setTimeout(()=>el.classList.remove("on"),sec*1000); }
+
+/* ---------- «Сердце стихии»: the ultimate from the spheres or from the school in the hands ---------- */
+const MG_ULT={ fire:{ n:"ЗВЁЗДНЫЙ УДАР", r:8, dmg:9, wind:1.1, pool:5 }, ice:{ n:"БУРАН", r:9, dur:7, every:.5, dmg:.8, frost:30, first:60 }, dark:{ n:"БЕЗДНА", r:9, dur:5, every:.3, dmg:.65, leech:.3, end:4 },
+  storm:{ n:"ГРОЗА", r:14, dur:8, every:.35, dmg:1.7, chain:2, stun:.8 }, perOrb:.2, prop:.6 };
+function mgUlt(k){ const L=KL.orbs||[]; let el=elemNow(), n=0, props=[]; if(L.length){ const c={}; L.forEach(e=>c[e]=(c[e]||0)+1); el=L.reduce((b,e)=>c[e]>c[b]?e:b,L[0]); n=c[el]; props=[...new Set(L.filter(e=>e!==el))]; KL.orbs=[]; orbHudDraw(true); }
+  const U=MG_ULT[el], pw=k*(1+MG_ULT.perOrb*n); KL.ultEl=el; KL.ultProps=props; const prop=(e,d)=>props.forEach(p=>orbProp(e,p,MG_ULT.prop,d)); const a0=KL.orbMul; KL.orbMul=1;
+  fpMhsfx(U.n+(props.length?" + "+props.map(p=>ELEM[p].n.toLowerCase()).join(" + "):""),"finish",ELEM[el].css); MSFX.big(el,1.4); FP.shake=Math.min(1.2,FP.shake+.4);
+  try{
+  if(el==="fire"){ const G=groundAhead(16), x=G.x, z=G.z, r=U.r*(k>1?1.2:1); const tele=fxTele("circle",x,z,null,{r,dur:U.wind,col:0xff6a2a}); tele.own=1; tone(60,0,1.2,"sawtooth",.06,200); const y=FP.zone.h(x,z); const st=orbSprite(0xffa040,5), x0=x+10, y0=y+40, z0=z+5;
+    orbFx(U.wind,(dt,t)=>{ const q=t/U.wind; st.position.set(x0+(x-x0)*q,y0+(y-y0)*q,z0+(z-z0)*q); st.scale.setScalar(4+q*3); for(let i=0;i<6;i++) fxEmit(FX.glow,st.position.x,st.position.y,st.position.z,(Math.random()-.5)*4,3+Math.random()*3,(Math.random()-.5)*4,.7,1.6,1,.4+Math.random()*.3,.1,-.5,.8); },()=>orbSpriteKill(st));
+    after(U.wind,()=>{ tele.kill(); if(PL.dead||!FP.zone) return; fxBeam(x,z,null,0xff6a2a,30,.7,4); fxRing(x,z,null,0xff8a3a,.5,r*1.3,.8,.85); fxRing(x,z,null,0xffffff,.3,r*.6,.4,.7); fxSparks(x,y+1,z,0xff8a3a,80,14,.42); fxSmoke(x,y+.4,z,0x3a2010,30,4,r*.8); FP.shake=1.6; fxImpact(1); flash(); if(typeof wowStop==="function") wowStop(.1,1.6); if(typeof wowSlow==="function") wowSlow(.6,.35); MSFX.big("fire",1.8);
+      const a1=KL.orbMul; KL.orbMul=1; near(x,z,r).forEach(e=>{ const d=orbHit(e,U.dmg*pw,"fire",{power:2,push:6,pose:30,heavy:true}); prop(e,d); }); KL.orbMul=a1; mgFire(x,z,r*.7,U.pool,.2); if(HK.ultHit) hkRun("ultHit","fire",x,z,r,k); },true); }
+  else if(el==="ice"){ const r=U.r*(k>1?1.2:1); near(PL.x,PL.z,r).forEach(e=>{ if(e.alive) mgFrost(e,U.first); prop(e,0); }); fxRing(PL.x,PL.z,PL.y,0xdff6ff,.5,r,.5,.9);
+    KL.zones.push(mkZone({ult:"ice",k,x:PL.x,z:PL.z,follow:true,r,dur:U.dur,every:U.every,col:0x9fe2ff,fn:Z=>{ const a1=KL.orbMul; KL.orbMul=1; near(PL.x,PL.z,Z.r).forEach(e=>{ const d=orbHit(e,U.dmg*pw,"ice",{power:.8,push:.3,pose:3,tick:true}); if(e.alive) mgFrost(e,U.frost); prop(e,d); }); KL.orbMul=a1; },
+      fx:Z=>{ for(let i=0;i<8;i++){ const a=Math.random()*6.283, rr=Math.random()*Z.r; fxEmit(FX.glow,PL.x+Math.cos(a)*rr,PL.y+3+Math.random()*2,PL.z+Math.sin(a)*rr,-2,-4,1,.8,.18,.7,.9,1,0,1); } }})); }
+  else if(el==="dark"){ const G=groundAhead(10), r=U.r; const Z=mkZone({ult:"dark",k,x:G.x,z:G.z,r,dur:U.dur,every:U.every,col:0x9a4dff,ring:true,
+      fn:Q=>{ const a1=KL.orbMul; KL.orbMul=1; near(Q.x,Q.z,Q.r).forEach(e=>{ const d=orbHit(e,U.dmg*pw,"dark",{power:.5,leech:U.leech,push:0,pose:3,tick:true}); prop(e,d); if(canPull(e)){ const dd=Math.hypot(Q.x-e.x,Q.z-e.z); if(dd>.8){ e.x+=(Q.x-e.x)/dd*Math.min(dd,2.2); e.z+=(Q.z-e.z)/dd*Math.min(dd,2.2); } } }); KL.orbMul=a1; },
+      fx:Q=>{ for(let i=0;i<6;i++){ const a=Math.random()*6.283, rr=2+Math.random()*Q.r; fxEmit(FX.glow,Q.x+Math.cos(a)*rr,FP.zone.h(Q.x,Q.z)+.5+Math.random(),Q.z+Math.sin(a)*rr,-Math.cos(a)*rr*1.4,.5,-Math.sin(a)*rr*1.4,.6,.3,.6,.3,1,0,1); } }});
+    const k0=Z.kill; Z.kill=function(){ if(this.dead) return; k0.call(this); if(!FP.zone) return; const x=this.x, z=this.z, y=FP.zone.h(x,z)+1; fxInk(x,y,z,40,2.4,0x07040d,1.2); fxRing(x,z,null,0x9a4dff,.3,r,.5,.9); flash(); FP.shake=1.2; MSFX.big("dark",1.3); const a1=KL.orbMul; KL.orbMul=1; near(x,z,r*.7).forEach(e=>{ const d=orbHit(e,U.end*pw,"dark",{power:1,leech:U.leech,push:4,pose:16,heavy:true}); prop(e,d); }); KL.orbMul=a1; }; KL.zones.push(Z); }
+  else { const r=U.r; let n2=0; KL.zones.push(mkZone({ult:"storm",k,x:PL.x,z:PL.z,follow:true,r,dur:U.dur,every:U.every,col:0xffe14a,
+      fn:Z=>{ const L=near(PL.x,PL.z,Z.r); const e=L.length?L[(n2++)%L.length]:null; let x,z; if(e){ x=e.x; z=e.z; } else { const a=Math.random()*6.283; x=PL.x+Math.cos(a)*(3+Math.random()*9); z=PL.z+Math.sin(a)*(3+Math.random()*9); }
+        const y=FP.zone.h(x,z), top=y+20, pts=[[x+(Math.random()-.5)*5,top,z+(Math.random()-.5)*5]]; for(let q=1;q<5;q++) pts.push([x+(Math.random()-.5)*2*(1-q/5),top-(top-y)*q/5,z+(Math.random()-.5)*2*(1-q/5)]); pts.push([x,y+(e?e.h*.6:0),z]);
+        fxBolt(pts,0xfff4c0,.3,.1); fxBeam(x,z,null,0xffe14a,9,.3,.8); fxSparks(x,y+.5,z,0xfff0a0,12,7,.2); FP.shake=Math.min(1,FP.shake+.22); if(n2%3===0) flash(); MSFX.hit("storm",1);
+        if(e&&e.alive){ const a1=KL.orbMul; KL.orbMul=1; const d=orbHit(e,U.dmg*pw,"storm",{power:.3,push:2,pose:10,heavy:true}); orbStun(e,U.stun); orbChain(e,d*.5,U.chain,7); prop(e,d); KL.orbMul=a1; } },
+      fx:Z=>{ if(Math.random()<.5){ const a=Math.random()*6.283, rr=Math.random()*Z.r; fxEmit(FX.glow,PL.x+Math.cos(a)*rr,PL.y+9+Math.random()*2,PL.z+Math.sin(a)*rr,(Math.random()-.5)*2,0,(Math.random()-.5)*2,1,1.4,.25,.22,.3,0,.8); } }})); }
+  } finally { KL.orbMul=a0; } }
+
+/* ---------- the HUD: three cells over the crosshair and the name of the set ---------- */
+function orbHudEl(){ let el=$("fpOrbs"); if(el) return el; const fp=$("fp"); if(!fp) return null; el=document.createElement("div"); el.id="fpOrbs"; el.className="fp-orbs"; el.innerHTML=`<div class="oc"><i></i><i></i><i></i></div><b class="on"></b>`; fp.appendChild(el); return el; }
+function orbHudDraw(force){ const el=orbHudEl(); if(!el) return; const on=mage()&&!PL.override&&FP.on; const L=on?(KL.orbs||[]):[]; const S=orbSpec(L);
+  const cd=S?Math.max((KL.orbCd&&KL.orbCd[S.key])||0,(S.kind==="tri"||S.kind==="trio")?(KL.orbBig||0):0):0, open=S?orbOpen(S):true; const key=[on?1:0,L.join(","),S?S.key:"",Math.ceil(cd),open?1:0,KL.cd[0]>0?1:0].join("|"); if(!force&&key===KL.orbHudK) return; KL.orbHudK=key;
+  el.classList.toggle("vis",on&&(L.length>0||!!(ORBW&&ORBW.open))); const cells=el.querySelectorAll(".oc i"); cells.forEach((c,i)=>{ const e=L[i]; c.className=e?"f":""; c.style.setProperty("--c",e?orbCss(e):"transparent"); c.innerHTML=e?ico(ELEM[e].ic):""; });
+  const nb=el.querySelector(".on"); nb.textContent=S?S.n+(!open?" · закрыт":cd>0?` · ${Math.ceil(cd)} с`:""):""; nb.className="on"+(S?(" k-"+S.kind):"")+(!open||cd>0?" no":""); nb.style.setProperty("--c",S?orbCss(S.el):"#fff");
+  const W=ORBW&&ORBW.el; if(W&&ORBW.open){ const t=W.querySelector(".ow-n"); if(t){ t.textContent=S?S.n:"веди палец по стихиям"; t.className="ow-n"+(S&&(!open||cd>0)?" no":""); } W.querySelectorAll(".ow-d i").forEach((c,i)=>{ const e=L[i]; c.style.setProperty("--c",e?orbCss(e):"transparent"); c.className=e?"f":""; }); } }
+
+/* ---------- the phone: hold «Сферы» — the wheel of four schools round the finger ---------- */
+const ORBW={ el:null, open:false, ptr:null };
+const ORB_SECT=[["fire",-Math.PI/2],["ice",0],["dark",Math.PI/2],["storm",Math.PI]];   /* up — fire, right — ice, down — dark, left — lightning */
+function orbWheelEl(){ if(ORBW.el&&ORBW.el.isConnected) return ORBW.el; const fp=$("fp"); if(!fp) return null; const el=document.createElement("div"); el.id="orbWheel"; el.className="orb-wheel"; const R=ORB.ring;
+  const wedge=a=>{ const a0=a-Math.PI/4+.06, a1=a+Math.PI/4-.06, r0=30, r1=R; const p=(r,b)=>`${(Math.cos(b)*r).toFixed(1)},${(Math.sin(b)*r).toFixed(1)}`; return `M${p(r0,a0)} L${p(r1,a0)} A${r1},${r1} 0 0 1 ${p(r1,a1)} L${p(r0,a1)} A${r0},${r0} 0 0 0 ${p(r0,a0)}Z`; };
+  el.innerHTML=`<svg viewBox="${-R-4} ${-R-4} ${2*R+8} ${2*R+8}" width="${2*R+8}" height="${2*R+8}">${ORB_SECT.map(([e,a])=>`<path class="ow-s" data-el="${e}" d="${wedge(a)}" style="--c:${orbCss(e)}"/>`).join("")}<circle class="ow-c" r="26"/></svg>
+    ${ORB_SECT.map(([e,a])=>`<span class="ow-i" data-el="${e}" style="--c:${orbCss(e)};left:${(Math.cos(a)*R*.66+R+4).toFixed(0)}px;top:${(Math.sin(a)*R*.66+R+4).toFixed(0)}px">${ico(ELEM[e].ic)}<small>${ELEM[e].n}</small></span>`).join("")}
+    <div class="ow-d"><i></i><i></i><i></i></div><b class="ow-n"></b>`; fp.appendChild(el); ORBW.el=el; return el; }
+function orbWheelOpen(){ const W=ORBW; if(W.open||!W.ptr) return; const el=orbWheelEl(); if(!el) return; W.open=true; const R=ORB.ring+4, M=6; const cx=clamp(W.x0,R+M,innerWidth-R-M), cy=clamp(W.y0,R+M,innerHeight-R-M);
+  el.style.left=(cx-R)+"px"; el.style.top=(cy-R)+"px"; el.classList.add("on"); el.querySelectorAll(".ow-s,.ow-i").forEach(s=>s.classList.remove("sel")); buzz(8); orbHudDraw(true); }
+function orbWheelClose(){ const W=ORBW; W.open=false; W.ptr=null; clearTimeout(W.tm); if(W.el) W.el.classList.remove("on"); const b=$("fpSkill"); if(b) b.classList.remove("dn","hold"); orbHudDraw(true); }
+function orbSectAt(dx,dy,cur){ const a=Math.atan2(dy,dx); let best=null, bd=9; for(const [e,c] of ORB_SECT){ const d=Math.abs(wrapA(a-c)); if(d<bd){ bd=d; best=e; } } if(cur&&cur!==best){ const c=ORB_SECT.find(q=>q[0]===cur)[1]; if(Math.abs(wrapA(a-c))<Math.PI/4+.16) return cur; } return best; }
+function orbDown(e){ if(!isTouch||(typeof HUD!=="undefined"&&HUD.edit)||!FP.on) return; const b=e.target&&e.target.closest&&e.target.closest("#fpSkill"); if(!b||!mage()||PL.override) return;
+  e.preventDefault(); e.stopImmediatePropagation(); if(anyBlocking()||FP.paused||PL.dead||ORBW.ptr!=null) return; audio(); if(typeof hudFanClose==="function") hudFanClose();
+  Object.assign(ORBW,{ ptr:e.pointerId, x0:e.clientX, y0:e.clientY, t0:performance.now(), sec:null, armed:true, moved:0, added:0, open:false }); b.classList.add("dn","hold"); try{ b.setPointerCapture(e.pointerId); }catch(e2){}
+  clearTimeout(ORBW.tm); ORBW.tm=setTimeout(()=>{ if(ORBW.ptr===e.pointerId) orbWheelOpen(); },140); }
+function orbMove(e){ const W=ORBW; if(W.ptr==null||e.pointerId!==W.ptr) return; e.preventDefault(); e.stopImmediatePropagation(); const dx=e.clientX-W.x0, dy=e.clientY-W.y0, d=Math.hypot(dx,dy); W.moved=Math.max(W.moved,d);
+  if(!W.open&&d>ORB.move) orbWheelOpen(); if(!W.open) return;
+  if(d<ORB.dead){ W.armed=true; if(W.sec){ W.sec=null; W.el.querySelectorAll(".sel").forEach(s=>s.classList.remove("sel")); } return; }
+  if(d<ORB.arm) return; const s=orbSectAt(dx,dy,W.sec); if(s!==W.sec){ if(W.sec!==null||W.armed){ orbAdd(s); W.added++; } W.sec=s; W.armed=false; W.el.querySelectorAll(".ow-s,.ow-i").forEach(q=>q.classList.toggle("sel",q.dataset.el===s)); } }
+function orbUp(e){ const W=ORBW; if(W.ptr==null||e.pointerId!==W.ptr) return; e.preventDefault(); e.stopImmediatePropagation(); const quick=!W.open&&performance.now()-W.t0<ORB.tap&&W.moved<ORB.move, added=W.added; orbWheelClose();
+  if(e.type==="pointercancel") return; if(PL.dead) return;
+  if(quick){ orbPress(); return; } if(added>0||(KL.orbs&&KL.orbs.length&&W.moved>=ORB.arm)) orbCast(); }
+if(isTouch){ addEventListener("pointerdown",orbDown,true); addEventListener("pointermove",orbMove,true); addEventListener("pointerup",orbUp,true); addEventListener("pointercancel",orbUp,true); }
+
+/* ---------- the computer: the keys of the four spheres ---------- */
+function orbKeyIn(i){ if(mage()&&!PL.dead&&!PL.override&&!(PL.drinkT>0)) orbAdd(ELEM_ORDER[i-1]); }
+function orbKeys(){ const q=FPI.q; if(!q) return; for(let i=1;i<=4;i++){ if(q["orb"+i]){ q["orb"+i]=false; orbKeyIn(i); } } }
+
+/* ---------- the bot: gathers a set that fits (a crowd — the wide ones, a boss — the strong ones), a sphere every 0.2 s, then lets it go ---------- */
+function orbBot(dt){ const B=KL.ob||(KL.ob={t:1.5,q:null,qt:0}); if(PL.dead||PL.drinkT>0) return;
+  if(B.q){ B.qt-=dt; if(B.qt>0) return; if(B.q.length){ orbAdd(B.q.shift()); B.qt=.2; return; } /* like a computer: the attack stays held while the keys gather the spheres */ B.q=null; orbCast(); B.t=2.2+Math.random()*1.8; return; }
+  B.t-=dt; if(B.t>0||KL.cd[0]>0) return; if(FP.botHuman&&typeof HB!=="undefined"&&HB.S&&HB.S.mode!=="in"&&!(FP.boss&&FP.boss.st==="stag")){ B.t=.3; return; } /* the «human» bot strikes only in his «at him» stretches (a boss may say «do not hit now» — fp-bot.js) */ const T=FP.lock&&FP.lock.alive?FP.lock:FP.boss&&FP.boss.alive?FP.boss:fpBestTarget(20,1.4); if(!T||Math.hypot(T.x-PL.x,T.z-PL.z)>18||(PL.st||0)<34){ B.t=.5; return; }
+  const crowd=near(T.x,T.z,5).length; let best=null, bs=-1;
+  for(const k of ORB_KEYS){ const S=ORB_SETS[k]; if(!orbOpen(S)||((KL.orbCd&&KL.orbCd[k])||0)>0||((S.kind==="tri"||S.kind==="trio")&&KL.orbBig>0)) continue; let s=S.kind==="tri"?14:S.kind==="trio"?11:4.5;
+    if(crowd>=3&&(S.el==="fire"||S.el==="dark"||k==="fis"||k==="fid")) s*=1.4; if(T.boss&&(k==="fds"||S.el==="storm"||S.el==="ice")) s*=1.2; s*=.85+Math.random()*.3; if(s>bs){ bs=s; best=k; } }
+  if(!best){ B.t=.6; return; } KL.orbs=[]; B.q=[...best].map(ch=>ORB_OF[ch]); B.qt=0; }
+
+/* «порча» (the dark school, fp-skills.js darkMark): an enemy under it hits weaker, MGB.dark.mark.weak a stack */
+hook("hurt",(dmg,from)=>{ if(!from||!from.hexN||!(from.hexT>FP.t)) return; return dmg*(1-MGB.dark.mark.weak*from.hexN); });
+/* ---------- the tick, the reset ---------- */
+hook("tick",dt=>{ orbKeys(); const C=KL.orbCd; if(C) for(const k in C){ if(C[k]>0) C[k]=Math.max(0,C[k]-dt); } if(KL.orbBig>0) KL.orbBig=Math.max(0,KL.orbBig-dt);
+  if(mage()&&FP.bot&&!FP.botNoOrbs) orbBot(dt); if(P.mgV!==1) mgTreeFix(); orbTipTick(dt);
+  if(FP.t-(KL.orbHudT||0)>.2){ KL.orbHudT=FP.t; orbHudDraw(); } });
+hook("reset",()=>{ KL.orbs=[]; KL.orbCd={}; KL.orbBig=0; KL.ob=null; KL.orbBusy=0; if(ORBW.ptr!=null) orbWheelClose(); orbHudDraw(true); ORB_SPIKES.forEach(S=>{ S.busy=false; S.mesh.visible=false; }); const s=$("orbShade"); if(s) s.classList.remove("on"); });
+
+/* ---------- old saves: the nodes that changed «Взрыв стихии» are now nodes of the spheres — their points come back (13.10) ---------- */
+const MG_GONE=["m_napalm","m_lance","m_blades","m_quick","m_burstswap"];
+function mgTreeFix(){ if(typeof P==="undefined"||!P||P.mgV===1) return; P.mgV=1; let n=0; const R=P.tree&&P.tree.mage; if(R){ MG_GONE.forEach(id=>{ n+=(+R[id]||0); delete R[id]; }); }
+  if(P.element&&!ELEM[P.element]) P.element="fire"; if(n>0){ P.mgRef=n; if(typeof treeTouch==="function") treeTouch(); } if(typeof saveP==="function") saveP(); }
+function mgRefSay(){ if(!P.mgRef||!FP.on||anyBlocking()) return false; const n=P.mgRef; P.mgRef=0; saveP(); fpSys(`✦ Маг обновлён: «Взрыв стихии» стал «Сферами». ${n} ${plural(n,"очко","очка","очков")} пути вернулись — вложи заново: ${isTouch?"меню ≡ → «Класс»":"клавиша "+keyName("tree")}`,"gold",8000); return true; }
+
+/* ---------- the first time with the mage: how to gather spheres (my own card, not the tutorial's) ---------- */
+function orbTipTick(dt){ if(!mage()||!FP.on||PL.dead||PL.override) return; if(P.mgRef&&FP.t-(KL.mgRefT||-9)>2){ KL.mgRefT=FP.t; mgRefSay(); return; } if(P.orbTip) return; if(anyBlocking()||FP.cine||FP.paused) return; if(typeof TUT!=="undefined"&&TUT.on&&!(TUT.task&&TUT.task.id==="skill")) return; /* in the training — right when it asks for the class skill */ if(typeof TEST!=="undefined"&&TEST&&!window.__orbTip) return;
+  KL.orbTipT=(KL.orbTipT||0)+dt; if(KL.orbTipT<2.5) return; P.orbTip=1; saveP(); orbTipShow(); }
+function orbTipShow(){ const fp=$("fp"); if(!fp) return; let el=$("orbTip"); if(el) el.remove(); el=document.createElement("div"); el.id="orbTip"; el.className="orb-tip";
+  const pc=!isTouch, ks=pc?ELEM_ORDER.map((e,i)=>`<kbd style="--c:${orbCss(e)}">${keyName("orb"+(i+1),true)}</kbd>`).join(""):"";
+  el.innerHTML=`<div class="ot-w">${ORB_SECT.map(([e,a])=>`<i style="--c:${orbCss(e)};left:${(50+Math.cos(a)*34).toFixed(0)}%;top:${(50+Math.sin(a)*34).toFixed(0)}%">${ico(ELEM[e].ic)}</i>`).join("")}<b>${ico("orb")}</b></div>
+    <div class="ot-t"><b>Сферы — твоё умение</b>${pc?`<span>${ks} — сферы огня, льда, тьмы, молнии (до трёх). <kbd>${keyName("skill",true)}</kbd> — выпустить. Без сфер — повтор последнего набора</span>`:`<span><b>Зажми «Сферы»</b> и веди палец по стихиям — до трёх сфер. <b>Отпусти</b> — заклинание. Короткий тап — повтор последнего</span>`}
+    <span>Какой стихии больше — та и форма, вторая даёт свойство. Три одинаковые — сильное, три разные — особое. Все 20 наборов — в справке «Сферы мага»</span></div><button class="ot-x">Понятно</button>`;
+  fp.appendChild(el); requestAnimationFrame(()=>el.classList.add("on")); const close=()=>{ el.classList.remove("on"); setTimeout(()=>el.remove(),300); }; el.querySelector(".ot-x").addEventListener("pointerdown",ev=>{ ev.preventDefault(); ev.stopPropagation(); close(); }); setTimeout(close,16000); }
+
+/* ---------- the help page «Сферы мага» (fp-help.js asks for it): the rule and all 20 sets, open and closed ---------- */
+function orbHelpPages(){ const row=k=>{ const S=ORB_SETS[k], op=orbOpen(S); return `<span class="oh-r${op?"":" lk"}" style="--c:${orbCss(S.el||ORB_OF[k[0]])}"><em>${[...k].map(ch=>`<i style="--c:${orbCss(ORB_OF[ch])}"></i>`).join("")}</em><b>${S.n}</b><small>${S.d}${op?"":` · <u>закрыт: ${orbHow(S)}</u>`}</small></span>`; };
+  return [ `Сферы — умение мага. ${isTouch?"<b>Зажми «Сферы»</b> — вокруг пальца четыре стихии; веди палец по ним — набираются сферы (до трёх, видно над прицелом). <b>Отпусти</b> — заклинание. В центр и обратно — та же стихия ещё раз. Короткий тап — повтор последнего набора":`Клавиши <b>${ELEM_ORDER.map((e,i)=>keyName("orb"+(i+1),true)).join(" ")}</b> — сферы огня, льда, тьмы и молнии (до трёх, видно над прицелом). <b>${keyName("skill",true)}</b> — выпустить. Без сфер — повтор последнего набора`}. Порядок не важен — важен набор. Маны не тратит: у каждого набора своя перезарядка, сильные ждут дольше.`,
+    `<b>Правило.</b> Какой стихии больше — та задаёт <b>форму</b>: огонь — конус пламени, лёд — веер копий, тьма — воронка, молния — луч и цепь. Вторая стихия даёт <b>свойство</b>: огонь поджигает, лёд морозит, тьма лечит тебя и накладывает порчу, молния бьёт цепью и оглушает. Одна-две сферы — малое заклинание.`,
+    `<b>Три одинаковые — сильные</b> (их открывают узлы в ветках пути мага):<span class="oh">${["fff","iii","ddd","sss"].map(row).join("")}</span>`,
+    `<b>Две + одна</b> (открыты сразу):<span class="oh">${["ffi","ffd","ffs","fii","iid","iis","fdd","idd","dds","fss","iss","dss"].map(row).join("")}</span>`,
+    `<b>Три разные — особые</b> (открываются с очками пути):<span class="oh">${["fis","fid","fds","ids"].map(row).join("")}</span>`,
+    `<b>Ульта «Сердце стихии»</b> берёт набранные сферы: какой стихии больше — та и ульта (огонь — звёздный удар, лёд — буран, тьма — бездна, молния — гроза), за каждую её сферу +20% силы, остальные добавляют свои свойства. Без сфер — по стихии атаки.` ]; }
+
+/* the tests' door */
+setTimeout(()=>{ if(window.__g) Object.assign(window.__g,{ ORB, ORBN, ORB_SETS, ORB_KEYS, orbAdd, orbCast, orbPress, orbSpec, orbOpen, orbRun, orbClear, orbHudDraw, orbWheelOpen, ORBW, mgUlt, MG_ULT, MGB, stormStrike, darkMark, mgTreeFix, orbTipShow, orbHelpPages }); },0);
+
 /* ===== fp-clshud.js ===== */
 /* ================= CLASS HUD: the buttons follow your class =================
    Attack icon by weapon, only the skills you've opened (with cooldown rings), one mana button (class ultimate + the army),
@@ -31550,7 +32008,7 @@ function clsHudParts(){ const fp=$("fp"); if(!fp||$("fpRage")) return; const bar
 function menuSkills(el){ const c=typeof clsActive==="function"?clsActive():null; const box=el&&el.querySelector(".mn-hero"); if(!c||!box||typeof TREE==="undefined"||!TREE[c]||box.querySelector("#fmSk")) return; const b=document.createElement("button"); b.className="mn-t"; b.id="fmSk";
   const n=actsOf(c).filter(id=>actOpen(id,c)).length; b.innerHTML=`${ico("daggers")}<b>Умения в бою</b><small>${n?`сменить · открыто ${n}`:"два слота на выбор"}</small>`; box.classList.add("sk5"); const ref=box.querySelector("#fmCls"); if(ref&&ref.nextSibling) box.insertBefore(b,ref.nextSibling); else box.appendChild(b);
   b.onclick=()=>{ closeModal("fpm",true); setTimeout(()=>slotsWindow(c),60); }; }
-/* the three schools of the mage on a phone: three chips inside the school button, always in the same order — one tap takes that school at once
+/* the four schools of the mage on a phone: four chips inside the school button, always in the same order — one tap takes that school at once
    (the button itself and the key V still take the next one). The press goes through FPI.elemTo: the switch happens inside the tick of the fight */
 function elemChips(eb){ if(eb.querySelector(".sch")) return; const box=document.createElement("span"); box.className="sch";
   ELEM_ORDER.forEach(k=>{ const E=ELEM[k], b=document.createElement("i"); b.className="sc"; b.dataset.el=k; b.style.setProperty("--c",E.css); b.setAttribute("aria-label",E.n); b.innerHTML=ico(E.ic);
@@ -31565,7 +32023,7 @@ function clsHud(){ if(!$("fp")) return; clsHudParts(); const c=clsActive(); cons
   if(c){ const L=clsSkills(c); setBtn("fpSkill",L[0],true); slotBtn("fpS2",0); slotBtn("fpS3",1); }
   else { setBtn("fpSkill",{n:"Кинжал",ic:"dagger",d:"Бросок во врага. Ещё раз — шаг в тень за спину"},true); setBtn("fpS2",null); setBtn("fpS3",null); }
   fp.dataset.sk=G[1]?"3":G[0]?"2":"1"; /* the mana button sits closer while you have fewer skills */ fp.dataset.s2=G[0]?"1":"0"; fp.dataset.s3=G[1]?"1":"0";
-  const ub=$("fpUlt"); if(ub){ const uc=c&&!PL.override?c:null; const ic=uc?(uc==="mage"?{fire:"meteor",ice:"snow",dark:"void"}[elemNow()]:KLS[uc].ult.ic):"arise"; if(ub.dataset.ic!==ic){ ub.dataset.ic=ic; ub.querySelector(".ic").innerHTML=ico(ic); } ub.title=uc?`${KLS[uc].ult.n}: ${KLS[uc].ult.d}`:"Армия теней: встают твои солдаты"; }
+  const ub=$("fpUlt"); if(ub){ const uc=c&&!PL.override?c:null; const ic=uc?(uc==="mage"?{fire:"meteor",ice:"snow",dark:"void",storm:"storm"}[elemNow()]:KLS[uc].ult.ic):"arise"; if(ub.dataset.ic!==ic){ ub.dataset.ic=ic; ub.querySelector(".ic").innerHTML=ico(ic); } ub.title=uc?`${KLS[uc].ult.n}: ${KLS[uc].ult.d}`:"Армия теней: встают твои солдаты"; }
   const ab=$("fpArmy"); if(ab&&!ab.dataset.lb2){ ab.dataset.lb2=1; ab.title=`Армия теней: встают твои солдаты, ${armyCost()} маны за каждую тень`; }
   const eb=$("fpElem"); if(eb){ const on=elemSwitchOn(); eb.classList.toggle("off",!on); if(on){ const E=ELEM[elemNow()]; eb.querySelector(".ic").innerHTML=ico(E.ic); eb.style.setProperty("--ec",E.css); eb.querySelector(".lb").textContent=E.n; eb.setAttribute("aria-label","Школа: "+E.n); elemChips(eb); eb.querySelectorAll(".sc").forEach(b=>b.classList.toggle("on",b.dataset.el===elemNow())); fp.style.setProperty("--sch",E.css); fp.dataset.sch=elemNow(); } else delete fp.dataset.sch; }
   HS.cls=null; HS.ulb=null; if(typeof viewTint==="function"&&!buff("berserk")) viewTint(); }
@@ -31588,14 +32046,14 @@ function clsHudTick(f){ const c=clsActive(); const key=(c||"-")+(P.element||"")+
 /* the controls guide follows the class too — and only lists what is on the screen */
 function guideList(){ const c=clsActive(); const L=[]; const pc=!isTouch;
   const EL=c==="mage"?ELEM[elemNow()]:null;
-  L.push([c?ATK_IC[c]:"daggers",c==="mage"?`Магия · ${EL.n}`:"Удар",c==="mage"?{fire:`Держи — копится огненный шар (${MGB.fire.form} с): взрыв по площади, главная сила мага. ${pc?"Клик":"Тап"} — только искра`,ice:`Держи — поток льда на ${MGB.ice.range} м: сам держится на враге. Чем дольше льёшь, тем сильнее бьёт и глубже холод; полный холод замораживает, а босса покрывает льдом — он бьёт и ходит медленнее`,dark:`${pc?"Клик":"Тап"} — тёмный снаряд: ${Math.round(MGB.dark.leech*100)}% урона возвращается тебе здоровьем. Держи — снаряд сильнее и лечит больше`}[elemNow()]:c==="warrior"?"Три тяжёлых взмаха: третий бьёт по земле. Тебя бьют и бьют в блок — копится шкала ярости, полная — Берсерк":c==="commander"?"Уколы копьём далеко вперёд, третий — широкий взмах":`Жми часто — серия из 4 ударов. Удар в спину — ×${CLS_TRAIT.assassin.back}${pc?"":". Можно просто тапнуть по экрану справа"}`,"atk","fpAtk"]);
+  L.push([c?ATK_IC[c]:"daggers",c==="mage"?`Магия · ${EL.n}`:"Удар",c==="mage"?{fire:`Держи — огненные шары летят один за другим (${MGB.fire.form} с на шар): взрыв по площади, враги горят. Отпустил раньше — шар меньше. ${pc?"Клик":"Тап"} — только искра`,ice:`Держи — поток льда на ${MGB.ice.range} м: сам держится на враге. Чем дольше льёшь, тем сильнее бьёт и глубже холод; полный холод замораживает, а босса покрывает льдом — он бьёт и ходит медленнее`,dark:`Держи — сгустки тьмы летят один за другим и сами ищут цель: ${Math.round(MGB.dark.fullLeech*100)}% урона возвращается тебе здоровьем, каждый накладывает порчу (враг бьёт слабее), третья порча рвёт его. ${pc?"Клик":"Тап"} — малый снаряд`,storm:`Держи — молния бьёт сразу, ${Math.round(1/MGB.storm.every)} раза в секунду, и прыгает ещё на ${MGB.storm.chain} врагов рядом; каждая ${MGB.storm.stunN}-я по одному врагу коротко оглушает. На ходу почти не замедляет`}[elemNow()]:c==="warrior"?"Три тяжёлых взмаха: третий бьёт по земле. Тебя бьют и бьют в блок — копится шкала ярости, полная — Берсерк":c==="commander"?"Уколы копьём далеко вперёд, третий — широкий взмах":`Жми часто — серия из 4 ударов. Удар в спину — ×${CLS_TRAIT.assassin.back}${pc?"":". Можно просто тапнуть по экрану справа"}`,"atk","fpAtk"]);
   L.push(["shield","Защита",pc?`<b>${keyName("dash")}</b> — рывок: уйти от удара. <b>${keyName("block")}</b> — держи блок. Блок прямо перед ударом — парирование: враг открыт, следующий удар — крит`:"Одна кнопка на всё. <b>Двигаешься</b> — рывок туда, уйти от удара. <b>Стоишь</b> — держи: блок. Нажал <b>прямо перед ударом</b> — парирование: враг открыт, следующий удар — крит. Иконка на кнопке показывает, что будет",`${keyName("dash")} · ${keyName("block")}`,"fpDef"]);
-  if(c){ const S0=clsSkills(c)[0]; L.push([S0.ic,S0.n,`${S0.d}. Умение класса: не тратит ману, только ждёт перезарядку (кольцо на кнопке)`,"skill","fpSkill"]);
-    const G=slotGet(c); G.forEach((id,i)=>{ if(!id) return; const A=ACT[id], r=actRank(id,c); L.push([A.ic,A.n,`${A.d(r)}. Слот ${i+1}: перезарядка ${+actCd(A,r).toFixed(1)} с, выносливость ${actSt(A,r)}${!pc&&i===1&&typeof hudFold==="function"&&hudFold("s3")?". Своей кнопки нет — зажми «Умение»: он появится рядом":""}`,["s2","s3"][i],["fpS2","fpS3"][i]]); });
+  if(c){ const S0=clsSkills(c)[0]; L.push([S0.ic,S0.n,c==="mage"?(pc?`<b>${["orb1","orb2","orb3","orb4"].map(a=>keyName(a)).join(" ")}</b> — сферы огня, льда, тьмы, молнии (до трёх, видно над прицелом). <b>${keyName("skill")}</b> — выпустить; без сфер — повтор последнего набора. Какой стихии больше — та форма, вторая — свойство; три одинаковые — сильное, три разные — особое. Маны не тратит`:`<b>Зажми</b> — вокруг пальца четыре стихии: веди палец по ним, наберёшь до трёх сфер. <b>Отпусти</b> — заклинание. Короткий тап — повтор последнего набора. Какой стихии больше — та форма, вторая — свойство; три одинаковые — сильное, три разные — особое. Маны не тратит`):`${S0.d}. Умение класса: не тратит ману, только ждёт перезарядку (кольцо на кнопке)`,"skill","fpSkill"]);
+    const G=slotGet(c); G.forEach((id,i)=>{ if(!id) return; const A=ACT[id], r=actRank(id,c); L.push([A.ic,A.n,`${A.d(r)}. Слот ${i+1}: перезарядка ${+actCd(A,r).toFixed(1)} с, выносливость ${actSt(A,r)}${!pc&&i===1&&typeof hudFold==="function"&&hudFold("s3")?(c==="mage"?". Своей кнопки нет — зажми кнопку ульты: он появится рядом":". Своей кнопки нет — зажми «Умение»: он появится рядом"):""}`,["s2","s3"][i],["fpS2","fpS3"][i]]); });
     const free=G.filter(x=>!x).length; L.push(["star",free?(free===2?"Два слота умений":"Ещё один слот"):"Слоты умений",`${free?"Умения для слотов открываются в ветках развития: очко за каждый уровень и за каждый час дел класса. ":"В слотах — любые два умения из веток. "}Сменить: ${pc?`клавиша ${keyName("tree")} → «Умения в бою»`:"кнопка «Умения в бою» слева (вне боя) или меню ≡ → «Умения в бою»"}`,"",null]);
     const U=KLS[c].ult; L.push([U.ic,`${U.n} · ${powCost()} маны`,`${U.d}. Мана — только от реальных дел`,"ult","fpUlt"]);
     L.push(["arise",`Армия · ${armyCost()} маны за тень`,`Отдельная кнопка: встают сильнейшие солдаты из хранилища — до ${armyLead()}. На кнопке — сколько встанет и цена. Павшие ждут ${ARMY_DOWN} с. Мана — только от реальных дел${!pc&&typeof hudFold==="function"&&hudFold("army")?". Своей кнопки нет: зажми кнопку ульты — армия встанет":""}`,"army","fpArmy"]);
-    if(elemSwitchOn()) L.push([ELEM[elemNow()].ic,"Школа магии",pc?"Огонь, лёд, тьма — по кругу. У каждой школы своя атака, свой «Взрыв» и своя ульта":"Три кнопки: огонь, лёд, тьма. Одно касание — и школа в руках, атаку можно не отпускать. У каждой школы своя атака, свой «Взрыв» и своя ульта","elem","fpElem"]); }
+    if(elemSwitchOn()) L.push([ELEM[elemNow()].ic,"Школа магии",pc?"Огонь, лёд, тьма, молния — по кругу. У каждой стихии своя атака и своя ульта":"Четыре кнопки: огонь, лёд, тьма, молния. Одно касание — и стихия в руках, атаку можно не отпускать. У каждой стихии своя атака и своя ульта","elem","fpElem"]); }
   else { L.push(["dagger","Кинжал тени","Бросок во врага. Нажми ещё раз, пока он светится, — мгновенно окажешься рядом","skill","fpSkill"]);
     L.push(["arise","Армия · «Восстань»",`${armyCost()} маны за каждую тень — мана только от реальных дел. Встают твои солдаты из хранилища`,"ult","fpUlt"]); }
   L.push(["flask","Зелье",`${pc?"":"Появляется, когда ты ранен. "}Лечит почти половину здоровья. Пополняются у манокамня`,"flask","fpFlask"]);
@@ -33224,7 +33682,7 @@ const BOOK=[
     "Здоровье мало — жми <b>Зелье</b>. Зелья пополняются у манокамня. Боссов можно оглушить: когда полоска под их здоровьем заполнится, подойди и бей — будет добивание." ] },
   { id:"classes", n:"Классы", ic:"crown", art:["sword","orb","dagger","bow","crown"], p:[
     "Классов четыре, и каждый играет по-своему. <b>Воин</b> — тяжёлый меч и шкала ярости: его бьют, она копится, полная — Берсерк (15 с урон +75%, по нему −75%); блок 90% только у него; слабость — силы уходят на четверть быстрее.",
-    `<b>Ассасин</b> — кинжалы: удар в спину ×${CLS_TRAIT.assassin.back}, умения лечат его; слабость — меньше здоровья и слабый блок. <b>Маг</b> — три школы, у каждой своя атака: огонь (заряженный шар), лёд (поток), тьма (вытягивает жизнь). <b>Генерал</b> — копьё и тени, что всегда идут рядом и сами встают снова; слабость — сам он бьёт слабее.`,
+    `<b>Ассасин</b> — кинжалы: удар в спину ×${CLS_TRAIT.assassin.back}, умения лечат его; слабость — меньше здоровья и слабый блок. <b>Маг</b> — четыре стихии, у каждой своя атака: огонь (шары со взрывом), лёд (поток), тьма (вытягивает жизнь), молния (цепь); умение — сферы: три стихии в одно заклинание. <b>Генерал</b> — копьё и тени, что всегда идут рядом и сами встают снова; слабость — сам он бьёт слабее.`,
     "В начале ты выбираешь <b>пробный класс</b>: сразу есть атака, умение класса и ульта; армия — на своей кнопке. Ещё два умения ты выбираешь сам: их открывают ветки развития, а ставятся они в два слота — «Умения в бою». Класс растёт от дел: «Зал» растит Воина, «Английский» и чтение — Мага.",
     "Наберёшь 10 часов в другом классе — он проснётся сам. Два сильных класса дают <b>гибрид</b> с тёмным титулом. Окно класса: меню ≡ → «Класс» (в Тенях — пауза → «Класс»)." ] },
   { id:"tree", n:"Путь класса", ic:"star", art:["star","sword","crown"], p:[
@@ -33238,11 +33696,14 @@ const BOOK=[
     "<b>Месяц</b> считает все дни с делом, пропуск его не сжигает: награды на 12, 20 и 26 дней. " +
     "<b>Ранг Пробуждённого</b> растёт от уровня: E → D (4) → C (8) → B (15) → A (25) → S (40). Каждый ранг даёт награду и открывает новое: эпические вещи с C, легендарные с A.",
     "<b>Осколки ✦</b> тратятся в перековке: окно «Путь» → «Вещи» → ⚒ (в Тенях: пауза → «Вещи»). Заточка усиливает вещь навсегда, «поднять до своего уровня» — чтобы любимая вещь росла с тобой. Всё это видно в окне «Путь»." ] },
-  { id:"magic", n:"Маг и три школы", ic:"fire", art:["fire","snow","void"], p:[
-    "У мага три школы — <b>огонь, лёд и тьма</b>. На телефоне это три кнопки у края: одно касание — и школа в руках, атаку можно не отпускать (на компьютере — V, по кругу). Кнопка атаки носит цвет и имя школы. У каждой школы своя атака, свой «Взрыв стихии» и своя ульта.",
-    "<b>Огонь</b>: держи атаку — копится шар, отпусти — взрыв по площади. Это главная разрушительная сила. <b>Лёд</b>: держи — поток льда. Чем дольше держишь на враге, тем сильнее бьёт и глубже холод; полный холод замораживает, замороженного раскалывает первый сильный удар. Босса лёд не останавливает, но покрывает: он бьёт и ходит медленнее. <b>Тьма</b>: снаряды возвращают тебе здоровье.",
-    "Главные умения школ: <b>Огненный лук</b> — одна стрела, тяни до 10 секунд, полный заряд бьёт страшно. <b>Ледяной покров</b> — вьюга стеной вокруг тебя: враги в ней замедлены на 70%, их снаряды вязнут. <b>Жатва души</b> — убивает обычного врага и полностью возвращает здоровье.",
-    "Слабости земель: в <b>Снежном хребте</b> сильнее огонь, в <b>Пепельных дюнах</b> — лёд. Комбо: замороженного ударь огнём — <b>пар</b>, двойной урон." ] },
+  { id:"magic", n:"Маг и четыре стихии", ic:"fire", art:["fire","snow","void","bolt"], p:[
+    "У мага четыре стихии — <b>огонь, лёд, тьма и молния</b>. На телефоне это четыре кнопки у края: одно касание — и стихия в руках, атаку можно не отпускать (на компьютере — V, по кругу). Кнопка атаки носит цвет и имя стихии. У каждой стихии своя атака и своя ульта.",
+    "<b>Огонь</b>: держи атаку — шары летят один за другим и взрываются по площади, враги горят. <b>Лёд</b>: держи — поток льда. Чем дольше держишь на враге, тем сильнее бьёт и глубже холод; полный холод замораживает, замороженного раскалывает первый сильный удар. Босса лёд не останавливает, но покрывает: он бьёт и ходит медленнее. <b>Тьма</b>: держи — сгустки сами ищут врага, лечат тебя и накладывают порчу: враг бьёт слабее, третья порча рвёт его. <b>Молния</b>: держи — бьёт сразу, прыгает по врагам рядом и коротко оглушает; на ходу почти не замедляет.",
+    "Умение мага — <b>Сферы</b>: набери до трёх стихий и выпусти — 20 разных заклинаний. Все они — на следующей странице.",
+    "Главные умения веток: <b>Огненный лук</b> — одна стрела, тяни до 10 секунд, полный заряд бьёт страшно. <b>Ледяной покров</b> — вьюга стеной вокруг тебя: враги в ней замедлены на 70%, их снаряды вязнут. <b>Жатва души</b> — убивает обычного врага и полностью возвращает здоровье.",
+    "Слабости земель: в <b>Снежном хребте</b> сильнее огонь, в <b>Пепельных дюнах</b> — лёд, на <b>болотах</b> — молния. Комбо: замороженного ударь огнём — <b>пар</b>, двойной урон." ] },
+  /* 13.10: the spheres of the mage — the rule and all 20 sets, open and closed (the text is built when the page opens: fp-orbs.js orbHelpPages) */
+  { id:"orbs", n:"Сферы мага", ic:"orb", art:["fire","snow","void","bolt"], get p(){ return typeof orbHelpPages==="function"?orbHelpPages():[]; } },
   { id:"army", n:"Армия теней", ic:"arise", art:["arise","beast","crown"], p:[
     "Победил врага — на земле может остаться его тень: у элиты и босса всегда, у обычного врага — иногда. Подчинить можно любого. Подойди и нажми <b>«Восстань»</b> — начнётся борьба: 3 секунды <b>жми как можно чаще</b> (кнопка на экране или клавиша {k:act}). Полоса растёт от нажатий и сползает сама; чем она выше в конце, тем выше шанс — до двух раз. Босс и враг выше тебя уровнем сопротивляются сильнее.",
     "Шанс написан словами: почти наверняка, высокий, средний, низкий, очень низкий, почти невозможно. У врага твоего уровня без борьбы: моб — высокий, элита — средний, босс — низкий; чем он выше тебя уровнем, тем ниже. Три попытки. Это <b>бесплатно</b> — держит только <b>место в армии</b>: по рангу (E 12 · D 16 · C 20 · B 26 · A 32 · S 40) и Казарма в Лагере. Армия полна — Система предложит отпустить слабейшую тень.",
@@ -33899,7 +34360,7 @@ if(isTouch){ addEventListener("resize",wideSync); addEventListener("orientationc
      where the browser allows it (Android in full screen) the screen turns by itself: the fight sideways, the refuge and the deeds upright.
    On a computer nothing here runs (isTouch). */
 const HUD_DEF={
-  atk:{el:"fpAtk",n:"Удар",b:88}, def:{el:"fpDef",n:"Защита",b:72}, skill:{el:"fpSkill",n:"Умение",b:62}, s2:{el:"fpS2",n:"Слот 1",b:56,fold:"skill"},
+  atk:{el:"fpAtk",n:"Удар",b:88}, def:{el:"fpDef",n:"Защита",b:72}, skill:{el:"fpSkill",get n(){ return typeof mage==="function"&&mage()?"Сферы":"Умение"; },b:62}, s2:{el:"fpS2",n:"Слот 1",b:56,fold:"skill"},
   s3:{el:"fpS3",n:"Слот 2",b:56,fold:"skill"}, ult:{el:"fpUlt",n:"Мана: ульта",b:64}, army:{el:"fpArmy",n:"Армия",b:56,fold:"ult"}, elem:{el:"fpElem",n:"Школа мага",b:50},
   flask:{el:"fpFlask",n:"Зелье",b:56}, lock:{el:"fpLock",n:"Цель",b:52}, mount:{el:"fpMount",n:"Зверь",b:50}, joy:{el:"fpJoyG",n:"Стик",b:112} };
 const HUD_IDS=Object.keys(HUD_DEF);
@@ -33952,7 +34413,9 @@ function hudJoyZone(x,y,def){ const J=HUD.joy; if(!J||!hudLive()) return def; co
   return (left?x<reach:x>W-reach)&&y>top; }
 /* ---------- the fan: hold «Умение» (or the mana button) — the folded buttons come out ---------- */
 const HUD_HOLD=300;
-function hudFanItems(owner){ const L=[]; for(const id of HUD_IDS){ const D=HUD_DEF[id]; if(D.fold!==owner||!hudFold(id)) continue; const el=document.getElementById(D.el); if(!el) continue;
+/* 13.10: the mage holds «Сферы» for the wheel of the spheres (fp-orbs.js) — what is folded into the class button comes out of the mana button for him */
+const hudFoldTo=D=>D.fold==="skill"&&typeof mage==="function"&&mage()?"ult":D.fold;
+function hudFanItems(owner){ const L=[]; for(const id of HUD_IDS){ const D=HUD_DEF[id]; if(hudFoldTo(D)!==owner||!hudFold(id)) continue; const el=document.getElementById(D.el); if(!el) continue;
     if(el.classList.contains("off")) continue; if(id==="army"&&!(typeof ultSplit==="function"&&ultSplit())) continue; L.push(id); } return L; }
 function hudFanOpen(owner,ptr){ hudFanClose(); const items=hudFanItems(owner); if(!items.length) return false; const fp=document.getElementById("fp"), ob=document.getElementById(HUD_DEF[owner].el); if(!fp||!ob) return false;
   const r=ob.getBoundingClientRect(), ox=r.left+r.width/2, oy=r.top+r.height/2, W=innerWidth, H=innerHeight, S=HUD.safe; const isz=Math.round(60*Math.min(1.1,Math.max(.85,Math.min(W,H)/390)));
@@ -33972,7 +34435,7 @@ function hudFanFire(id){ hudFanClose(); if(PL.dead) return; audio(); fpPress(id)
 function hudFanMove(x,y){ const F=HUD.fan; if(!F) return; let sel=null; for(const p of F.pts){ if(Math.hypot(x-p.x,y-p.y)<p.r){ sel=p.id; break; } } if(sel!==F.sel){ F.sel=sel; F.pts.forEach(p=>p.b.classList.toggle("sel",p.id===sel)); if(sel&&typeof buzz==="function") buzz(5); } }
 /* a finger on «Умение» or on the mana button while something is folded into it: short — its own action; long — the fan */
 const HOLD={ id:null, ptr:null, t0:0, tm:0, x:0, y:0, el:null };
-function hudOwnerOf(t){ if(!t||!t.closest) return null; const b=t.closest("#fpSkill,#fpUlt"); if(!b) return null; return b.id==="fpSkill"?"skill":"ult"; }
+function hudOwnerOf(t){ if(!t||!t.closest) return null; const b=t.closest("#fpSkill,#fpUlt"); if(!b) return null; if(b.id==="fpSkill"&&typeof mage==="function"&&mage()) return null; return b.id==="fpSkill"?"skill":"ult"; }
 function hudDown(e){ if(HUD.edit) return; const F=HUD.fan; if(F&&!(e.target.closest&&e.target.closest("#hudFan"))) hudFanClose();
   if(!FP.on||!hudLive()) return; const own=hudOwnerOf(e.target); if(!own||!hudFanItems(own).length) return; /* nothing folded here: the button's own handler runs as before */
   e.preventDefault(); e.stopPropagation(); if(anyBlocking()||FP.paused||PL.dead) return; audio(); const el=document.getElementById(HUD_DEF[own].el);
@@ -34026,7 +34489,7 @@ function hudEdPanel(){ const E=HUD.edit; if(!E) return; const el=document.getEle
   const sv=Math.round((+e.s||1)*100), ov=Math.round((e.o==null?1:+e.o)*100);
   sp.innerHTML=`<b>${D.n}</b><label class="st-row"><span class="st-l"><b>Размер</b></span><input type="range" id="heS" min="60" max="160" step="5" value="${sv}"><output>${sv}%</output></label>
     ${id==="joy"?"":`<label class="st-row"><span class="st-l"><b>Прозрачность</b></span><input type="range" id="heO" min="30" max="100" step="5" value="${ov}"><output>${ov}%</output></label>`}
-    ${D.fold?`<button class="st-sw${e.f?"":" on"}" id="heF" role="switch" aria-checked="${e.f?"false":"true"}"><span class="st-l"><b>На экране</b><small>${e.f?`спрятана: зажми «${HUD_DEF[D.fold].n.replace("Мана: ","")}»`:"своя кнопка"}</small></span><i></i></button>`:""}`;
+    ${D.fold?`<button class="st-sw${e.f?"":" on"}" id="heF" role="switch" aria-checked="${e.f?"false":"true"}"><span class="st-l"><b>На экране</b><small>${e.f?`спрятана: зажми «${HUD_DEF[hudFoldTo(D)].n.replace("Мана: ","")}»`:"своя кнопка"}</small></span><i></i></button>`:""}`;
   sp.classList.add("on");
   const rng=(q,fn)=>{ const i=sp.querySelector(q); if(!i) return; const paint=()=>{ i.style.setProperty("--p",((i.value-i.min)/(i.max-i.min)*100).toFixed(1)+"%"); i.parentNode.querySelector("output").textContent=i.value+"%"; }; paint(); i.addEventListener("input",()=>{ fn(+i.value/100); paint(); hudApply(); }); };
   rng("#heS",v=>{ const L2=hudEdL(); L2[id]={...(L2[id]||e),s:v}; }); rng("#heO",v=>{ const L2=hudEdL(); L2[id]={...(L2[id]||e),o:v}; });
@@ -35285,7 +35748,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="1013-v12a01";
+const BUILD="1013-v12b01";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
