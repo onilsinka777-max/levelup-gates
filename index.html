@@ -2906,6 +2906,59 @@ body.s3on #ui .holo.s3w::before,body.s3on #ui .holo.s3w::after{display:none}
 .s3.port .s3-note-pop{top:calc(104px + var(--st,0px))}
 /* the windows of other modules keep their own size inside the System frame */
 #ui .holo.s3x.small{width:min(80vw,380px)}#ui .holo.s3x.chal{width:min(96vw,820px)}#ui .holo.s3x.set{width:min(94vw,860px)}#ui .holo.s3x.wide{width:min(94vw,760px)}
+
+/* ================= «Система» v3 (20.10, agent sys3): four sections, the tabs, the profile, the diary with charts, the quest decline, the turn card of the world ================= */
+.s3.land .s3-b{width:calc(252px*var(--u));height:calc(58px*var(--u));gap:calc(16px*var(--u))}
+.s3.land .s3-b b{font-size:calc(13.5px*var(--u));letter-spacing:.34em}
+.s3.land .s3-b b.lg{font-size:calc(12px*var(--u));letter-spacing:.16em}
+.s3.port .s3-b{height:52px}
+.s3.port .s3-b b{font-size:10.5px;letter-spacing:.2em}
+@media (max-height:460px){ .s3.land .s3-b{height:calc(48px*var(--u))} }
+/* the tabs of a window (Рейд · Отряд · Рейтинг; Статус · Коллекция теней; the diary's day · week · month) */
+.s3-tabs{--c:#5fd0ff;display:flex;gap:4px;margin:0 0 12px;padding:0 0 1px;border-bottom:1px solid color-mix(in srgb,var(--c) 32%,transparent);position:relative;z-index:4}
+.s3-tabs button{appearance:none;flex:1;min-width:0;min-height:40px;display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 6px;border:1px solid transparent;border-bottom:0;background:transparent;cursor:pointer;
+  font:700 10.5px/1.15 "Unbounded","Exo 2",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7f93bb;transition:color .2s,background .2s,border-color .2s}
+.s3-tabs button i{flex:none;width:6px;height:6px;transform:rotate(45deg);border:1px solid currentColor;opacity:.6}
+.s3-tabs button:hover{color:#d4e2ff}
+.s3-tabs button.on{color:#fff;border-color:color-mix(in srgb,var(--c) 60%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 22%,transparent),color-mix(in srgb,var(--c) 6%,transparent));box-shadow:inset 0 -2px 0 var(--c),0 0 14px color-mix(in srgb,var(--c) 22%,transparent);text-shadow:0 0 10px color-mix(in srgb,var(--c) 70%,transparent)}
+.s3-tabs button.on i{background:var(--c);border-color:var(--c);opacity:1;box-shadow:0 0 6px var(--c)}
+.s3-tabs button:focus-visible{outline:1px solid #fff;outline-offset:-2px}
+@media (max-width:420px){ .s3-tabs button{font-size:9px;letter-spacing:.08em;gap:5px} }
+/* a tab switch is one window changing its page — no flash, no unfolding */
+#ui .holo.s3w.s3tsw .holo-frame{animation:none}
+#ui .holo.s3w.s3tsw .s3w-fl{display:none}
+#ui .holo.s3w.s3tsw .s3w-c,#ui .holo.s3w.s3tsw .s3w-n{animation:none}
+.s3-rdl .rd-lim{margin-top:8px;font:500 12px "Exo 2",sans-serif;color:#9fb4d8}
+.s3-kv.hot b{color:#ffb38a}
+.btn.s3-no{border-color:rgba(143,166,204,.45);color:#b8c6de}
+/* the diary */
+.dv-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 2px}
+.dv-nav b{font:700 12px "Unbounded","Exo 2",sans-serif;letter-spacing:.24em;color:#e6f2ff}
+.dv-a{appearance:none;width:40px;height:34px;border:1px solid rgba(95,208,255,.4);background:rgba(20,50,100,.25);color:#bfe8ff;font:700 18px "Exo 2",sans-serif;cursor:pointer}
+.dv-a:disabled{opacity:.3;cursor:default}
+.dv-word{margin:6px 0 2px;line-height:1.5;text-transform:none}
+.s3-tiles b.xp{color:#ffd68a}.s3-tiles b i{font-style:normal;font-size:12px;color:#7f93bb}
+.dv-ch{margin:2px 0 0}
+.dv-svg{display:block;width:100%;height:auto;overflow:visible;font-family:"Exo 2",sans-serif}
+.dv-svg line.g{stroke:rgba(110,170,255,.16);stroke-width:1;stroke-dasharray:2 4}.dv-svg line.b{stroke:rgba(140,190,255,.42);stroke-width:1}
+.dv-svg .ya{font:500 10px ui-monospace,Menlo,monospace;fill:#6c86ad;text-anchor:end}
+.dv-svg .xa{font:600 10px ui-monospace,Menlo,monospace;fill:#7189b0;text-anchor:middle;letter-spacing:.06em}.dv-svg .xa.t{fill:#fff}
+.dv-svg .v{font:700 11px "Exo 2",sans-serif;fill:#e8f4ff;text-anchor:middle}
+.dv-b path{fill:#3d9bff;opacity:.8;filter:drop-shadow(0 0 4px rgba(80,170,255,.55))}.dv-b path.t{fill:#7fd8ff;opacity:1}
+.dv-b rect.z{fill:rgba(110,170,255,.25)}.dv-b rect.hit{fill:transparent;cursor:pointer}
+.dv-b:hover path,.dv-b.on path{opacity:1;fill:#9fe4ff}
+.dv-rd{min-height:20px;margin:2px 0 4px;font:500 12px "Exo 2",sans-serif;color:#9fb4d8}.dv-rd b{color:#fff}
+.dv-svg.sph .sl{font:600 12.5px "Exo 2",sans-serif;fill:#d6e6ff}.dv-svg.sph .sv{font:600 11px ui-monospace,Menlo,monospace;fill:#9fb4d8;text-anchor:end}
+.dv-svg.sph .tr{fill:rgba(60,100,170,.16)}
+.dv-svg.xp{margin:8px 0 4px}
+.dv-lg{display:flex;flex-wrap:wrap;gap:6px 16px;font:500 12px "Exo 2",sans-serif;color:#c4d6f0}.dv-lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+@media (max-width:559px){ .dv-svg.sph .sl{font-size:12px} .dv-svg.sph .sv{font-size:10.5px} }
+/* the world on a phone held upright: turn it (the phone in the picture goes from upright to lying) */
+.wd-turn.toland{z-index:96}
+.wd-turn.toland .ph i{transform:rotate(0);animation:wdTurnL 3.4s cubic-bezier(.5,0,.2,1) infinite}
+@keyframes wdTurnL{0%,22%{transform:rotate(0)}52%,86%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+.wd-turn small{font:600 10px ui-monospace,Menlo,monospace;letter-spacing:.32em;color:#7fc0ff}
+@media (prefers-reduced-motion:reduce){ .wd-turn.toland .ph i{animation:none;transform:rotate(-90deg)} }
 </style>
 </head>
 <body>
@@ -4163,7 +4216,7 @@ function modal({id,title,icon="!",body,cls="",blocking=true,accent=null,closable
   ui.appendChild(el); open.set(id,{el,blocking,closable}); sfx.open(); refreshShade();
   if(closable) el.querySelector(".x").onclick=()=>closeModal(id);
   if(/\bs3x\b/.test(cls)&&typeof sy3Deco==="function") sy3Deco(el);
-  if(onMount) onMount(el); return el; }
+  if(onMount) onMount(el); if(typeof sy3TabsOn==="function") sy3TabsOn(id,el); /* 20.10: the tabs of the System's windows (sys3w.js) */ return el; }
 function closeModal(id,instant=false){ const m=open.get(id); if(!m) return; open.delete(id); refreshShade(); if(instant){ m.el.remove(); return; } sfx.close(); m.el.classList.add("closing"); setTimeout(()=>m.el.remove(),340); }
 function anyBlocking(except){ return [...open.entries()].some(([k,m])=>k!==except && m.blocking); }
 function refreshShade(){ $("shade").classList.toggle("on",anyBlocking()); }
@@ -4184,7 +4237,8 @@ const RANK_NAME=l=>RANK_NEED[rankIdx(l)].r;   /* the one letter of a level — t
 function hud(){ if(P.riftHold&&typeof riftHoldFix==="function") riftHoldFix(); const set=(id,v)=>{ const e=$(id); if(e) e.textContent=v; }; set("hudLvl",P.level); if(typeof mana==="function") set("hudMana",Math.floor(mana())); const x=$("hudXp"); if(x) x.style.width=(P.xp/P.xpNext*100)+"%";
   set("hudStreak",P.streak); set("hudCoins",coinFmt(P.coins)); set("hudName",P.name||"Пробуждённый"); set("hudCls",`Пробуждённый ранга ${RANK_NAME(P.level)}`); }
 function bumpEl(id){ const e=$(id); if(!e) return; const p=e.parentElement; p.classList.remove("bump"); void p.offsetWidth; p.classList.add("bump"); }
-function addXp(n){ P.xp+=n; if(typeof progXp==="function") progXp(n); let ups=0; while(P.xp>=P.xpNext){ P.xp-=P.xpNext; P.level++; P.xpNext=xpNeed(P.level); ups++; } hud(); saveP(); return ups; }
+/* src: "deed" (a real deed) | "game" (everything in the world); 20.10 — the day's split is kept for the diary (P.xpd: {day:{r,g}}, two weeks… two months) */
+function addXp(n,src){ P.xp+=n; try{ const td=todayKey(), D=P.xpd||(P.xpd={}), d=D[td]||(D[td]={r:0,g:0}); d[src==="deed"?"r":"g"]+=n; const ks=Object.keys(D); if(ks.length>70){ ks.sort(); ks.slice(0,ks.length-70).forEach(k=>delete D[k]); } }catch(e){} if(typeof progXp==="function") progXp(n); let ups=0; while(P.xp>=P.xpNext){ P.xp-=P.xpNext; P.level++; P.xpNext=xpNeed(P.level); ups++; } hud(); saveP(); return ups; }
 async function levelUpFx(noProg){ playFile("lvl",.8); flash(); const r0=RANK_NAME(P.level-1), r1=RANK_NAME(P.level); if(r0!==r1){ if(!cineTitle("РАНГ "+r1,"ты стал Пробуждённым ранга "+r1,"gold",{ms:2500})) banner("РАНГ "+r1,"ты стал Пробуждённым ранга "+r1,"#b58cff"); await wait(3000); } banner("УРОВЕНЬ "+P.level,"сила и здоровье в бою выросли","#ffd166"); await wait(2600); if(typeof progRank==="function"&&!noProg){ const pr=progRank(true); if(pr.length) await progPop(pr); } }
 /* for tuning: the table level → total experience → hours of play, and the measured experience per hour of play in this save */
 function xpTable(){ return [2,4,8,10,12,15,20,25,30,40].map(l=>({l,xp:xpTotal(l),h:+(xpTotal(l)/XP_PLAY_H).toFixed(1),rank:RANK_NEED[rankByLevel(l)].r})); }
@@ -4498,9 +4552,11 @@ function mockModel(cx,cz){ const rng=seeded(hashStr("mock:"+Math.round(cx/500)+"
 /* ===== c1-world.js ===== */
 /* ================= FIRST-PERSON NEON CITY ================= */
 const canvas=$("scene");
-const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:"high-performance"});
+/* 20.10 (sys3, Anton: «всё ещё мыльно — сделай качество сразу ахуенным и в 60 фпс»): antialias on; the default «Высокое» draws at the screen's own density
+   (a phone up to 3×, a computer up to 2×); the player lowers it in the settings (GFX_T, fp-sky.js). Before: 1.5× on a phone, then 1.25× («Обычно») and 1× after a slow second */
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});
 const LOWQ=/[?&]low/.test(location.search);
-let PR=Math.min(window.devicePixelRatio||1,isTouch?1.5:1.75); if(LOWQ) PR=1;
+let PR=Math.min(window.devicePixelRatio||1,isTouch?3:2); if(LOWQ) PR=1;
 renderer.setPixelRatio(PR); renderer.toneMapping=THREE.NoToneMapping;
 /* a phone may drop the graphics context when the app sleeps in the background: progress is saved, so just come back cleanly */
 renderer.domElement.addEventListener("webglcontextlost",e=>{ e.preventDefault(); try{ saveP(); }catch(x){} },false);
@@ -4513,7 +4569,7 @@ const composer=new THREE.EffectComposer(renderer); composer.setPixelRatio(PR);
 const renderPass=new InkRenderPass(scene,camera,{strength:1,colorEdges:.5,farFade:420}); composer.addPass(renderPass);
 const bloom=new THREE.UnrealBloomPass(new THREE.Vector2(512,512),isTouch?.7:.8,.55,.4); composer.addPass(bloom);
 const toneP=new THREE.ShaderPass(THREE.ACESFilmicToneMappingShader); toneP.uniforms.exposure.value=1.25; composer.addPass(toneP); const gradeP=mkGrade(); composer.addPass(gradeP);
-function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h,false); composer.setSize(w,h); bloom.resolution.set(w/2,h/2); if(typeof gradeP!=="undefined") gradeP.uniforms.res.value.set(w,h); camera.aspect=w/h; camera.fov=w<h?74:(w/h>1.9?58:66); camera.updateProjectionMatrix(); if(window.__hubResize) window.__hubResize(w,h); }
+function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h,false); /* 20.10: the canvas CSS box = exactly the size the buffer was made for (100vw/100dvh could differ from innerWidth/innerHeight and stretch the picture) */ canvas.style.width=w+"px"; canvas.style.height=h+"px"; composer.setSize(w,h); bloom.resolution.set(w/2,h/2); if(typeof gradeP!=="undefined") gradeP.uniforms.res.value.set(w,h); camera.aspect=w/h; camera.fov=w<h?74:(w/h>1.9?58:66); camera.updateProjectionMatrix(); if(window.__hubResize) window.__hubResize(w,h); }
 addEventListener("resize",resize); resize();
 scene.add(new THREE.HemisphereLight(0x9aa6ff,0x2a1840,1.1));
 const UNI={ time:{value:0}, lit:{value:.62} };
@@ -5258,7 +5314,7 @@ function towerCard(t){ const d=towerDist(t), near=d<28;
     onMount:el=>{ const go=el.querySelector("#twGo")||el.querySelector("#twHere"); if(go) go.onclick=()=>{ closeModal("tower"); syncTower(t); }; const r=el.querySelector("#twRoute"); if(r) r.onclick=()=>{ closeModal("tower"); routeToXZ(t.x,t.z,t.name); }; }}); }
 async function syncTower(t){ clearRoute(); P.towers=P.towers||{}; P.towers[t.id]=todayKey(); P.towersEver=P.towersEver||{}; P.towersEver[t.id]=1; P.syncs=(P.syncs||0)+1; t.synced=true; saveP();
   scene.remove(t.g); const i=towerHits.findIndex(h=>h.userData.tower===t); if(i>=0) towerHits.splice(i,1); buildTowerObj(t);
-  sfx.gate(); flash(); banner("СИНХРОНИЗАЦИЯ",t.name,"#6dffb0"); await wait(1800); const ups=addXp(40); if(ups) await levelUpFx();
+  sfx.gate(); flash(); banner("СИНХРОНИЗАЦИЯ",t.name,"#6dffb0"); await wait(1800); const ups=typeof gameXp==="function"?gameXp(40):addXp(40); if(ups) await levelUpFx();
   toast(`Связь с районом восстановлена · синхронизаций: ${P.syncs}`,"#6dffb0"); }
 function routeToXZ(x,z,name){ const ll=fromLocal(x,z); const fake={lat:ll.lat,lng:ll.lng,type:"WILL",rank:"◈",name,fakeTower:true}; routeTarget=null; const me=player.local; let path=findPath(me.x,me.z,x,z); if(!path||path.length<2) path=[[me.x,me.z],[x,z]]; routePath=path; chevMat.color.set(0x9fe8ff);
   toast(`Путь к ${name} · ${fmtDist(Math.hypot(x-me.x,z-me.z))}`,"#9fe8ff"); }
@@ -28629,7 +28685,7 @@ function vilTalk(Z,V,N){ const es0=errState(V); if(!es0.seen){ es0.seen=1; saveP
   if(!E){ modal({id:"vil",title:N.n,icon:"✦",accent:N.c,closable:true,body:`<div class="holo-text"><p>«Ты сделал для нас больше, чем мы просили. Иди к Хозяину этих земель — ключ у него.»</p></div><div class="actions"><button class="btn primary" id="vOk">Пойду</button></div>`,onMount:el=>el.querySelector("#vOk").onclick=()=>closeModal("vil")}); return; }
   const ready=es.on&&errReady(V,es,E); const prog=E.k==="kill"?`${es.n}/${E.n}`:E.k==="fetch"?(es.got?"найдено":"ещё не найдено"):E.k==="cave"?(es.n||caveDone(E.cave)?"зачищено":"не зачищено"):"";
   modal({id:"vil",title:N.n,icon:"✦",accent:N.c,closable:true,body:`<div class="holo-sub">${V.n} · поручение ${es.i+1} из ${V.err.length}</div><div class="holo-text"><p><b>${E.t}.</b> ${E.d}</p></div>
-    ${es.on?`<div class="kv"><span>Сейчас</span><b>${prog}</b></div>`:""}<div class="kv"><span>Награда</span><b>◉ ${E.coins} · опыт ${E.xp}${E.k!=="kill"?" · вещь":""}</b></div>
+    ${es.on?`<div class="kv"><span>Сейчас</span><b>${prog}</b></div>`:""}<div class="kv"><span>Награда</span><b>◉ ${E.coins} · опыт ${xpG(E.xp)}${E.k!=="kill"?" · вещь":""}</b></div>
     <div class="actions">${ready?`<button class="btn primary" id="vDone">Сдать поручение</button>`:es.on?`<button class="btn ghost" id="vOk">Понял</button>`:`<button class="btn ghost" id="vNo">Не сейчас</button><button class="btn primary" id="vTake">Взяться</button>`}</div>`,
     onMount:el=>{ const b=id=>el.querySelector(id); if(b("#vOk")) b("#vOk").onclick=()=>closeModal("vil"); if(b("#vNo")) b("#vNo").onclick=()=>closeModal("vil");
       if(b("#vTake")) b("#vTake").onclick=()=>{ es.on=1; es.n=0; es.got=0; saveP(); closeModal("vil"); fpSys(`Поручение: ${E.t}`,"gold",3000); if(E.k==="fetch"||E.k==="cave") fpHint("Место отмечено на карте и на компасе",2600); };
@@ -29545,17 +29601,25 @@ function dnHud(){ let el=$("fpWx"); if(!el){ const mini=document.querySelector("
    · light shafts and blob shadows: one instanced draw call each. */
 /* 14.10 (Anton: «айфон грелся за час» → авто-экономия + «Экономно / Обычно / Красиво»): prT — the pixel ratio on a phone (pr — on a computer),
    fpsT / fpsP — the frame cap on a phone / a computer (0 — no cap). A phone starts at «Обычно»: 30 frames and a lower resolution */
+/* 20.10 (sys3): «Высокое» is the default everywhere — the full density of the screen (a phone up to 3×, a computer up to 2×) and 60 frames (no cap on a computer);
+   «Среднее» — 2× / 1.5×, 60 frames; «Низкое» — 1×, 30 frames. «Авто» (the old saving mode that steps down by itself) is a choice in the settings, never the default */
 const GFX_T={
-  low: { id:"low",  n:"экономно", q:0, pr:1,    prT:1,    fpsT:30, fpsP:30, viewK:.82, det:30, detK:.42, propK:.74, part:160, shaft:0,  blobP:0, lodD:70,  bloom:.55 },
-  mid: { id:"mid",  n:"обычно",   q:1, pr:1.5,  prT:1.25, fpsT:30, fpsP:60, viewK:1,   det:46, detK:1,   propK:1,   part:420, shaft:10, blobP:1, lodD:105, bloom:.7 },
-  high:{ id:"high", n:"красиво",  q:2, pr:1.75, prT:1.5,  fpsT:60, fpsP:0,  viewK:1.18,det:76, detK:1.45,propK:1.3, part:900, shaft:22, blobP:1, lodD:160, bloom:.75 } };
+  low: { id:"low",  n:"низкое", q:0, pr:1,    prT:1,    fpsT:30, fpsP:30, viewK:.82, det:30, detK:.42, propK:.74, part:160, shaft:0,  blobP:0, lodD:70,  bloom:.55 },
+  mid: { id:"mid",  n:"среднее",  q:1, pr:1.5,  prT:2,    fpsT:60, fpsP:60, viewK:1,   det:46, detK:1,   propK:1,   part:420, shaft:10, blobP:1, lodD:105, bloom:.7 },
+  high:{ id:"high", n:"высокое",  q:2, pr:2,    prT:3,    fpsT:60, fpsP:0,  viewK:1.18,det:76, detK:1.45,propK:1.3, part:900, shaft:22, blobP:1, lodD:160, bloom:.75 } };
 const GFX={ T:GFX_T.mid, id:"mid", auto:true, probe:null, ver:0, last:{}, skipN:0, drawN:0, lowBat:false, capTest:typeof TEST!=="undefined"&&TEST&&/[?&]fpscap/.test(location.search) };
 const W_MATS=[];                         /* every material of the open world that has a tier (GQ) inside */
 const gfxAutoId=()=>GFX.lowBat?"low":isTouch?"mid":"high";
-function gfxInit(){ const auto=!(P.gfx&&GFX_T[P.gfx]); const id=auto?(GFX.drops&&GFX.ver?GFX.id:gfxAutoId()):P.gfx; GFX.auto=auto; gfxSet(id,true,true); }
+/* P.gfx: "high" | "mid" | "low" | "auto"; nothing saved = "high" (20.10) */
+const gfxAutoOn=()=>P.gfx==="auto";
+const gfxSaved=()=>P.gfx&&GFX_T[P.gfx]?P.gfx:"high";
+function gfxInit(){ const auto=gfxAutoOn(); const id=auto?(GFX.drops&&GFX.ver?GFX.id:gfxAutoId()):gfxSaved(); GFX.auto=auto; gfxSet(id,true,true); }
+/* the quality of the System follows the same choice (sys3d.js sy3PR reads P.set.s3q) */
+const GFX_S3={ high:"hi", mid:"mid", low:"lo" };
+function gfxS3(id){ try{ const S=setGet(); S.s3q=GFX_S3[id]||"hi"; if(typeof SY3!=="undefined"&&SY3.built&&SY3.on&&typeof sy3Lay==="function") sy3Lay(); }catch(e){} }
 const gfxName=()=>GFX.T.n;
 /* sets the tier. keep — do not write the choice into the save (the automatic pick); quiet — no message */
-function gfxSet(id,quiet,keep){ const T=GFX_T[id]||GFX_T.mid; const same=GFX.id===T.id&&GFX.ver>0; GFX.T=T; GFX.id=T.id; GFX.ver++; if(!keep){ P.gfx=T.id; GFX.auto=false; saveP(); }
+function gfxSet(id,quiet,keep){ const T=GFX_T[id]||GFX_T.mid; const same=GFX.id===T.id&&GFX.ver>0; GFX.T=T; GFX.id=T.id; GFX.ver++; if(!keep){ P.gfx=T.id; GFX.auto=false; gfxS3(T.id); saveP(); }
   if(typeof perf!=="undefined"&&perf.tier<1){ const pr=Math.min(window.devicePixelRatio||1,isTouch?T.prT:T.pr); if(pr!==PR){ PR=pr; renderer.setPixelRatio(PR); composer.setPixelRatio(PR); resize(); } }
   const Z=WORLD.Z; if(Z&&!same) gfxApply(Z); if(!quiet) toast("Графика: "+T.n,"#7fe9ff"); }
 /* everything that depends on the tier is refreshed here: shader defines, counts, the ground detail */
@@ -29572,14 +29636,17 @@ function gfxProbe(){ if(!GFX.auto||(TEST&&!GFX.capTest)||GFX.id==="low"||FP.paus
 /* the frame cap: the tier's own (30 on a phone), and while a window or the pause covers the world — 20 (the world stands still under it) */
 function gfxFps(){ return isTouch?GFX.T.fpsT:GFX.T.fpsP; }
 function gfxCap(){ if(typeof TEST!=="undefined"&&TEST&&!GFX.capTest) return 0; let c=gfxFps(); const fpOn=typeof FP!=="undefined"&&FP.on;
-  const still=fpOn?(FP.paused||(anyBlocking()&&!FP.cine&&!open.has("cine"))):(typeof anyBlocking==="function"&&anyBlocking()); if(still) c=c?Math.min(c,20):20; return c; }
+  const sys=typeof SY3!=="undefined"&&SY3.on; /* 20.10: the 3D System keeps moving behind its own windows — no 20-frame cap there */
+  const still=fpOn?(FP.paused||(anyBlocking()&&!FP.cine&&!open.has("cine"))):(!sys&&typeof anyBlocking==="function"&&anyBlocking()); if(still) c=c?Math.min(c,20):20; return c; }
 /* true — skip this animation frame (the loop is called again next frame); key: "fp" the fight loop, "hub" the refuge */
 function gfxSkip(now,key){ const c=gfxCap(); if(!c){ GFX.drawN++; return false; } const L=GFX.last[key]||0; if(now-L<1000/c-3&&now>=L){ GFX.skipN++; return true; } GFX.last[key]=now; GFX.drawN++; return false; }
 /* at the start (main.js, after the save is read): the tier for the refuge too, before the world is built; a phone on a low battery starts «Экономно» */
 function gfxBoot(){ try{ if(navigator.getBattery) navigator.getBattery().then(b=>{ const f=()=>{ const lo=b.level<.2&&!b.charging; if(lo!==GFX.lowBat){ GFX.lowBat=lo; if(GFX.auto) gfxSet(gfxAutoId(),true,true); } }; f(); b.addEventListener("levelchange",f); b.addEventListener("chargingchange",f); }).catch(()=>{}); }catch(e){}
-  const id=P.gfx&&GFX_T[P.gfx]?P.gfx:gfxAutoId(); GFX.auto=!(P.gfx&&GFX_T[P.gfx]); gfxSet(id,true,true); }
+  /* 20.10: once — every old save starts at «Высокое» (the old automatic steps — P.perf, «Обычно» on a phone — were the blur Anton saw) */
+  if((P.gfxV||0)<2){ P.gfxV=2; P.gfx="high"; P.perf=0; try{ setGet().s3q="hi"; }catch(e){} saveP(); }
+  GFX.auto=gfxAutoOn(); const id=GFX.auto?gfxAutoId():gfxSaved(); gfxSet(id,true,true); }
 /* the pause menu: one button (the hook in fpMenu calls these two) */
-function gfxMenuBtn(){ return `<button class="btn" id="fmGfx">◐ Графика: ${GFX.T.n}${GFX.auto?" · авто":""}</button>`; }
+function gfxMenuBtn(){ return `<button class="btn" id="fmGfx">◐ Качество: ${GFX.T.n}${GFX.auto?" · авто":""}</button>`; }
 function gfxMenuBind(el){ const b=el.querySelector("#fmGfx"); if(b) b.onclick=()=>{ gfxNext(); closeModal("fpm",true); fpMenu(); const d=document.querySelector("#m-fpm details,.mn-more"); if(d) d.open=true; }; }
 /* ---------- the shared light ---------- */
 const WU={ sunDir:{value:new THREE.Vector3(-.35,.8,-.45).normalize()}, sunC:{value:new THREE.Color(1,1,1)}, mist:{value:new THREE.Vector4(0,0,.25,.02)}, fogSun:{value:new THREE.Color(0,0,0)},
@@ -31224,8 +31291,8 @@ async function storyAfterGate(){ const C=camp(), ch=chNow(); if(!ch||!C.ready) r
   await storyScene(ch.out||[],head); if(ch.setFlag){ C.flags[ch.setFlag]=1; saveP(); } if(ch.choice&&ch.choice.at==="out") await storyChoice(ch,head); if(ch.epi) await storyScene(ch.epi,head);
   const last=C.ch===SEASON.ch.length-1; if(C.ch===6&&!P.title) P.title="Пробуждённый";
   if(last){ P.title=C.flags.endArise?"Наследник Трона":"Освободитель №0"; if(C.flags.endArise) armyZero(); }
-  const xp=60+C.ch*15, coins=30+C.ch*10; coinAdd(coins,"story"); const ups=addXp(xp); hud(); sfx.chest();
-  await new Promise(r=>modal({id:"chdone",title:`Глава ${C.ch+1} пройдена`,icon:"📖",accent:"#b58cff",body:`<div class="notif-text gold">${ch.t}<small>+${xp} опыта · ◉ ${coins}${last?` · титул «${P.title}»`:C.ch===6?" · титул «Пробуждённый»":""}</small></div>
+  const xp=60+C.ch*15, coins=30+C.ch*10; coinAdd(coins,"story"); const ups=typeof gameXp==="function"?gameXp(xp):addXp(xp); hud(); sfx.chest();
+  await new Promise(r=>modal({id:"chdone",title:`Глава ${C.ch+1} пройдена`,icon:"📖",accent:"#b58cff",body:`<div class="notif-text gold">${ch.t}<small>+${xpG(xp)} опыта · ◉ ${coins}${last?` · титул «${P.title}»`:C.ch===6?" · титул «Пробуждённый»":""}</small></div>
     ${ch.tease?`<div class="holo-text" style="margin-top:6px"><p>Дальше: <b>${ch.tease}</b></p><p class="dim">Следующая глава откроется завтра. А сегодня твои Врата никуда не делись.</p></div>`:`<div class="holo-text" style="margin-top:6px"><p class="dim">Сезон пройден. Врата, Тени и Двойник — каждый день. Сезон 2 уже пишется.</p></div>`}
     <div class="actions"><button class="btn ghost" id="cdSh">↗ Поделиться</button><button class="btn primary" id="cdOk">${ch.tease?"До завтра":"Свободная охота"}</button></div>`,onMount:el=>{ el.querySelector("#cdOk").onclick=()=>{ closeModal("chdone"); r(); }; el.querySelector("#cdSh").onclick=async()=>{ closeModal("chdone",true); await shareCard("chapter",{n:C.ch+1,t:ch.t,tease:ch.tease}); r(); }; }}));
   if(ups) await levelUpFx(); C.ch++; C.prog=0; C.doneDay=todayKey(); if(C.ch>=SEASON.ch.length) C.fin=true; saveP(); storyChip(); if(MODE==="hub"){ hubGatesRebuild(); } }
@@ -31405,7 +31472,7 @@ async function maybeUrgent(force){ const td=todayKey(); if(!force&&(P.urgentDay=
     <div class="actions"><button class="btn ghost" id="ugNo">Не сейчас</button><button class="btn primary big" id="ugGo">Принять</button></div>`,onMount:el=>{ el.querySelector("#ugNo").onclick=()=>{ closeModal("urgent"); r(false); }; el.querySelector("#ugGo").onclick=()=>{ closeModal("urgent"); r(true); }; }}));
   if(!go) return; const g=mkPersonalGate(deed,88,1,{urgent:true,rank:"D"}); g.amt=amt; g.name=D.n; g.deadline=Date.now()+180000; urgentTimer(g); doDeed(g); }
 let urgIv=null; function urgentTimer(g){ const el=$("urgentT"); el.classList.add("on"); clearInterval(urgIv); urgIv=setInterval(()=>{ const left=Math.max(0,g.deadline-Date.now()); el.innerHTML=`<b>СРОЧНО</b> ${fmtS(left/1000)}`; if(left<=0||g.done){ clearInterval(urgIv); el.classList.remove("on"); } },250); }
-async function urgentReward(g){ $("urgentT").classList.remove("on"); const inTime=Date.now()<=g.deadline; if(inTime){ const ups=addXp(gateReward(g).xp); hud(); sfx.chest(); flash();
+async function urgentReward(g){ $("urgentT").classList.remove("on"); const inTime=Date.now()<=g.deadline; if(inTime){ const ups=addXp(gateReward(g).xp,"deed"); hud(); sfx.chest(); flash();
     await new Promise(r=>modal({id:"ugw",title:"Срочный квест выполнен",icon:"✓",accent:"#ffd166",body:`<div class="notif-text gold">Успел!<small>двойной опыт</small></div><div class="actions"><button class="btn primary" id="uOk">Отлично</button></div>`,onMount:el=>el.querySelector("#uOk").onclick=()=>{ closeModal("ugw"); r(); }})); if(ups) await levelUpFx(); }
   else toast("Время вышло — дело засчитано, но без сундука"); }
 /* ---------- hub visuals: the giant Shadow over the city ---------- */
@@ -31737,7 +31804,16 @@ document.addEventListener("click",e=>{ const b=e.target&&e.target.closest?e.targ
 
 /* ---------- fights give experience too — slower than real deeds (a 20-minute deed ≈ an hour of fighting) ---------- */
 let _xpLock=false;
-async function combatXp(n){ if(PL.override||!n) return; const ups=addXp(Math.round(n)); P.fightXp=(P.fightXp||0)+Math.round(n); if(ups){ plStats(); if(FP.on){ PL.hp=PL.max; } if(!_xpLock){ _xpLock=true; await levelUpFx(); _xpLock=false; } if(FP.on) fpSys("Уровень вырос в бою. Дела в жизни растят его втрое быстрее","gold",3600); } }
+/* 20.10 (sys3, Anton: «за квесты хочу больше опыта, чем в игре: чтобы прогрессировать в игре, в любом случае нужно выполнять реальные дела»; 11:30 — «реальные дела ≈80%, игра ≈20%»):
+   every source of experience in the game (kills, land and dungeon bosses, Gate clears, rare beasts, secrets, chests, errands, the wandering boss, the rift, the story, raids)
+   goes through here and is multiplied by XPG.k. Measured (test/sys3xp.py, a day of 3 deeds · 60 min + 30 min of play, level 18): the deeds gave 70.7% before (the game ≈2200 XP per hour of play, not the 900 of the old model), ≈80% with k = .6.
+   The fractions are kept (P.xpFrac), so a 1-XP kill still counts over time. Real deeds are untouched (deeds.js PAY.xpMin). */
+const XPG={ k:.6, dungeon:40, boss:[60,2], secret:30, errand:150, rare:80 };
+const xpG=n=>Math.round((+n||0)*XPG.k); /* what a game source shows on its card */
+function gameXpN(n){ const v=(+n||0)*XPG.k+(P.xpFrac||0), w=Math.floor(v+1e-9); P.xpFrac=Math.round((v-w)*1000)/1000; return w; }
+/* a game source outside a fight (the story, a raid, a world claim): the same share */
+function gameXp(n){ const w=gameXpN(n); if(w>0){ P.fightXp=(P.fightXp||0)+w; return addXp(w,"game"); } return 0; }
+async function combatXp(n){ if(PL.override||!n) return; n=gameXpN(n); if(!n) return; const ups=addXp(n,"game"); P.fightXp=(P.fightXp||0)+n; if(ups){ plStats(); if(FP.on){ PL.hp=PL.max; } if(!_xpLock){ _xpLock=true; await levelUpFx(); _xpLock=false; } if(FP.on) fpSys("Уровень вырос в бою. Но главный рост — реальные дела: они дают в разы больше опыта","gold",3600); } }
 
 /* ================= THE ARMY, NEW RULES (Anton, 02.10) =================
    1. Shadows have health and die. A fallen one waits ARMY_DOWN seconds in the storage, then can be raised again.
@@ -37354,7 +37430,7 @@ function homeSpendRows(L){ HOME_ORDER.forEach(k=>{ const l=homeLv(k); if(l>=HOME
    the feed «who did a deed today» where a friend confirms your deed («свидетель»); one boss of the squad a week — every real deed of
    every member is a hit; the shadows of friends stand at the manastones (fp-friend.js).
    Without a server: your card travels as a link (nickname, class, rank, hours — nothing else leaves the phone). */
-function lifeDayAdd(mins){ const d=P.lifeDay||(P.lifeDay={}); const k=todayKey(); d[k]=(d[k]||0)+Math.max(1,Math.round(mins)); const ks=Object.keys(d).sort(); while(ks.length>21) delete d[ks.shift()]; }
+function lifeDayAdd(mins){ const d=P.lifeDay||(P.lifeDay={}); const k=todayKey(); d[k]=(d[k]||0)+Math.max(1,Math.round(mins)); const ks=Object.keys(d).sort(); while(ks.length>62) delete d[ks.shift()]; } /* 20.10: two months for the diary (sys3w.js) */
 function weekMin(){ const d=P.lifeDay||{}; let s=0; for(let i=0;i<7;i++){ const t=new Date(Date.now()-i*864e5); s+=d[todayKey(t)]||0; } return s; }
 function myCard(){ const c=typeof clsActive==="function"?clsActive():null; return { n:(P.name||"Пробуждённый").slice(0,20), c:c||"", r:RANK_NAME(P.level||1), l:P.level||1, w:Math.round(weekMin()), t:Math.round(typeof rankMin==="function"?rankMin():lifeTotal()), id:P.sqId||(P.sqId=Math.random().toString(36).slice(2,10)), at:todayKey() }; }
 function cardLink(){ const j=JSON.stringify(myCard()); const b=btoa(unescape(encodeURIComponent(j))).replace(/=+$/,""); return location.origin+location.pathname+"?squad="+encodeURIComponent(b); }
@@ -39123,7 +39199,7 @@ function wideTut(){ const a=$("tutArrow"); if(!a||!a.classList.contains("on")||t
 function wideSync(){ if(!isTouch) return; const w=innerWidth, h=innerHeight, land=w>h, first=!WD.w, turned=!first&&land!==WD.land; WD.w0=WD.w; WD.w=w; WD.h=h; WD.land=land; WD.phone=widePhone();
   const L=wideLefty(); if(L!==WD.lefty||first){ WD.lefty=L; document.body.classList.toggle("wd-lefty",L); }
   if(turned){ WD.turns++; WD.stay=false; wideRelease(); wideRelay(); if(land&&WD.phone&&FP.on&&!P.wideTip){ P.wideTip=1; saveP(); } }
-  wideCard(); }
+  wideCard(); wideFpCard(); }
 /* some browsers tell about the turn before the page has its new size: look again a few times and pass the news on as a resize */
 function wideKick(){ [0,90,280,650].forEach(ms=>setTimeout(()=>{ if(innerWidth!==WD.w||innerHeight!==WD.h) window.dispatchEvent(new Event("resize")); },ms)); }
 /* the lock-on button of the landscape cluster (made once, on a touch screen only) */
@@ -39137,7 +39213,7 @@ function wideParts(){ const fp=$("fp"); if(!fp||$("fpLock")) return; const box=f
 /* three times a second: the lock-on button, the boss bar's room, the left-handed switch, the hub card, the hint; and a turn the browser did not report */
 function wideWatch(){ if(innerWidth!==WD.w||innerHeight!==WD.h){ window.dispatchEvent(new Event("resize")); if(innerWidth!==WD.w||innerHeight!==WD.h) wideSync(); return; }
   const L=wideLefty(); if(L!==WD.lefty){ WD.lefty=L; document.body.classList.toggle("wd-lefty",L); }
-  wideCard(); if(!FP.on){ WD.zone=null; return; } wideParts(); const fp=$("fp"); if(!fp) return;
+  wideCard(); wideFpCard(); if(!FP.on){ WD.zone=null; return; } wideParts(); const fp=$("fp"); if(!fp) return;
   const B=FP.boss, boss=!!(B&&(B.alive||B.dying)); if(boss!==WD.boss){ WD.boss=boss; fp.classList.toggle("wd-boss",boss); }
   const lb=$("fpLock"); if(lb){ const lk=!!(FP.lock&&FP.lock.alive); let on=lk; if(!on&&(WD.land||(typeof hudLive==="function"&&hudLive()))&&!PL.dead) for(const e of FP.ents){ if(e.alive&&!e.ghost&&Math.hypot(e.x-PL.x,e.z-PL.z)<20){ on=true; break; } }
     const k=(on?"1":"0")+(lk?"1":"0"); if(k!==WD.lockK){ WD.lockK=k; lb.classList.toggle("wd-on",on); lb.classList.toggle("on",lk); }
@@ -39146,7 +39222,7 @@ function wideWatch(){ if(innerWidth!==WD.w||innerHeight!==WD.h){ window.dispatch
   if(FP.zone!==WD.zone){ WD.zone=FP.zone; WD.hintT=performance.now()+1600; if(WD.land&&WD.phone&&!P.wideTip){ P.wideTip=1; saveP(); } }
   if(WD.hintT&&performance.now()>WD.hintT) wideHint(); }
 /* once in a life, entering the world or a Gate with the phone upright: a soft line, three seconds */
-function wideHint(){ if(P.wideTip||!FP.on||!WD.phone||WD.land||(TEST&&!window.__wideHint)){ WD.hintT=0; return; } const Z=FP.zone; if(!Z||Z.prologue||Z.tut||(typeof TUT!=="undefined"&&TUT.on)){ WD.hintT=0; return; }
+function wideHint(){ if(true||P.wideTip||!FP.on||!WD.phone||WD.land||(TEST&&!window.__wideHint)){ WD.hintT=0; return; } const Z=FP.zone; if(!Z||Z.prologue||Z.tut||(typeof TUT!=="undefined"&&TUT.on)){ WD.hintT=0; return; }
   if(anyBlocking()||FP.cine||PL.dead||document.body.classList.contains("fpguide")||$("fpHint").classList.contains("on")) return; /* later: something else is on the screen */
   WD.hintT=0; P.wideTip=1; saveP(); fpHint("Поверни телефон — в бою так удобнее",3000); }
 /* the hub and the deeds are made for a phone held upright: on a phone lying on its side a calm card asks to turn it (never on a tablet or a computer, never over a camera deed) */
@@ -39157,6 +39233,18 @@ function wideCard(){ const on=wideHubOn(); WD.hubN=on?WD.hubN+1:0; let el=$("wdT
   if(!el){ el=document.createElement("div"); el.id="wdTurn"; el.className="wd-turn"; el.setAttribute("role","dialog"); el.innerHTML=`<div class="ph"><i></i></div><b>Система удобнее вертикально</b><span>поверни телефон</span><button id="wdStay">Оставить так</button>`; document.body.appendChild(el);
     el.querySelector("#wdStay").onclick=e=>{ e.stopPropagation(); WD.stay=true; wideCard(); }; ["pointerdown","pointerup","click","touchstart"].forEach(t=>el.addEventListener(t,e=>e.stopPropagation())); }
   if(!el.classList.contains("on")){ el.classList.add("on"); void el.offsetWidth; el.classList.add("in"); } }
+/* 20.10 (sys3, Anton, answer 9: «мир Врат (бой) на телефоне — тоже только горизонтально»): a phone held upright in the world or a Gate gets the card
+   «Поверни телефон» over everything, and the fight waits (FP.paused) until the phone lies on its side. In the open world a quiet way out to the System */
+function wideFpOn(){ return isTouch&&WD.phone&&!WD.land&&typeof FP!=="undefined"&&FP.on&&!document.querySelector(".camov")&&!(typeof TEST!=="undefined"&&TEST&&window.__noTurn); }
+function wideFpCard(){ const on=wideFpOn(); let el=$("wdFp");
+  if(!on){ if(el&&el.classList.contains("on")){ el.classList.remove("in"); el.classList.remove("on"); } if(WD.fpPause){ WD.fpPause=false; if(typeof FP!=="undefined"&&FP.on) FP.paused=false; } return; }
+  if(!el){ el=document.createElement("div"); el.id="wdFp"; el.className="wd-turn toland"; el.setAttribute("role","dialog"); el.setAttribute("aria-label","Поверни телефон");
+    el.innerHTML=`<div class="ph"><i></i></div><small>СИСТЕМА · МИР ВРАТ</small><b>Мир Врат — только горизонтально</b><span>поверни телефон</span><button id="wdFpOut">Выйти в Систему</button>`; document.body.appendChild(el);
+    el.querySelector("#wdFpOut").onclick=e=>{ e.stopPropagation(); if(typeof inFight==="function"&&inFight()){ el.querySelector("#wdFpOut").textContent="В бою не уйти — поверни телефон"; return; } if(typeof wLeave==="function"&&typeof WORLD!=="undefined"&&FP.zone===WORLD.Z){ WD.fpPause=false; FP.paused=false; wLeave(); } };
+    ["pointerdown","pointerup","click","touchstart"].forEach(t=>el.addEventListener(t,e=>e.stopPropagation())); }
+  const out=el.querySelector("#wdFpOut"); out.style.display=typeof WORLD!=="undefined"&&FP.zone===WORLD.Z?"":"none";
+  if(!el.classList.contains("on")){ el.classList.add("on"); void el.offsetWidth; el.classList.add("in"); try{ wideRelease(); }catch(e){} }
+  if(!FP.paused){ FP.paused=true; WD.fpPause=true; } }
 if(isTouch){ addEventListener("resize",wideSync); addEventListener("orientationchange",wideKick); if(window.visualViewport) visualViewport.addEventListener("resize",wideKick);
   try{ if(screen.orientation&&screen.orientation.addEventListener) screen.orientation.addEventListener("change",wideKick); }catch(e){}
   setTimeout(wideSync,0); setInterval(wideWatch,330); }
@@ -39700,7 +39788,7 @@ async function doDeed(g){ hubBusy=true; lifeMinInit(); let res=g.pre||await chec
   g.done=true; g.verified=res.cam?"cam":res.app?"app":"honor"; g.opened=true; saveP();
   // real rewards come first: this is what you did in real life
   const rw=gateReward(g); const T=GT[g.type]; const proof=res.cam||res.app; const pay=deedPay(g,res,fast), xp=pay.xp; rw.stat=pay.stat; P.stats[T.stat]=(P.stats[T.stat]||0)+rw.stat; P.energy=(P.energy||0)+1; addTotal(g.custom?"task":g.deed,g.amt); const dmin=deedMinutes(g.deed,g.amt); if(pay.cnt>0) armyFeed(g,pay.cnt); lifeAdd(g,dmin); const mg=manaAdd(pay.mana); const dco=coinAdd(pay.coins,"deed"); const skId=g.skill||SKILL_OF[g.deed]; realAdd(skId,pay.cnt,g.amount,pay.raw);
-  const st=streakOnDeed(); const pp=typeof progDeed==="function"?progDeed(g,dmin,st):[]; const wdmg=weekHit(g,res.cam); if(typeof squadHit==="function") squadHit(g,res.cam); const ups=addXp(xp); hud(); campEvent("deed",g); if(g.main) campEvent("main",g); if(g.sp==="calm") campEvent("calm",g); if(g.custom) campEvent("custom",g); if(res.cam) campEvent("cam",g);
+  const st=streakOnDeed(); const pp=typeof progDeed==="function"?progDeed(g,dmin,st):[]; const wdmg=weekHit(g,res.cam); if(typeof squadHit==="function") squadHit(g,res.cam); const ups=addXp(xp,"deed"); if(typeof djAdd==="function") djAdd(g,{min:dmin,cnt:pay.cnt,xp,mana:mg,stat:[T.stat,rw.stat],sk:skId,kind:pay.kind}); /* 20.10: the diary of deeds (sys3w.js) */ hud(); campEvent("deed",g); if(g.main) campEvent("main",g); if(g.sp==="calm") campEvent("calm",g); if(g.custom) campEvent("custom",g); if(res.cam) campEvent("cam",g);
   await new Promise(r=>modal({id:"did",title:"Засчитано",icon:"✓",accent:"#6dffb0",body:`<div class="notif-text gold">${dIco(g)} ${g.name}: ${amtText(g)}${g.chain?` + ${dIco({deed:g.chain.deed})} ${g.chain.amt}`:""}<small>${pay.how}${fast?` · ⏱ уложился за ${fmtS(res.t)} · ×1.3`:g.limit&&res.t?" · не уложился во время":""}</small></div>
     <div class="kv mana"><span>Мана</span><b style="color:#6fb7ff">${mg>0?`+${mg}`:pay.mana>0?"полная":"+0"} · ${manaSummons()} ${manaWord(manaSummons())}</b></div>${dco?`<div class="kv"><span>Монеты</span><b style="color:#ffd166">◉ +${dco}</b></div>`:`<div class="kv"><span>Ящик Врат</span><b style="color:#c39bff">${typeof LOOT!=="undefined"&&pay.cnt>=LOOT.deedMin?"откроется сейчас":"за дело от 5 минут"}</b></div>`}<div class="kv"><span>Опыт</span><b>+${xp}</b></div>${pay.html}<div class="kv"><span>${T.statName}</span><b>${P.stats[T.stat]} (+${rw.stat})</b></div><div class="kv"><span>Серия дней</span><b>🔥 ${P.streak}${st==="shield"?" · щит спас серию":st===true&&P.streak>1?" · +1":""}${typeof streakNext==="function"&&streakNext()&&streakNext().d>P.streak?` · до награды ${streakNext().d-P.streak} дн.`:""}</b></div>${typeof progLine==="function"&&P.firstDay!==todayKey()?`<div class="kv"><span>Контракт недели</span><b style="color:#7fe9ff">${progLine()}</b></div>`:""}
     <div class="kv"><span>${skId&&allSkills().find(s=>s.id===skId)?"Навык «"+allSkills().find(s=>s.id===skId).n+"»":"Всего в жизни"}</span><b>${skId?`${fmtHM(skMin(skId))} · ранг ${skRank(skMin(skId))}`:totalLine(g)} · ⏱ ${fmtHM(lifeTotal())}</b></div>${wdmg&&P.firstDay!==todayKey()?`<div class="kv"><span>Тень недели</span><b style="color:#ff8aa0">−${wdmg}</b></div>`:""}
@@ -40759,7 +40847,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="1020-v16a01";
+const BUILD="1020-v17a01";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
@@ -40908,7 +40996,7 @@ function perfApply(t,save=true){ perf.tier=Math.max(perf.tier,t);
     ms.forEach(m=>{ if(!m.defines||m.defines.OCT!==3){ m.defines=Object.assign({},m.defines,{OCT:3}); m.needsUpdate=true; } }); if(HUB.post&&(!HUB.post.material.defines||HUB.post.material.defines.RAYS!==8)){ HUB.post.material.defines={RAYS:8}; HUB.post.material.needsUpdate=true; } }
   if(perf.tier>=3) PR=Math.min(PR,.75);
   renderer.setPixelRatio(PR); composer.setPixelRatio(PR); resize(); if(save){ P.perf=perf.tier; saveP(); } }
-function perfTick(dt){ const ok=(MODE==="hub"&&!dOn)||(MODE==="fp"&&FP.on&&!anyBlocking()&&!FP.paused); /* 14.10: in the world the automatic tier steps down first (gfxProbe), the resolution after it */ const first=MODE==="fp"&&typeof GFX!=="undefined"&&GFX.auto&&GFX.id!=="low"&&WORLD.Z&&FP.zone===WORLD.Z; if(!ok||first||perf.tier>=3||document.hidden) { perf.acc=perf.n=0; return; } perf.acc+=dt; perf.n++;
+function perfTick(dt){ if(!GFX.auto&&!LOWQ){ perf.acc=perf.n=0; return; } /* 20.10: the picture steps down by itself only when the player chose «Авто» */ const ok=(MODE==="hub"&&!dOn)||(MODE==="fp"&&FP.on&&!anyBlocking()&&!FP.paused); /* 14.10: in the world the automatic tier steps down first (gfxProbe), the resolution after it */ const first=MODE==="fp"&&typeof GFX!=="undefined"&&GFX.auto&&GFX.id!=="low"&&WORLD.Z&&FP.zone===WORLD.Z; if(!ok||first||perf.tier>=3||document.hidden) { perf.acc=perf.n=0; return; } perf.acc+=dt; perf.n++;
   if(perf.acc>4){ perf.fps=perf.n/perf.acc; perf.m=1; const c=typeof gfxCap==="function"?gfxCap():0, bad=perf.fps<(c?c*.8:28); perf.acc=perf.n=0; if(bad){ perf.calm=0; perfApply(perf.tier+1); } } }
 if(LOWQ) perf.tier=2;
 
@@ -41004,25 +41092,26 @@ function sndWire(){ if(!ac) return; [ambEl,raidEl].forEach(el=>{ if(!el||el._bus
 /* the music steps back under a cutscene and returns after it (k — the share that stays) */
 function musDuckTo(k,sec){ SND.k=k; if(!ac||!SND.duck) return; try{ const t=ac.currentTime, g=SND.duck.gain; g.cancelScheduledValues(t); g.setValueAtTime(g.value,t); g.linearRampToValueAtTime(Math.max(.0001,k),t+Math.max(.05,sec||.6)); }catch(e){} }
 function setApply(){ const S=setGet(); document.body.classList.toggle("lefty",!!S.lefty); sndApply(); return S; }
-function setGfx(v){ if(v==="auto"){ delete P.gfx; GFX.auto=true; GFX.probed=0; GFX.probe=null; GFX.drops=0; GFX.weak=0; gfxSet(gfxAutoId(),true,true); saveP(); } else gfxSet(v,true); }
-const setGfxNow=()=>P.gfx&&GFX_T[P.gfx]?P.gfx:"auto";
+function setGfx(v){ if(v==="auto"){ P.gfx="auto"; GFX.auto=true; GFX.probed=0; GFX.probe=null; GFX.drops=0; GFX.weak=0; gfxSet(gfxAutoId(),true,true); if(typeof gfxS3==="function") gfxS3(GFX.id); saveP(); } else gfxSet(v,true); }
+const setGfxNow=()=>P.gfx==="auto"?"auto":P.gfx&&GFX_T[P.gfx]?P.gfx:"high";
 const SET_BLOOD=[[0,"Выкл"],[1,"Теневая"]]; /* 19.10 (Anton): «Настоящая» removed completely; an old save with 2 reads as 1 (setGet) */
 const SET_BLOOD_NOTE=["Ни брызг, ни следов. Тела всё равно падают по-настоящему.","Из ран — тёмно-фиолетовая эссенция теней, светится в темноте. Брызги по силе удара, следы раненых, лужи под телами."];
-const SET_GFX=[["auto","Авто"],["low","Экономно"],["mid","Обычно"],["high","Красиво"]];
-/* 14.10: «Авто» on a phone is the saving mode — 30 frames, a lower resolution, steps down by itself when the frames sag (a hot phone slows down) */
+/* 20.10 (sys3): «Высокое» — the default (Anton: «качество сразу ахуенное и 60 фпс, игрок сам понизит»); «Авто» — the old saving mode, by choice only */
+const SET_GFX=[["high","Высокое"],["mid","Среднее"],["low","Низкое"],["auto","Авто"]];
 const gfxFpsTxt=id=>{ const T=GFX_T[id], f=isTouch?T.fpsT:T.fpsP; return f?`${f} кадров в секунду`:"без ограничения кадров"; };
-const SET_GFX_NOTE={ auto:()=>`${isTouch?"Телефон бережётся сам: 30 кадров, разрешение чуть ниже. Проседают кадры или телефон греется — картинка становится проще":"Игра выбирает сама и снижает качество, если кадры проседают"}. Сейчас: ${(WORLD.Z||GFX.ver?GFX.T:GFX_T[gfxAutoId()]).n}.`,
-  low:()=>`${gfxFpsTxt("low")}, меньше травы и частиц, горизонт ближе. Телефон почти не греется — для долгой игры от батареи.`,
-  mid:()=>`${gfxFpsTxt("mid")}, тени под врагами, облака, блики на воде. Так задумано для телефона.`,
-  high:()=>`${gfxFpsTxt("high")}, дальний горизонт, густая трава, лучи света. Для компьютера${isTouch?" — телефон с ней греется":" и сильного телефона"}.` };
-function setReset(){ Object.assign(setGet(),SET_DEF); P.noBuzz=false; P.bright=1; if(typeof FP!=="undefined"){ FP.sens=1; P.sens=1; } setGfx("auto"); setApply(); if(FP.on) fpPost(true); saveP(); }
+const gfxPrTxt=id=>{ const T=GFX_T[id]; return `${Math.min(window.devicePixelRatio||1,isTouch?T.prT:T.pr).toFixed(2).replace(/\.?0+$/,"")}×`; };
+const SET_GFX_NOTE={ auto:()=>`${isTouch?"Телефон бережётся сам: разрешение ниже, проседают кадры или телефон греется — картинка становится проще":"Игра выбирает сама и снижает качество, если кадры проседают"}. Сейчас: ${(WORLD.Z||GFX.ver?GFX.T:GFX_T[gfxAutoId()]).n}.`,
+  low:()=>`${gfxFpsTxt("low")}, разрешение ${gfxPrTxt("low")}, меньше травы и частиц, горизонт ближе. Телефон почти не греется — для долгой игры от батареи.`,
+  mid:()=>`${gfxFpsTxt("mid")}, разрешение ${gfxPrTxt("mid")}, тени под врагами, облака, блики на воде. Меньше нагрев.`,
+  high:()=>`${gfxFpsTxt("high")}, полное разрешение экрана (${gfxPrTxt("high")}), дальний горизонт, густая трава, лучи света. Чётче всего${isTouch?" — телефон может греться":""}.` };
+function setReset(){ Object.assign(setGet(),SET_DEF); P.noBuzz=false; P.bright=1; if(typeof FP!=="undefined"){ FP.sens=1; P.sens=1; } setGfx("high"); setApply(); if(FP.on) fpPost(true); saveP(); }
 
 /* ---------- settings: the window (the title, the pause menu of the world, the menu of the refuge). o.back — what opens when it closes ---------- */
 const stRange=(id,label,sub,min,max,step,val)=>`<label class="st-row"><span class="st-l"><b>${label}</b>${sub?`<small>${sub}</small>`:""}</span><input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${label}"><output>${val}%</output></label>`;
 const stSwitch=(id,label,sub,dis)=>`<button class="st-sw" id="${id}" role="switch" aria-checked="false"${dis?" disabled":""}><span class="st-l"><b>${label}</b><small>${sub}</small></span><i></i></button>`;
 function setWindow(o={}){ const S=setGet(); const canVib=!!navigator.vibrate; let tm=0, sure=0, tickAt=0;
   const body=`<div class="st-grid">
-    <section class="st-sec"><h4>Графика</h4><div class="st-seg" id="stGfx" role="radiogroup" aria-label="Качество графики">${SET_GFX.map(([v,n])=>`<button data-v="${v}" role="radio">${n}</button>`).join("")}</div><p class="st-note" id="stGfxN"></p>
+    <section class="st-sec"><h4>Качество картинки</h4><div class="st-seg" id="stGfx" role="radiogroup" aria-label="Качество графики">${SET_GFX.map(([v,n])=>`<button data-v="${v}" role="radio">${n}</button>`).join("")}</div><p class="st-note" id="stGfxN"></p>
       ${stRange("stBr","Яркость","если в Тенях темно",85,165,5,100)}</section>
     <section class="st-sec"><h4>Звук</h4>${stRange("stMus","Музыка","",0,100,5,100)}${stRange("stSfx","Эффекты","удары, шаги, Система",0,100,5,100)}
       <div class="st-mute" id="stMute"><span>Звук сейчас выключен</span><button class="btn small" id="stUnmute">Включить</button></div></section>
@@ -41621,7 +41710,7 @@ const rnEsc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":
 
 /* ---------- rewards: issued by the server; applied here once per raid (P.raidGot), then marked as taken ---------- */
 function rnReward(raid,rw,rank){ try{ const got=Array.isArray(P.raidGot)?P.raidGot:(P.raidGot=[]); if(got.includes(raid)) return false;
-  if(rw.coins&&typeof coinAdd==="function") coinAdd(rw.coins,"raid",true); if(rw.mana&&typeof manaAdd==="function") manaAdd(rw.mana); if(rw.xp&&typeof addXp==="function") addXp(rw.xp);
+  if(rw.coins&&typeof coinAdd==="function") coinAdd(rw.coins,"raid",true); if(rw.mana&&typeof manaAdd==="function") manaAdd(rw.mana); if(rw.xp&&typeof gameXp==="function") gameXp(rw.xp);
   got.push(raid); while(got.length>60) got.shift(); if(typeof saveP==="function") saveP(); rnEmit("reward",{raid,reward:rw,rank});
   if(typeof acApi==="function") acApi("POST","/v1/raid/rewards/claim",{raid}).catch(()=>{}); return true; }catch(e){ return false; } }
 async function rnRewardsCheck(){ if(typeof acApi!=="function"||!rnOk()) return; try{ const r=await acApi("GET","/v1/raid/rewards"); for(const x of r.items||[]) if(!x.claimed) rnReward(x.raid,x.reward,x.rank); }catch(e){} }
@@ -42501,7 +42590,7 @@ async function wnHitFlush(){ WORLDN.hitT=Date.now(); for(const [key,dmg] of [...
   try{ const r=await acApi("POST","/v1/world/hit",{boss:key,dmg:Math.round(dmg)}); const W=WORLDN.st&&WORLDN.st.wander&&WORLDN.st.wander.active; if(W&&W.key===key){ W.hp=r.hp; W.fallen=r.done; } }catch(e){} } }
 setInterval(()=>{ if(WORLDN.hitQ.size&&!document.hidden) wnHitFlush(); },15000);
 const wnClear=gate=>acApi("POST","/v1/world/clear",{gate});
-async function wnClaim(key){ const r=await acApi("POST","/v1/world/claim",{key}); if(r.first){ const w=r.reward||{}; if(w.coins&&typeof coinAdd==="function") coinAdd(w.coins,"world"); if(w.mana&&typeof manaAdd==="function") manaAdd(w.mana); if(w.xp&&typeof addXp==="function") addXp(w.xp); } return r; }
+async function wnClaim(key){ const r=await acApi("POST","/v1/world/claim",{key}); if(r.first){ const w=r.reward||{}; if(w.coins&&typeof coinAdd==="function") coinAdd(w.coins,"world"); if(w.mana&&typeof manaAdd==="function") manaAdd(w.mana); if(w.xp&&typeof gameXp==="function") gameXp(w.xp); } return r; }
 async function wnExpSend(shadows,hours,power){ const r=await acApi("POST","/v1/world/expedition",{shadows,hours,power:Math.round(power||0)}); if(r.cost&&typeof manaAdd==="function") manaAdd(-r.cost); return r; }
 const wnExpList=()=>acApi("GET","/v1/world/expeditions");
 async function wnExpClaim(id){ const r=await acApi("POST","/v1/world/expedition/claim",{id}); if(r.first&&r.outcome){ const o=r.outcome; if(o.coins&&typeof coinAdd==="function") coinAdd(o.coins,"expedition"); if(o.mana&&typeof manaAdd==="function") manaAdd(o.mana); } return r; }
@@ -43060,9 +43149,10 @@ window.__sxp={ SXP, sxp, sxpCheck, sxpSend, sxpWindow, sxpRisk, sxpLoad };
 const SY3={ shT:3, on:false, built:false, el:null, sc:null, cam:null, uT:{value:0}, uW:{value:1}, uWarp:{value:0}, panels:[], mode:"", W:0, H:0, D:13, P0:-.19, u:1,
   yaw:0, pitch:0, dist:13, tYaw:0, tPitch:0, tDist:13, sway:[0,0], par:[0,0], tPar:[0,0], idle:0, drag:null, moved:false, ptrs:new Map(), pinch:0,
   coreXY:[0,0], coreR:60, sleep:false, warp:0, t:0, acc:0, chk:0, day:"", qs:[], fedAt:0, feedP:null, lastCss:"", fovPx:0, lo:0, skip:0, pqT:0, basis:null };
-/* the colours by the reference (20.10, answer 20): profile blue, skills violet, shop orange, rating orange-red; squad teal-green, the shadows magenta, the log cyan */
-const SY3_NAV=[["prof","Профиль","#4fa8ff","user"],["skills","Навыки","#9d7cff","star"],["shop","Магазин","#ffa53c","bag"],["rate","Рейтинг","#ff6a3c","bars"],["squad","Отряд","#35e0a6","group"],["army","Коллекция теней","#d36bff","shade"],["log","Дневник дел","#5fd0ff","book"]];
-const SY3_IC={ user:`<circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.8-3.8 3.6-5.6 7-5.6s6.2 1.8 7 5.6"/>`, star:`<path d="M12 3.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>`,
+/* 20.10 (11:20 / 11:30, Anton): exactly four sections on the right — Навыки · Рейд (tabs Рейд · Отряд · Рейтинг) · Магазин · Дневник дел.
+   The profile (status, stats, class, the collection of shadows) is the bar at the bottom. Colours: skills violet, raid red-orange, shop orange, the diary cyan */
+const SY3_NAV=[["skills","Навыки","#9d7cff","star"],["raid","Рейд","#ff6a3c","raid"],["shop","Магазин","#ffa53c","bag"],["log","Дневник дел","#5fd0ff","book"]];
+const SY3_IC={ raid:`<path d="M4.5 4.5l9 9M4.5 4.5h3l7.5 7.5M4.5 4.5v3L12 15M14 15.5l1.5-1.5 3 3-1.5 1.5zM19.5 4.5l-9 9M19.5 4.5h-3L12 9M19.5 4.5v3L15 12M10 15.5L8.5 14l-3 3 1.5 1.5z"/>`, user:`<circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.8-3.8 3.6-5.6 7-5.6s6.2 1.8 7 5.6"/>`, star:`<path d="M12 3.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>`,
   bag:`<path d="M5.5 8.5h13l-1.1 11.2H6.6z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>`, bars:`<path d="M5 20v-6M10 20V9.5M15 20v-8M20 20V5"/>`,
   group:`<circle cx="9" cy="8.5" r="3"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M3.5 19c.6-3.2 2.8-4.7 5.5-4.7s4.9 1.5 5.5 4.7M14.6 14.6c2.6-.3 4.9.9 5.6 4"/>`,
   shade:`<path d="M12 3.5c-3.6 0-6 2.8-6 6.4v9.6l2-1.6 2 1.6 2-1.6 2 1.6 2-1.6 2 1.6V9.9c0-3.6-2.4-6.4-6-6.4z"/><circle cx="9.6" cy="10.4" r=".9"/><circle cx="14.4" cy="10.4" r=".9"/>`,
@@ -43080,10 +43170,11 @@ const SY3_DAYB=25; /* all the deeds of the day closed: the System adds this (50 
 const SY3_QS=8; /* the start quests: E + this (15 before 20.10) */ /* the System's own bonus of mana for a quest, by its rank (on top of the deed's pay) */
 function sy3Set(){ const S=setGet(); if(!S.s3lay) S.s3lay="auto"; if(S.s3snd==null) S.s3snd=1; if(!S.s3q) S.s3q="hi"; return S; }
 /* the sharpness of the System (20.10, Anton: «на телефоне всё мыльное… в настройках дашь возможность понизить качество»): the 3D space is drawn at the screen's own pixel density */
-const SY3_Q={ hi:3, mid:2, lo:1.25 };
+const SY3_Q={ hi:3, mid:2, lo:1 }; /* 20.10 (sys3): the same choice as the game's «Качество» (P.set.s3q ⇄ P.gfx, fp-sky.js gfxS3) */
 function sy3PR(){ const d=window.devicePixelRatio||1; return Math.max(1,Math.min(d,SY3_Q[sy3Set().s3q]||3)); }
 function sy3Mode(){ const L=sy3Set().s3lay; if(L==="port"||L==="land") return L; return innerWidth<innerHeight*.95?"port":"land"; }
-const sy3Lo=()=>{ try{ return (typeof perf!=="undefined"&&perf.tier>=2)||LOWQ?2:(isTouch||(typeof perf!=="undefined"&&perf.tier>=1))?1:0; }catch(e){ return 1; } };
+/* the counts of dust and streaks: by the quality (20.10 — a phone on «Высокое» gets the full space; before, every phone got the lighter one) */
+const sy3Lo=()=>{ try{ const q=sy3Set().s3q; return LOWQ||q==="lo"||(typeof perf!=="undefined"&&perf.tier>=2)?2:q==="mid"||(typeof perf!=="undefined"&&perf.tier>=1)?1:0; }catch(e){ return 1; } };
 
 /* ================= THE SPACE (WebGL) ================= */
 const SY3_V=`varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
@@ -43180,7 +43271,7 @@ function sy3Build(){ if(SY3.built) return; SY3.built=true; SY3.lo=sy3Lo();
       <div class="s3-title"><i class="s3-tw l"><u></u></i><b id="s3Ttl" data-t="КВЕСТЫ">КВЕСТЫ</b><i class="s3-tw r"><u></u></i></div>
       <div class="s3-tr"><button class="s3-btn sq" id="s3Set" aria-label="Настройки Системы">${sy3I("gear")}</button><button class="s3-btn sq" id="s3Help" aria-label="Что здесь?"><b>?</b></button></div>
       <div class="s3-zoom"><button id="s3Zi" aria-label="Ближе">+</button><button id="s3Zo" aria-label="Дальше">−</button><button id="s3Zc" aria-label="В центр">${sy3I("aim")}</button></div>
-      <div class="s3-bar" id="s3Bar" role="button" tabindex="0" aria-label="Статус: уровень, опыт, мана, монеты, серия"></div>
+      <div class="s3-bar" id="s3Bar" role="button" tabindex="0" aria-label="Профиль: статус, уровень, опыт, мана, монеты, серия"></div>
       <div class="s3-pq" id="s3Pq"></div>
     </div>
     <div class="s3-tip" id="s3Tip"></div><div class="s3-say" id="s3Say"></div><i class="s3-dim"></i><i class="s3-flash" id="s3Flash"></i>
@@ -43204,12 +43295,12 @@ function sy3Lay(){ const W=innerWidth, H=innerHeight, mode=sy3Mode(), el=SY3.el;
   SY3.pr=sy3PR(); const px=SY3.pr*(SY3.H/700); if(SY3.dotM) SY3.dotM.uniforms.uPx.value=px; if(SY3.dustM) SY3.dustM.uniforms.uPx.value=px;
   let cx, cy; const C=SY3.core, R=Math.round;
   if(mode==="land"){ const low=H<520; cx=W*.44; cy=H*.46;
-    /* the sections: seven tilted slabs down the right side, each a little more to the left (the reference); they never reach under the zoom column */
-    const nN=SY3.pNav.length, y0=H*(low?.2:.215), y1=H*(low?.79:.815), st=(y1-y0)/(nN-1), bw=238*u, mx=Math.min(W*(low?.83:.845),W-62-bw/2-(low?6:14));
-    SY3.pNav.forEach((p,i)=>sy3Put(p,R(mx-i*W*.0095),R(y0+i*st),.7+i*.05,.02,-.24,-.05));
+    /* the sections: four tilted slabs down the right side, each a little more to the left (the reference: y ≈ .25 … .69 of the screen); they never reach under the zoom column */
+    const nN=SY3.pNav.length, y0=H*(low?.23:.25), y1=H*(low?.72:.69), st=(y1-y0)/(nN-1), bw=252*u, mx=Math.min(W*(low?.83:.845),W-62-bw/2-(low?6:14));
+    SY3.pNav.forEach((p,i)=>sy3Put(p,R(mx-i*W*.016),R(y0+i*st),.7+i*.05,.02,-.24,-.05));
     /* the quests hang «chaotically» on the left: the daily one high in the middle, two notices tilted towards the core */
     sy3Put(SY3.pQ[0],R(W*.6),R(H*(low?.25:.205)),.55,0,-.1,.012); sy3Put(SY3.pQ[1],R(W*.245),R(H*(low?.37:.335)),.9,0,.22,.07); sy3Put(SY3.pQ[2],R(W*(low?.165:.17)),R(H*(low?.6:.5)),-.4,0,.25,.085); }
-  else { cx=W*.5; cy=H*.255; const nN=SY3.pNav.length, y0=H*.425, y1=H*.85, st=(y1-y0)/(nN-1);
+  else { cx=W*.5; cy=H*.255; const nN=SY3.pNav.length, y0=H*.47, y1=H*.79, st=(y1-y0)/(nN-1);
     const nw=Math.min(230,(W-26)*.5); SY3.pNav.forEach((p,i)=>sy3Put(p,R(W-16-nw/2-(i%2?W*.022:0)),R(y0+i*st),.5,-.03,-.2,-.025));
     sy3Put(SY3.pQ[0],R(W*.265),R(H*.485),.6,0,.2,.035); sy3Put(SY3.pQ[1],R(W*.255),R(H*.62),.35,0,.22,-.03); sy3Put(SY3.pQ[2],R(W*.27),R(H*.765),.1,0,.18,.05); }
   const s=(SY3.D-0)/SY3.D, X=(cx-W/2)*SY3.basis.kpx*s, Y=(H/2-cy)*SY3.basis.kpx*s; C.position.set(0,0,0).addScaledVector(SY3.basis.r,X).addScaledVector(SY3.basis.up,Y);
@@ -43248,7 +43339,7 @@ function sy3Wire(){ const el=SY3.el, busy=()=>anyBlocking()||hubBusy||SY3.locked
   el.addEventListener("wheel",e=>{ if(!SY3.on||e.target.closest(".s3-pq")) return; e.preventDefault(); SY3.tDist=clamp(SY3.tDist*(1+Math.sign(e.deltaY)*Math.min(.18,Math.abs(e.deltaY)*.0012)),SY3.D*.62,SY3.D*1.5); SY3.idle=0; },{passive:false});
   addEventListener("keydown",e=>{ if(!SY3.on||(typeof TL!=="undefined"&&TL.on)||e.ctrlKey||e.metaKey||e.altKey) return; const tag=(e.target&&e.target.tagName)||""; if(/INPUT|TEXTAREA/.test(tag)) return;
     if(e.code==="Escape"){ const w=[...open.keys()].filter(k=>k.startsWith("s3w_")).pop(); if(w){ e.preventDefault(); closeModal(w); } return; }
-    if(anyBlocking()||hubBusy||SY3.locked) return; const m=/^Digit([1-7])$/.exec(e.code); if(m){ sy3Open(SY3_NAV[+m[1]-1][0]); return; }
+    if(anyBlocking()||hubBusy||SY3.locked) return; const m=/^Digit([1-9])$/.exec(e.code); if(m){ const n=SY3_NAV[+m[1]-1]; if(n) sy3Open(n[0]); else if(+m[1]===SY3_NAV.length+1) sy3StatusWin(); return; }
     if(e.code==="Equal"||e.code==="NumpadAdd") zoom(.84); else if(e.code==="Minus"||e.code==="NumpadSubtract") zoom(1.19); else if(e.code==="KeyG"||e.code==="Enter") sy3CoreTap();
     else if(e.code==="ArrowLeft") SY3.tYaw=clamp(SY3.tYaw+.12,-.45,.45); else if(e.code==="ArrowRight") SY3.tYaw=clamp(SY3.tYaw-.12,-.45,.45); }); }
 
@@ -43276,7 +43367,7 @@ function sy3Load(){ if(SY3.loading) return SY3.loading; const el=SY3.el, L=el.qu
     const left=MIN-(performance.now()-t0); if(left>0) await wait(left); clearInterval(tick); set(1); await wait(TEST?150:300);
     SY3.ready=true; SY3.ldDone=performance.now(); L.classList.add("out"); el.classList.remove("load","in"); void el.offsetWidth; el.classList.add("in"); if(SY3.on&&started) sy3Snd("boot2");
     setTimeout(()=>L.classList.remove("on","out"),TEST?350:800); })(); }
-function sy3Frame(dt,now){ if(!SY3.on||!SY3.built) return; if(document.hidden) return; if(SY3.lo>=2&&(SY3.skip=(SY3.skip+1)%2)) return; if(SY3.lo>=2) dt*=2;
+function sy3Frame(dt,now){ if(!SY3.on||!SY3.built) return; if(document.hidden) return; /* 20.10: no own frame skipping — the frame cap is the quality's (gfxSkip in main.js: 60 on «Высокое», 30 on «Низкое») */
   SY3.t+=dt; SY3.uT.value=SY3.t; const W=innerWidth, H=innerHeight; if(W!==SY3.W||H!==SY3.H) sy3Lay();
   const k=Math.min(1,dt*6.5); SY3.yaw+=(SY3.tYaw-SY3.yaw)*k; SY3.pitch+=(SY3.tPitch-SY3.pitch)*k; SY3.dist+=(SY3.tDist-SY3.dist)*Math.min(1,dt*5);
   SY3.idle+=dt; const sw=Math.min(1,Math.max(0,SY3.idle-2)/4); SY3.sway[0]=Math.sin(SY3.t*.07)*.045*sw; SY3.sway[1]=Math.sin(SY3.t*.052+1.3)*.014*sw;
@@ -43310,7 +43401,7 @@ function sy3Refresh(){ if(!SY3.built) return; const lv=P.level||1, xk=P.xpNext?M
   /* badges on the sections */
   const bn=(k,v)=>{ const b=SY3.el.querySelector("#s3Bn_"+k); if(b){ b.textContent=v||""; b.classList.toggle("on",!!v); } };
   const c=typeof clsActive==="function"?clsActive():null; bn("skills",c&&typeof treeFree==="function"&&treeFree(c)>0?"+"+treeFree(c):""); const L=P.day?P.day.gates:[]; bn("log",L.length?`${L.filter(g=>g.done).length}/${L.length}`:"");
-  bn("army",typeof army==="function"&&army().length?String(army().length):""); bn("prof",RANK_NAME(lv)); bn("shop",""); bn("squad",typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?"●":""); bn("rate","");
+  bn("shop",""); bn("raid",typeof RAID!=="undefined"&&RAID.invite&&Date.now()-RAID.invite.at<3*3600e3?"!":typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?"●":"");
   SY3.pNav.forEach(p=>p.el.classList.toggle("lock",!!SY3.sleep));
   sy3Quests(); }
 const sy3Flame=()=>`<svg class="s3i fl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.4 2.4-5.2 3.6-8.3.5 1.9 1.7 2.9 2.7 3.4.3-2.6 1.6-5 3.6-6.4-.3 2.8 3.1 5.6 3.1 10.4 0 4-2.6 7.1-6.5 7.1z"/></svg>`;
@@ -43351,12 +43442,13 @@ function sy3QuestList(){ const S=typeof syState==="function"?syState():{open:1},
   if(day&&day.gates.length&&S.open){ const G=day.gates, rk=G.reduce((a,g)=>"EDCBAS".indexOf(g.rank)>"EDCBAS".indexOf(a)?g.rank:a,"E"), main=SPHERES[(S.grow&&SYS_SPH?SYS_SPH[S.grow[0]]:null)||G[0].sp]||SPHERES.body;
     L.push({id:"daily",kind:"daily",head:"ЗАДАНИЕ",rank:rk,col:"#43e08a",title:`Ежедневный квест: ${({body:"Тренировка силы",read:"Сила разума",focus:"Острый ум",calm:"Тишина внутри",will:"Железная воля"})[Object.keys(SPHERES).find(k=>SPHERES[k]===main)]||"Путь дня"}`,done:G.every(g=>g.done),
       cols:G.slice(0,4).map(g=>{ const n=(g.name||"").replace(/\s*\(.*\)/,"").split(" ")[0].toUpperCase().slice(0,11); const num=typeof g.amt==="number"; return {n, cur:g.done?(num?g.amt:1):(g.prog||0), max:num?g.amt:1, u:num&&g.unit&&g.unit.length<=4?g.unit:"", ok:!!g.done}; }), act:()=>sy3Open("daily")}); }
-  if(S.open||S.learned){ const dq=sy3DayQuest(), it=(SY3_DQ[dq.sp]||[]).find(x=>x.k===dq.k&&(!dq.n||x.n===dq.n))||{n:dq.k}; const soon=it.read&&typeof readQuest!=="function"&&(it.lang||!(DEEDS.scroll&&typeof chScroll==="function"));
+  if(S.open||S.learned){ const dq=sy3DayQuest(); if(!dq.off){ const it=(SY3_DQ[dq.sp]||[]).find(x=>x.k===dq.k&&(!dq.n||x.n===dq.n))||{n:dq.k}; const soon=it.read&&typeof readQuest!=="function"&&(it.lang||!(DEEDS.scroll&&typeof chScroll==="function"));
     const g=sy3QGate(dq.k,it); const pay=g?deedPay(g,null,false,true):{mana:0,xp:0}; const rank=g?g.rank:"C";
-    L.push({id:"dq",kind:"note",head:"УВЕДОМЛЕНИЕ",rank,col:"#a98bff",title:it.words?it.n:`${it.n}${g&&!it.read?" · "+amtText(g):""}`,how:it.how,soon,done:dq.done,mana:(pay.mana||0)+SY3_QB[rank],xp:pay.xp||0,run:()=>sy3RunDq(dq,it)}); }
-  if(day&&S.open){ const nx=day.gates.filter(g=>!g.done).sort((a,b)=>"EDCBAS".indexOf(b.rank)-"EDCBAS".indexOf(a.rank))[0]; if(nx){ const rw=gateReward(nx); L.push({id:"g:"+nx.id,kind:"note",head:"ВРАТА ДНЯ",rank:nx.rank,col:(GT[nx.type]||{}).color||"#5fd0ff",title:`${nx.name} · ${amtText(nx)}`,how:(DEEDS[nx.deed]||{}).how||"",mana:rw.mana,xp:rw.xp,gate:nx,run:()=>sy3RunGate(nx)}); } }
-  if(S.habit&&S.open){ const h=S.habit, did=h.d===todayKey(); L.push({id:"habit",kind:"note",head:"ПРИВЫЧКА",rank:"E",col:"#ffd166",title:`Привычка дня: ${h.n}`,how:"Отметь, когда сделаешь. Серия привычки растёт каждый день.",done:did,mana:SY3_QB.E,xp:0,run:()=>syHabitDo()}); }
-  if(S.open&&!syLocked()) sy3XQ().forEach((x,i)=>{ const it=sy3XIt(x), g=sy3QGate(x.k,it), pay=g?deedPay(g,null,false,true):{mana:0,xp:0}, rank=g?g.rank:"D";
+    L.push({id:"dq",kind:"note",head:"УВЕДОМЛЕНИЕ",rank,col:"#a98bff",title:it.words?it.n:`${it.n}${g&&!it.read?" · "+amtText(g):""}`,how:it.how,soon,done:dq.done,mana:(pay.mana||0)+SY3_QB[rank],xp:pay.xp||0,run:()=>sy3RunDq(dq,it)}); } }
+  const gNo=S.gNo&&S.gNo.d===todayKey()?S.gNo.ids:[];
+  if(day&&S.open){ const nx=day.gates.filter(g=>!g.done&&!gNo.includes(g.id)).sort((a,b)=>"EDCBAS".indexOf(b.rank)-"EDCBAS".indexOf(a.rank))[0]; if(nx){ const rw=gateReward(nx); L.push({id:"g:"+nx.id,kind:"note",head:"ВРАТА ДНЯ",rank:nx.rank,col:(GT[nx.type]||{}).color||"#5fd0ff",title:`${nx.name} · ${amtText(nx)}`,how:(DEEDS[nx.deed]||{}).how||"",mana:rw.mana,xp:rw.xp,gate:nx,run:()=>sy3RunGate(nx)}); } }
+  if(S.habit&&S.open&&S.habNo!==todayKey()){ const h=S.habit, did=h.d===todayKey(); L.push({id:"habit",kind:"note",head:"ПРИВЫЧКА",rank:"E",col:"#ffd166",title:`Привычка дня: ${h.n}`,how:"Отметь, когда сделаешь. Серия привычки растёт каждый день.",done:did,mana:SY3_QB.E,xp:0,run:()=>syHabitDo()}); }
+  if(S.open&&!syLocked()) sy3XQ().filter(x=>!x.no).forEach((x,i)=>{ const it=sy3XIt(x), g=sy3QGate(x.k,it), pay=g?deedPay(g,null,false,true):{mana:0,xp:0}, rank=g?g.rank:"D";
     L.push({id:"x"+x.i,kind:"note",head:x.seen?"УВЕДОМЛЕНИЕ":"НОВЫЙ КВЕСТ",rank,title:it.words?it.n:`${it.n}${g&&!it.read?" · "+amtText(g):""}`,how:it.how,done:!!x.done,mana:(pay.mana||0)+SY3_QB[rank],xp:pay.xp||0,x,pri:1-x.at/1e13,run:()=>sy3RunX(x)}); });
   /* the frame of every quest is the colour of its rank (20.10, 09:40); the daily one stays green like the reference */
   L.forEach(q=>{ if(q.kind!=="daily"&&SY3_RK[q.rank]) q.col=sy3RkC(q.rank); });
@@ -43369,6 +43461,15 @@ function sy3XQ(){ const S=syState(), td=todayKey(); if(!S.xq||S.xq.d!==td) S.xq=
   if(S.xq.L.length<due){ const dq=sy3DayQuest(), grow=(S.grow&&S.grow.length?S.grow:["body","will"]).filter(k=>SY3_DQ[k]); const pool=[...grow,"calm","will","body"].filter((k,i,a)=>SY3_DQ[k]&&a.indexOf(k)===i).flatMap(k=>SY3_DQ[k].map(it=>({sp:k,it}))).filter(o=>!(o.sp===dq.sp&&o.it.k===dq.k&&o.it.n===dq.n)&&!(o.it.lang&&typeof readQuest!=="function")&&!(o.it.read&&typeof readQuest!=="function"&&!(DEEDS.scroll&&typeof chScroll==="function")));
     while(S.xq.L.length<due){ const used=S.xq.L.map(x=>x.n), left=pool.filter(o=>!used.includes(o.it.n)); if(!left.length) break; const o=left[hashStr(td+"x"+S.xq.L.length)%left.length]; S.xq.L.push({i:S.xq.L.length,sp:o.sp,k:o.it.k,n:o.it.n,at:Date.now(),done:false,seen:0}); } saveP(); }
   return S.xq.L; }
+/* 20.10 (11:20, answer 18: «квест можно отклонить — сколько угодно, тогда маны не будет»): a System quest, a Gate of the day on the card, the habit of the day.
+   The quest of the day is declined → the System offers another one from the spheres the player grows (until the pool runs out); a later quest (12/15/18) → gone for today */
+function sy3QPool(){ const S=syState(), grow=(S.grow&&S.grow.length?S.grow:["body","will"]).filter(k=>SY3_DQ[k]); return [...grow,"calm","will","body"].filter((k,i,a)=>SY3_DQ[k]&&a.indexOf(k)===i).flatMap(k=>SY3_DQ[k].map(it=>({sp:k,it}))).filter(o=>!(o.it.lang&&typeof readQuest!=="function")&&!(o.it.read&&typeof readQuest!=="function"&&!(DEEDS.scroll&&typeof chScroll==="function"))); }
+const sy3CanNo=q=>!!q&&!q.done&&(q.id==="dq"||!!q.x||!!q.gate||q.id==="habit");
+function sy3Decline(q){ const S=syState(), td=todayKey(); S.decl=(S.decl||0)+1; let msg="Без маны. Отклонять можно сколько угодно";
+  if(q.id==="dq"){ const dq=sy3DayQuest(); dq.no=dq.no||[]; dq.no.push(dq.sp+":"+dq.k+":"+dq.n); const xs=(S.xq&&S.xq.d===td?S.xq.L:[]).map(x=>x.n);
+    const left=sy3QPool().filter(o=>!dq.no.includes(o.sp+":"+o.it.k+":"+o.it.n)&&!xs.includes(o.it.n)); if(left.length){ const o=left[hashStr(td+"r"+dq.no.length)%left.length]; dq.sp=o.sp; dq.k=o.it.k; dq.n=o.it.n; dq.done=false; msg="Без маны. Система выдала другой квест"; } else { dq.off=1; msg="Без маны. Новых квестов на сегодня больше нет"; } }
+  else if(q.x){ q.x.no=1; } else if(q.gate){ if(!S.gNo||S.gNo.d!==td) S.gNo={d:td,ids:[]}; S.gNo.ids.push(q.gate.id); msg="Без маны. Дело дня осталось в «Ежедневном квесте»"; } else if(q.id==="habit") S.habNo=td;
+  saveP(); sy3Note("КВЕСТ ОТКЛОНЁН",msg,"#8fa6cc","no:"+S.decl); sy3Refresh(); }
 const sy3XIt=x=>(SY3_DQ[x.sp]||[]).find(it=>it.k===x.k&&it.n===x.n)||{k:x.k,n:x.n,how:""};
 async function sy3RunX(x){ const it=sy3XIt(x); let ok=false; if(it.read) ok=await syReadDo(false,it.lang?"lang":"mind"); else if(it.words) ok=await syWordsDo(5); else { const g=sy3QGate(x.k,it); if(!g) return; await doDeed(g); ok=!!g.done; }
   if(ok){ x.done=true; const S=syState(); S.qn=(S.qn||0)+1; saveP(); const g=sy3QGate(x.k,it); sy3QuestDone(SY3_QB[g?g.rank:"D"]||SY3_QB.D,"Квест Системы"); } }
@@ -43383,8 +43484,9 @@ function sy3QuestWin(q){ if(q.kind==="daily"){ sy3Open("daily"); return; } if(q.
   sy3Win("q",`КВЕСТ · РАНГ ${q.rank}`,`<div class="s3q-w" style="--c:${col}"><small class="s3-qh n"><i></i>УВЕДОМЛЕНИЕ</small><h3>${sy3Esc(q.title)}</h3>${q.how?`<p>${q.how}</p>`:""}
       ${cond?`<div class="s3-kv"><span>Условие</span><b>${cond}</b></div>`:""}<div class="s3-kv"><span>Проверка</span><b>${ci&&!String(chk).includes("<")?sy3I(SY3_CHKI[ci],"kv"):""}${chk}</b></div><div class="s3-kv"><span>Награда</span><b>${q.soon?"скоро":`${q.mana?`<span class="mn">✦ +${q.mana} маны</span>`:""}${q.xp?`${q.mana?" · ":""}<span class="xp">⚡ +${q.xp} опыта</span>`:""}`}</b></div><div class="s3-kv"><span>Срок</span><b>до конца дня</b></div>
       ${q.soon?`<p class="s3-note">Чтение с фрагментом и опросом скоро появится в Системе. Пока можно записать свою книгу таймером в «Дневнике дел».</p>`:""}
-      <div class="actions"><button class="btn ghost" id="s3qL">Сделаю позже</button>${q.soon?"":`<button class="btn primary big" id="s3qGo">Принять</button>`}</div></div>`,
-    {accent:col,icon:"!",blocking:true,onMount:el=>{ el.querySelector("#s3qL").onclick=()=>{ sy3Snd("close"); closeModal("s3w_q"); }; const go=el.querySelector("#s3qGo"); if(go) go.onclick=async()=>{ sy3Snd("accept"); closeModal("s3w_q",true); try{ await q.run(); }catch(e){ console.warn("quest",e); } sy3Refresh(); }; }}); }
+      ${sy3CanNo(q)?`<p class="s3-note">Квест можно отклонить — сколько угодно раз. Тогда маны за него не будет.</p>`:""}
+      <div class="actions"><button class="btn ghost" id="s3qL">Сделаю позже</button>${sy3CanNo(q)?`<button class="btn ghost s3-no" id="s3qNo">Отклонить</button>`:""}${q.soon?"":`<button class="btn primary big" id="s3qGo">Принять</button>`}</div></div>`,
+    {accent:col,icon:"!",blocking:true,onMount:el=>{ el.querySelector("#s3qL").onclick=()=>{ sy3Snd("close"); closeModal("s3w_q"); }; const no=el.querySelector("#s3qNo"); if(no) no.onclick=()=>{ sy3Snd("deny"); closeModal("s3w_q"); sy3Decline(q); }; const go=el.querySelector("#s3qGo"); if(go) go.onclick=async()=>{ sy3Snd("accept"); closeModal("s3w_q",true); try{ await q.run(); }catch(e){ console.warn("quest",e); } sy3Refresh(); }; }}); }
 function sy3XChk(x){ const it=sy3XIt(x); if(it.read) return typeof readQuest==="function"?"опрос по фрагменту":"опрос по свитку"; if(it.words) return "опрос по словам"; const g=sy3QGate(x.k,it); return g?verifyWord(g):"таймер"; }
 function SY3_DQ_CHK(q){ const dq=sy3DayQuest(), it=(SY3_DQ[dq.sp]||[]).find(x=>x.k===dq.k&&(!dq.n||x.n===dq.n))||{}; if(it.read) return typeof readQuest==="function"?"опрос по фрагменту":"опрос по свитку"; if(it.words) return "опрос по словам"; const g=sy3QGate(dq.k,it); return g?verifyWord(g):"таймер"; }
 async function sy3RunDq(dq,it){ let ok=false; const S=syState();
@@ -43392,8 +43494,8 @@ async function sy3RunDq(dq,it){ let ok=false; const S=syState();
   if(ok){ dq.done=true; S.qn=(S.qn||0)+1; saveP(); sy3QuestDone(SY3_QB[sy3QGate(dq.k,it)?sy3QGate(dq.k,it).rank:"C"]||SY3_QB.C,"Квест Системы"); } }
 async function sy3RunGate(g){ if(syLocked()){ const ng=g.noGate; g.noGate=true; await doDeed(g); g.noGate=ng; saveP(); } else openGate(g); }
 /* «КВЕСТ ВЫПОЛНЕН»: the System's bonus of mana, a notification, the cards slide */
-function sy3QuestDone(bonus,what){ const got=bonus>0&&typeof manaAdd==="function"?manaAdd(bonus):0; hud(); sy3Snd("done"); sy3Note("КВЕСТ ВЫПОЛНЕН",`${what||"Квест"}${got>0?` · ✦ +${got} маны`:""}`,"#43e08a"); sy3Refresh();
-  const day=P.day; if(day&&day.d===todayKey()&&day.gates.length&&day.gates.every(g=>g.done)){ const S=syState(); if(S.dayB!==day.d){ S.dayB=day.d; saveP(); setTimeout(()=>{ const m=manaAdd(SY3_DAYB); sy3Note("ЕЖЕДНЕВНЫЙ КВЕСТ",`все дела дня закрыты · ✦ +${m} маны`,"#ffd166"); sy3Refresh(); },1600); } } }
+function sy3QuestDone(bonus,what){ const got=bonus>0&&typeof manaAdd==="function"?manaAdd(bonus):0; if(got>0&&typeof djBonus==="function") djBonus(got); hud(); sy3Snd("done"); sy3Note("КВЕСТ ВЫПОЛНЕН",`${what||"Квест"}${got>0?` · ✦ +${got} маны`:""}`,"#43e08a"); sy3Refresh();
+  const day=P.day; if(day&&day.d===todayKey()&&day.gates.length&&day.gates.every(g=>g.done)){ const S=syState(); if(S.dayB!==day.d){ S.dayB=day.d; saveP(); setTimeout(()=>{ const m=manaAdd(SY3_DAYB); if(m>0&&typeof djBonus==="function") djBonus(m); sy3Note("ЕЖЕДНЕВНЫЙ КВЕСТ",`все дела дня закрыты · ✦ +${m} маны`,"#ffd166"); sy3Refresh(); },1600); } } }
 /* a short System notification at the top (does not block) */
 /* a System notification drops from the top like in the anime, with a sound, and hides by itself (20.10, answer 27). One at a time: the next waits in a queue */
 function sy3Note(h,t,col,key){ if(!SY3.built) return; const Q=SY3.nq||(SY3.nq=[]); if(key&&(Q.some(n=>n.key===key)||SY3.nKey===key)) return; Q.push({h,t,col,key}); if(!SY3.nBusy) sy3NoteNext(); }
@@ -43428,32 +43530,16 @@ function sy3Skin(o){ try{ if(!SY3.on||!document.body.classList.contains("s3on"))
     return {...o, cls:(c+" s3w s3x").trim(), title:/s3w-k/.test(o.title||"")?o.title:`<span class="s3w-k">СИСТЕМА</span><span class="s3w-t">${o.title||""}</span>`, accent:o.accent||"#5fd0ff"}; }catch(e){ return o; } }
 function sy3Open(k){ if(!SY3.built) sy3Build(); if(SY3.sleep){ sy3Snd("deny"); return; } sy3Snd("select"); const p=SY3.pNav.find(q=>q.el.dataset.s===k); if(p){ p.el.classList.remove("pulse"); void p.el.offsetWidth; p.el.classList.add("pulse"); }
   if(typeof syTourHit==="function") syTourHit(k);
-  const real=(tab,title,col,top)=>sy3Win(k,title,`${top||""}<div id="rlPanel" class="s3-real"></div>`,{accent:col,wide:true,onMount:()=>{ REAL.tab=tab; REAL.sph=null; REAL.sel=null; realPanel(); }});
-  if(k==="prof") return sy3Win(k,"ПРОФИЛЬ",sy3ProfHTML(),{accent:"#4fa8ff",wide:true,onMount:sy3ProfWire});
+  const real=(tab,title,col,top,id)=>sy3Win(id||k,title,`${top||""}<div id="rlPanel" class="s3-real"></div>`,{accent:col,wide:true,onMount:()=>{ REAL.tab=tab; REAL.sph=null; REAL.sel=null; realPanel(); }});
   if(k==="skills"){ const c=clsActive(); return real("skills","НАВЫКИ","#9d7cff",`<button class="s3-path" id="s3Path"><i>${sy3I("star")}</i><span><b>${c?"ПУТЬ КЛАССА · "+KLS[c].n.toUpperCase():"ПУТЬ КЛАССА"}</b><small>${c?(typeof treeFree==="function"&&treeFree(c)>0?`свободных очков: ${treeFree(c)} — вложи их`:"ветки умений твоего класса"):"класс выбирается в обучении боя"}</small></span><em>›</em></button>`); }
-  if(k==="rate") return real("people","РЕЙТИНГ","#ff8a3c");
   if(k==="daily") return real("deeds","ЕЖЕДНЕВНЫЙ КВЕСТ","#43e08a",`<p class="s3-note top">Закрой все дела дня — Система добавит <b>✦ ${SY3_DAYB} маны</b>. ${syLocked()?"":"Каждое дело открывает Врата в мире."}</p>`);
   if(k==="shop") return sy3Win(k,"МАГАЗИН",sy3ShopHTML(),{accent:"#ffb347",wide:true,onMount:sy3ShopWire});
-  if(k==="log") return sy3Win(k,"ДНЕВНИК ДЕЛ",sy3LogHTML(),{accent:"#6fd6ff",wide:true,onMount:sy3LogWire});
-  if(k==="squad"){ if(typeof squadWindow==="function") squadWindow(); return; }
-  if(k==="army"){ if(typeof armyWindow==="function") armyWindow(); return; } }
+  if(k==="log") return sy3DiaryWin();
+  /* 20.10 (11:30): «Рейд» is one window with the tabs Рейд · Отряд · Рейтинг; the profile (the bar) has the tab «Коллекция теней» (sys3w.js) */
+  if(k==="raid"||k==="squad"||k==="rate") return sy3Tab("raid",k==="raid"?(SY3.tabLast&&SY3.tabLast.raid)||"raid":k);
+  if(k==="prof"||k==="army") return sy3Tab("prof",k); }
 /* the Skills window: the path of the class on top */
 document.addEventListener("click",e=>{ const b=e.target.closest&&e.target.closest("#s3Path"); if(!b) return; const c=clsActive(); if(!c){ toast(syLocked()?"Класс выбирается в обучении боя — после пробуждения":"Сначала выбери класс","#9d7cff"); return; } closeModal("s3w_skills",true); if(typeof treeWindow==="function") treeWindow(c); });
-/* ---------- ПРОФИЛЬ ---------- */
-function sy3ProfHTML(){ const lv=P.level||1, i=rankIdx(), R=RANK_NEED[i].r, nx=RANK_NEED[i+1], kl=nx?clamp((lv-RANK_NEED[i].l)/Math.max(1,nx.l-RANK_NEED[i].l),0,1):1, c=clsActive(), K=c?KLS[c]:null, L=lifeLv(), st=P.stats||{};
-  const A=typeof army==="function"?army().length:0, ck=c&&typeof roleCollK==="function"?roleCollK(c):0, top=Math.max(5,...["body","mind","soul","will"].map(k=>st[k]||0)), S=syState();
-  const stat=(k,n,col)=>`<div class="s3-st2" style="--c:${col}"><span>${n}</span><i><u style="width:${((st[k]||0)/top*100).toFixed(1)}%"></u></i><b>${st[k]||0}</b></div>`;
-  return `<div class="s3pf"><i class="s3pf-rk" style="--c:${SY3_RK[R]}">${R}</i><div><small>${S.open?"ИГРОК":"НОСИТЕЛЬ"} · РАНГ ${R} · УР. ${lv}</small><b>${sy3Esc(P.name||"Пробуждённый")}</b><em>${K?`${K.n} · ${K.role}`:"класс ещё не выбран"}</em></div></div>
-    <div class="s3-kv"><span>${nx?`До ранга ${nx.r} — уровень ${nx.l}`:"Ранг S — вершина"}</span><b>${Math.round(kl*100)}%</b></div><div class="s3-bar2" style="--c:${SY3_RK[R]}"><u style="width:${(kl*100).toFixed(1)}%"></u></div>
-    <div class="s3-tiles"><div><small>Опыт</small><b>${Math.floor((P.xp||0)/Math.max(1,P.xpNext||1)*100)}%</b></div><div><small>Мана</small><b class="mn">${Math.floor(mana())}</b></div><div><small>Монеты</small><b class="cr">◆ ${coinFmt(P.coins||0)}</b></div><div><small>Серия</small><b class="fl">${P.streak||0} ${plural(P.streak||0,"день","дня","дней")}</b></div></div>
-    <h4 class="s3-h">ХАРАКТЕРИСТИКИ</h4>${stat("body","Сила","#ff6b7a")}${stat("mind","Интеллект","#b58cff")}${stat("soul","Дух","#6dffb0")}${stat("will","Воля","#ffd166")}
-    <p class="s3-note">Характеристики растут от реальных дел: каждый час дел сферы — +1. В мире Врат это сила удара.</p>
-    <h4 class="s3-h">КЛАСС</h4>${K?`<div class="s3-cls" style="--c:${K.col}"><b>${K.n}</b><small>${K.role} · ${K.wpn}</small><p>${K.play}</p></div><div class="s3-row2"><button class="btn small" data-pf="tree">Путь класса</button><button class="btn small ghost" data-pf="cls">Класс подробно</button></div>`:`<p class="s3-note">${S.open?"Класс выбирается в обучении боя — попробуй все три.":"Класс откроется, когда ты станешь Игроком."}</p>`}
-    <h4 class="s3-h">КОЛЛЕКЦИЯ ТЕНЕЙ</h4><div class="s3-kv"><span>Теней в коллекции</span><b>${A}</b></div><div class="s3-kv"><span>Бонус коллекции</span><b>${c==="assassin"?"Ассасин ведёт тени в бой — «Легион теней»":c?`+${Math.round(ck*100)}% к урону и здоровью`:"—"}</b></div>
-    <h4 class="s3-h">ЖИЗНЬ</h4><div class="s3-kv"><span>Уровень жизни ${L.n} · ${lifeTitle(L.n)}</span><b>${fmtHM(lifeTotal())} дел</b></div><div class="s3-kv"><span>День в Системе</span><b>${sysDay()}</b></div>
-    <div class="s3-row2"><button class="btn small" data-pf="path">Путь и сила</button><button class="btn small" data-pf="ladder">Лестница рангов</button>${S.open&&!syLocked()?`<button class="btn small" data-pf="gear">Снаряжение</button>`:""}<button class="btn small ghost" data-pf="set">Настройки</button></div>`; }
-function sy3ProfWire(el){ const F={ tree:()=>{ const c=clsActive(); if(c) treeWindow(c); }, cls:()=>clsWindow(), path:()=>pathWindow(), ladder:()=>ladderWindow(true), gear:()=>gearWindow(), set:()=>setWindow({back:null}) };
-  el.querySelectorAll("[data-pf]").forEach(b=>b.onclick=()=>{ const f=F[b.dataset.pf]; if(!f) return; closeModal("s3w_prof",true); try{ f(); }catch(e){ console.warn(e); } }); }
 /* ---------- МАГАЗИН ---------- */
 function sy3ShopHTML(){ const c=P.coins||0; let L=[]; try{ L=typeof spendList==="function"?spendList():[]; }catch(e){} const now=L.filter(r=>r.ok&&r.p!=null&&r.p<=c).slice(0,6), soon=L.filter(r=>r.ok&&r.p!=null&&r.p>c).sort((a,b)=>a.p-b.p).slice(0,4); SY3.shop=[...now,...soon];
   const row=(r,i,s)=>`<button class="s3-shr${s?" soon":""}" data-sh="${i}"><span><b>${sy3Esc(r.n)}</b><small>${sy3Esc(r.g)} · ${r.d}</small></span><em>${r.p?`◆ ${coinFmt(r.p)}`:"бесплатно"}${s?`<u>ещё ${coinFmt(r.p-c)}</u>`:""}</em></button>`;
@@ -43464,47 +43550,18 @@ function sy3ShopHTML(){ const c=P.coins||0; let L=[]; try{ L=typeof spendList===
     <div class="actions">${typeof spendWindow==="function"&&!syLocked()?`<button class="btn" id="s3ShAll">Все товары</button>`:""}${typeof coinLogWindow==="function"?`<button class="btn ghost" id="s3ShLog">История монет</button>`:""}</div>`; }
 function sy3ShopWire(el){ el.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{ const r=SY3.shop[+b.dataset.sh]; if(!r||!r.go) return; closeModal("s3w_shop",true); setTimeout(r.go,40); });
   const a=el.querySelector("#s3ShAll"); if(a) a.onclick=()=>{ closeModal("s3w_shop",true); spendWindow(); }; const l=el.querySelector("#s3ShLog"); if(l) l.onclick=()=>{ closeModal("s3w_shop",true); coinLogWindow(); }; }
-/* ---------- ДНЕВНИК ДЕЛ: the log of every real deed, the week, the chronicle ---------- */
-function sy3LogHTML(){ const days=[]; for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); const k=todayKey(d); days.push({k,n:(P.history||{})[k]||0,t:i===0,dd:d.getDate()}); }
-  const top=Math.max(3,...days.map(d=>d.n)), log=(P.log||[]).slice(0,40), td=todayKey(), L=P.day&&P.day.d===td?P.day.gates:[];
-  const fmtD=d=>d===td?"сегодня":d.slice(8,10)+"."+d.slice(5,7);
-  return `<div class="s3-tiles"><div><small>Сегодня</small><b>${(P.history||{})[td]||0}</b></div><div><small>Серия</small><b class="fl">${P.streak||0}</b></div><div><small>Всего в жизни</small><b>${fmtHM(lifeTotal())}</b></div><div><small>Дней с делами</small><b>${daysPlayed()}</b></div></div>
-    <h4 class="s3-h">ДВЕ НЕДЕЛИ</h4><div class="s3-cal">${days.map(d=>`<span class="${d.t?"t":""}${d.n?" on":""}" title="${d.k}: ${d.n}"><i style="height:${Math.round(d.n/top*100)}%"></i><small>${d.dd}</small></span>`).join("")}</div>
-    ${L.length?`<h4 class="s3-h">ДЕЛА ДНЯ · ${L.filter(g=>g.done).length} ИЗ ${L.length}</h4>${L.map(g=>`<div class="s3-lg${g.done?" ok":""}"><span><b>${sy3Esc(g.name)}</b><small>${amtText(g)} · ранг ${g.rank}</small></span><em>${g.done?"✓":"—"}</em></div>`).join("")}`:""}
-    <h4 class="s3-h">ЗАПИСИ</h4>${log.length?log.map(r=>`<div class="s3-lg"><span><b>${sy3Esc(r.t)}</b></span><em>${fmtD(r.d)}</em></div>`).join(""):`<p class="s3-note">Здесь будет каждое твоё дело. Начни первое — Система запишет.</p>`}
-    ${(P.chron||[]).length?`<h4 class="s3-h">ХРОНИКА · МЫСЛИ</h4>${P.chron.slice(0,4).map(c=>`<p class="s3-chr"><small>${fmtD(c.d)}</small>${sy3Esc(c.t)}</p>`).join("")}`:""}
-    <div class="actions"><button class="btn primary" id="s3LgGo">${sy3I("timer")} Начать дело</button><button class="btn" id="s3LgOwn">Своё дело</button></div>`; }
-function sy3LogWire(el){ el.querySelector("#s3LgGo").onclick=()=>{ closeModal("s3w_log",true); if(typeof sysQuick==="function") sysQuick(); };
-  el.querySelector("#s3LgOwn").onclick=async()=>{ closeModal("s3w_log",true); const id=await customDeedWindow(); if(id){ const i=P.day?P.day.gates.findIndex(g=>!g.done):-1; if(i>=0){ customGate(i,id); toast("Твоё дело стало делом дня","#6fd6ff"); } else toast("Сохранил. Появится в плане завтра"); sy3Refresh(); } }; }
 /* ---------- the gear: the layout (Anton picks), the sound ---------- */
 /* ---------- the gear: the layout (Anton picks), the sharpness, the sounds ---------- */
 function sy3SetWin(){ const S=sy3Set(); const ch=(k,v,t)=>`<button class="chipbtn${S[k]===v?" on":""}" data-k="${k}" data-v="${v}"><span>${t}</span></button>`;
   sy3Win("set","НАСТРОЙКИ СИСТЕМЫ",`<h4 class="s3-h">ВИД НА ТЕЛЕФОНЕ</h4><div class="chips">${ch("s3lay","auto","Авто")}${ch("s3lay","port","Вертикально")}${ch("s3lay","land","Горизонтально")}</div>
-    <p class="s3-note">Вертикально — ядро сверху, слева квесты, справа разделы. Горизонтально — как на levelupp.ru: квесты слева, разделы справа, ядро в центре. «Авто» — по тому, как держишь телефон.</p>
+    <p class="s3-note">Главный вид — горизонтально, как на levelupp.ru: квесты слева, разделы справа, ядро в центре. Вертикально — запасной: ядро сверху, слева квесты, справа разделы. «Авто» — по тому, как держишь телефон. Мир Врат на телефоне — только горизонтально.</p>
     <h4 class="s3-h">КАЧЕСТВО КАРТИНКИ</h4><div class="chips">${ch("s3q","hi","Высокое")}${ch("s3q","mid","Среднее")}${ch("s3q","lo","Низкое")}</div>
-    <p class="s3-note">Высокое — Система рисуется в полном разрешении экрана (${Math.min(3,window.devicePixelRatio||1).toFixed(1).replace(/\.0$/,"")}×): чётко, но телефон может греться. Ниже — мягче картинка, меньше нагрев.</p>
+    <p class="s3-note">Высокое — по умолчанию: полное разрешение экрана (${Math.min(3,window.devicePixelRatio||1).toFixed(2).replace(/\.?0+$/,"")}×) и 60 кадров — в Системе и в мире Врат. Телефон может греться. Среднее — 2× и 60 кадров, Низкое — 1× и 30 кадров. Тот же выбор — в настройках игры.</p>
     <h4 class="s3-h">ЗВУКИ СИСТЕМЫ</h4><div class="chips">${ch("s3snd",1,"Уведомления со звуком")}${ch("s3snd",0,"Тихо")}</div>
     <p class="s3-note">Музыка — прежняя, тихий эмбиент. Её громкость — во всех настройках игры.</p>
     <div class="actions"><button class="btn ghost" id="s3SetAll">Все настройки игры</button></div>`,{accent:"#5fd0ff",onMount:el=>{
-      el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k, v=k==="s3snd"?+b.dataset.v:b.dataset.v; S[k]=v; saveP(); el.querySelectorAll(`[data-k="${k}"]`).forEach(x=>x.classList.toggle("on",x===b)); sy3Snd("tick"); if(k==="s3lay"||k==="s3q") sy3Lay(); });
+      el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k, v=k==="s3snd"?+b.dataset.v:b.dataset.v; S[k]=v; if(k==="s3q"&&typeof setGfx==="function") setGfx({hi:"high",mid:"mid",lo:"low"}[v]||"high"); saveP(); el.querySelectorAll(`[data-k="${k}"]`).forEach(x=>x.classList.toggle("on",x===b)); sy3Snd("tick"); if(k==="s3lay"||k==="s3q") sy3Lay(); });
       el.querySelector("#s3SetAll").onclick=()=>{ closeModal("s3w_set",true); setWindow({back:null}); }; }}); }
-/* ---------- СТАТУС: a tap on the bar (20.10, answers 28–29; the stats are the game's own: Сила, Интеллект, Дух, Воля — they grow from the spheres of deeds) ---------- */
-const SY3_ST=[["body","Сила","#ff6b7a","Тело"],["mind","Интеллект","#b58cff","Чтение · Фокус и учёба"],["soul","Дух","#6dffb0","Спокойствие"],["will","Воля","#ffd166","Дисциплина"]];
-function sy3StatusHTML(){ const lv=P.level||1, i=rankIdx(), R=RANK_NEED[i].r, nx=RANK_NEED[i+1], need=P.xpNext||xpNeed(lv), xp=Math.floor(P.xp||0), xk=clamp(xp/Math.max(1,need),0,1), kl=nx?clamp((lv-RANK_NEED[i].l)/Math.max(1,nx.l-RANK_NEED[i].l),0,1):1;
-  const st=P.stats||{}, top=Math.max(10,...SY3_ST.map(([k])=>st[k]||0)), mn=Math.floor(mana()), mx=manaMax(), D0=typeof payDay==="function"?payDay():{cnt:0}, td=todayKey(), S=syState(), c=typeof clsActive==="function"?clsActive():null;
-  const days=[]; for(let d=13;d>=0;d--){ const x=new Date(); x.setDate(x.getDate()-d); const k=todayKey(x); days.push({k,n:(P.history||{})[k]||0,t:d===0,w:"ВСПЧПСВ"[x.getDay()],dd:x.getDate()}); }
-  const today=Math.round(D0.mana!=null?D0.mana:(D0.cnt||0)*PAY.manaMin);
-  return `<div class="s3pf"><i class="s3pf-rk" style="--c:${sy3RkC(R)}">${R}</i><div><small>${S.open?"ИГРОК":"НОСИТЕЛЬ"} · РАНГ ${R} · УР. ${lv}</small><b>${sy3Esc(P.name||"Пробуждённый")}</b><em>${c&&KLS[c]?`${KLS[c].n} · ${KLS[c].role}`:"класс ещё не выбран"}</em></div></div>
-    <h4 class="s3-h">УРОВЕНЬ</h4><div class="s3-kv"><span>Опыт до LV.${lv+1}</span><b>${coinFmt(xp)} / ${coinFmt(need)} · осталось ${coinFmt(Math.max(0,need-xp))}</b></div><div class="s3-bar2" style="--c:#4fa8ff"><u style="width:${(xk*100).toFixed(1)}%"></u></div>
-    <div class="s3-kv"><span>${nx?`Ранг ${nx.r} — с уровня ${nx.l}`:"Ранг S — вершина"}</span><b>${Math.round(kl*100)}%</b></div><div class="s3-bar2" style="--c:${sy3RkC(R)}"><u style="width:${(kl*100).toFixed(1)}%"></u></div>
-    <h4 class="s3-h">МАНА</h4><div class="s3-tiles"><div><small>Мана</small><b class="mn">✦ ${mn}<i>/${mx}</i></b></div><div><small>Сегодня от дел</small><b class="mn">+${today}</b></div><div><small>Монеты</small><b class="cr">◆ ${coinFmt(P.coins||0)}</b></div></div>
-    <div class="s3-src"><div class="s3-kv"><span>Реальные дела — по минутам</span><b>час таймера = <span class="mn">✦ ${Math.round(60*PAY.manaMin)}</span></b></div><div class="s3-kv"><span>Строгий таймер · камера · проверка игрой</span><b>×2</b></div><div class="s3-kv"><span>Запись вручную</span><b>в зачёт треть</b></div>
-      <div class="s3-kv"><span>Квест Системы (ранг E → S)</span><b><span class="mn">+${SY3_QB.E} … +${SY3_QB.S}</span></b></div><div class="s3-kv"><span>Все дела дня закрыты</span><b><span class="mn">+${SY3_DAYB}</span></b></div><div class="s3-kv"><span>Потолок наград в день</span><b>${PAY.dayMax/60} ч дел</b></div></div>
-    <p class="s3-note">Мана — только от реальной жизни. Тратится в мире Врат: навык класса и армия теней. Монеты — за победы во Вратах и сундуки.</p>
-    <h4 class="s3-h">СЕРИЯ · ${P.streak||0} ${plural(P.streak||0,"ДЕНЬ","ДНЯ","ДНЕЙ")}</h4><div class="s3-days">${days.map(d=>`<span class="${d.n?"on":""}${d.t?" t":""}" title="${d.k}: ${d.n}"><small>${d.w}</small><i>${d.n?sy3Flame():""}</i><b>${d.dd}</b></span>`).join("")}</div>
-    <h4 class="s3-h">ХАРАКТЕРИСТИКИ</h4>${SY3_ST.map(([k,n,col,sp])=>`<div class="s3-st2" style="--c:${col}"><span>${n}<small>${sp}</small></span><i><u style="width:${((st[k]||0)/top*100).toFixed(1)}%"></u></i><b>${st[k]||0}</b></div>`).join("")}
-    <p class="s3-note">Каждый час дел сферы — +1 к её характеристике. В мире Врат это сила удара, запас здоровья и маны.</p>`; }
-function sy3StatusWin(){ sy3Snd("select"); return sy3Win("status","СТАТУС",sy3StatusHTML(),{accent:"#4fa8ff",icon:"◆",wide:true}); }
 /* ---------- a missed daily quest (20.10, answer 30): soft — the reward burns, the System writes coldly. No punishment zone ---------- */
 function sy3Miss(){ const S=syState(), td=todayKey(), day=P.day&&P.day.d===td?P.day:null, prev=S.dl;
   if(prev&&prev.d!==td&&prev.n>0&&!prev.ok&&S.missD!==prev.d&&daysSince(prev.d)<=3){ S.missD=prev.d; saveP(); let n=0; const f=()=>{ if(!SY3.on||++n>60) return; if(anyBlocking()||hubBusy||SY3.locked) { setTimeout(f,1500); return; } sy3MissWin(prev); }; setTimeout(f,TEST?500:2400); }
@@ -43514,7 +43571,7 @@ function sy3MissWin(p){ const dd=p.d.slice(8,10)+"."+p.d.slice(5,7); sy3Snd("den
     <div class="s3-kv"><span>Награда</span><b><s class="mn">✦ ${SY3_DAYB} маны</s> — сгорела</b></div><div class="s3-kv"><span>Штраф</span><b>нет</b></div>
     <p class="s3-cold">Система не наказывает. Система запоминает.</p><div class="actions"><button class="btn primary" id="s3MsOk">Принято</button></div></div>`,{accent:"#8fa6cc",icon:"!",onMount:el=>{ el.querySelector("#s3MsOk").onclick=()=>closeModal("s3w_miss"); }}); }
 function sy3HelpWin(){ sy3Win("help","ЧТО ЗДЕСЬ",`<div class="s3-help"><p><b>Ядро</b> в центре — вход в мир Врат. Нажми на него.</p><p><b>Квесты</b> — реальные дела дня. Камера считает отжимания, опрос проверяет чтение, таймер — время. За квест — <b class="mn">мана</b>: сила в мире Врат.</p>
-    <p><b>Разделы</b>: профиль и ранг, навыки (E→S по часам дел), магазин, рейтинг, отряд, коллекция теней, дневник дел.</p><p><b>Серия</b> 🔥 — дни подряд с делами. Не прерывай.</p><p class="s3-note">Крути пространство пальцем или мышью, приближай двумя пальцами или колесом. ${isTouch?"":"Клавиши 1–7 — разделы, Enter — ядро."}</p></div>
+    <p><b>Разделы</b> справа: навыки (E→S по часам дел), рейд (отряд и рейтинг — вкладки), магазин, дневник дел — итоги дня, недели и месяца.</p><p><b>Нижняя панель</b> — твой профиль: статус, характеристики, класс, коллекция теней.</p><p><b>Серия</b> 🔥 — дни подряд с делами. Не прерывай.</p><p class="s3-note">Крути пространство пальцем или мышью, приближай двумя пальцами или колесом. ${isTouch?"":"Клавиши 1–4 — разделы, 5 — профиль, Enter — ядро."}</p></div>
     <div class="actions">${typeof whatNowWindow==="function"&&!syLocked()?`<button class="btn" id="s3HlNow">Что делать сейчас?</button>`:""}${typeof bookWindow==="function"&&!syLocked()?`<button class="btn ghost" id="s3HlBook">Книга игры</button>`:""}</div>`,{accent:"#5fd0ff",onMount:el=>{
       const n=el.querySelector("#s3HlNow"); if(n) n.onclick=()=>{ closeModal("s3w_help",true); whatNowWindow(); }; const b=el.querySelector("#s3HlBook"); if(b) b.onclick=()=>{ closeModal("s3w_help",true); bookWindow(); }; }}); }
 /* 20.10: «ГЕО» and «КАРТА» are gone from the System (answer 8); the map of the continent stays in the world (key M) */
@@ -43556,6 +43613,165 @@ function sy3Snd(k){ try{ if(!sy3Set().s3snd||typeof sxVoice!=="function") return
    quieter while the System is on — a calm hypnotic ambient (fp-music.js musSysQuiet). No generated hum any more. */
 const SY3A={ on:false };
 function sy3Amb(on){ SY3A.on=!!on; try{ if(typeof musSysQuiet==="function") musSysQuiet(!!on); }catch(e){} }
+
+/* ===== sys3w.js ===== */
+/* ================= «СИСТЕМА» v3 — the windows of the four sections (20.10, agent sys3) =================
+   decisions-2026-10-19, «20.10, 11:20» and «11:30 уточнения»:
+   · the right side has four sections: Навыки · Рейд · Магазин · Дневник дел (sys3d.js SY3_NAV);
+   · «Рейд» is one window with the tabs Рейд · Отряд · Рейтинг; «Рейд» = the entry to the lobby (raidWindow, fp-raid.js), «Отряд» = squadWindow (fp-squad.js),
+     «Рейтинг» = the people tab of the old System page (real.js). Each tab is the real window of its module: the tab bar is put into it by modal() (g1-core.js → sy3TabsOn);
+   · the bar at the bottom opens «Профиль» (status, stats Сила/Интеллект/Дух/Воля, class, experience, mana, coins, the streak) with the tab «Коллекция теней» (armyWindow, army.js);
+   · «Дневник дел» = the summaries: the day (what was done, minutes, what grew), the week and the month with charts (minutes per day, per sphere, deeds vs the game).
+   The diary reads the journal of deeds P.dj (written by doDeed, flow.js → djAdd: one row per deed, 92 days) and the split of experience P.xpd (g1-core.js addXp);
+   for the days before the journal it falls back to P.lifeDay (minutes), P.history (count) and P.log (titles). */
+
+/* ================= TABS ================= */
+const SY3_TG={
+  raid:{ n:"РЕЙД", col:"#ff6a3c", tabs:[["raid","Рейд"],["squad","Отряд"],["rate","Рейтинг"]] },
+  prof:{ n:"ПРОФИЛЬ", col:"#4fa8ff", tabs:[["prof","Статус"],["army","Коллекция теней"]] } };
+/* the windows (modal ids) that wear the tab bar while the System is on */
+const SY3_TID={ s3w_raid:["raid","raid"], raid:["raid","raid"], squad:["raid","squad"], s3w_rate:["raid","rate"], s3w_status:["prof","prof"], army:["prof","army"] };
+function sy3TabsOn(id,el){ try{ if(typeof SY3==="undefined"||!SY3.on||!document.body.classList.contains("s3on")) return; const t=SY3_TID[id]; if(!t||!el||el.querySelector(".s3-tabs")) return;
+    const [g,k]=t, G=SY3_TG[g]; (SY3.tabLast||(SY3.tabLast={}))[g]=k;
+    const bar=document.createElement("div"); bar.className="s3-tabs"; bar.setAttribute("role","tablist"); bar.setAttribute("aria-label",G.n); bar.style.setProperty("--c",G.col);
+    bar.innerHTML=G.tabs.map(([tk,tn])=>`<button role="tab" data-tab="${tk}" aria-selected="${tk===k}" class="${tk===k?"on":""}"><i></i>${tn}</button>`).join("");
+    const head=el.querySelector(".holo-head"); if(head) head.insertAdjacentElement("afterend",bar); else { const inn=el.querySelector(".holo-inner"); if(inn) inn.prepend(bar); }
+    bar.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation(); if(b.dataset.tab!==k) sy3Tab(g,b.dataset.tab,true); }));
+    el.style.setProperty("--accent",G.col); /* one window: the frame of the group's colour, whatever module drew the page */ el.classList.add("s3tab"); if(SY3.tabSw) el.classList.add("s3tsw"); }catch(e){ console.warn("tabs",e); } }
+function sy3TabClose(g){ Object.keys(SY3_TID).forEach(id=>{ if(SY3_TID[id][0]===g&&open.has(id)){ if(id==="raid"&&typeof RAID!=="undefined") RAID.lobby=false; closeModal(id,true); } }); }
+function sy3Tab(g,k,sw){ if(!SY3.built) sy3Build(); sy3TabClose(g); SY3.tabSw=!!sw; clearTimeout(SY3.tabSwT); SY3.tabSwT=setTimeout(()=>{ SY3.tabSw=false; },1600); if(sw) sy3Snd("tick");
+  (SY3.tabLast||(SY3.tabLast={}))[g]=k;
+  if(g==="raid"){ if(k==="squad"){ if(typeof squadWindow==="function") squadWindow(); return; }
+    if(k==="rate") return sy3Win("rate","РЕЙТИНГ",`<div id="rlPanel" class="s3-real"></div>`,{accent:"#ff6a3c",wide:true,onMount:()=>{ REAL.tab="people"; REAL.sph=null; REAL.sel=null; realPanel(); }});
+    return sy3RaidWin(); }
+  if(k==="army"){ if(typeof armyWindow==="function") armyWindow(); return; }
+  return sy3StatusWin(); }
+
+/* ---------- РЕЙД: the entry (the lobby itself is raidWindow) ---------- */
+function sy3RaidWin(){ const net=typeof rdCanNet==="function"&&rdCanNet(), inSq=typeof sqIn==="function"&&!!sqIn(), inv=typeof RAID!=="undefined"&&RAID.invite&&Date.now()-RAID.invite.at<3*3600e3?RAID.invite:null;
+  const lim=typeof rdLimitLine==="function"?rdLimitLine():"", rk=RANK_NAME(P.level||1);
+  return sy3Win("raid","РЕЙД",`<div class="s3q-w" style="--c:#ff6a3c"><small class="s3-qh n"><i></i>ГЛАВНОЕ · БЕТА</small><h3>Рейд — до трёх Игроков в одном подземелье</h3>
+      <p>Босс со свитой, добыча — поровну. Вход открывает <b>Печать рейда</b>: общая копилка реальных дел отряда за час до старта.</p>
+      ${inv?`<div class="s3-kv hot"><span>Приглашение</span><b>${sy3Esc(inv.from)} · ранг ${sy3Esc(inv.rank)} · код ${sy3Esc(inv.code)}</b></div>`:""}
+      <div class="s3-kv"><span>Твой ранг</span><b>${rk} · рейд — по старшему</b></div><div class="s3-kv"><span>Отряд</span><b>${inSq?`в отряде${typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?" · "+sy3Esc(SQN.st.code):""}`:"нет — вкладка «Отряд»"}</b></div>
+      <div class="s3-kv"><span>Связь с сервером</span><b>${net?"есть":"нужен вход в аккаунт"}</b></div>${lim?`<div class="s3-rdl">${lim}</div>`:""}
+      <div class="actions"><button class="btn ghost" id="s3RdSq">Отряд</button><button class="btn primary big" id="s3RdGo">${inv?"Войти по приглашению":"Лобби рейда"}</button></div></div>`,
+    {accent:"#ff6a3c",wide:true,icon:"☗",onMount:el=>{ el.querySelector("#s3RdGo").onclick=()=>{ sy3Snd("accept"); closeModal("s3w_raid",true); SY3.tabSw=true; clearTimeout(SY3.tabSwT); SY3.tabSwT=setTimeout(()=>{ SY3.tabSw=false; },1600); if(typeof raidWindow==="function") raidWindow(); };
+      el.querySelector("#s3RdSq").onclick=()=>sy3Tab("raid","squad",true); }}); }
+
+/* ================= ПРОФИЛЬ (the bar): status · stats · class · experience · mana · coins · streak ================= */
+const SY3_ST=[["body","Сила","#ff6b7a","Тело"],["mind","Интеллект","#b58cff","Чтение · Фокус и учёба"],["soul","Дух","#6dffb0","Спокойствие"],["will","Воля","#ffd166","Дисциплина"]];
+function sy3StatusHTML(){ const lv=P.level||1, i=rankIdx(), R=RANK_NEED[i].r, nx=RANK_NEED[i+1], need=P.xpNext||xpNeed(lv), xp=Math.floor(P.xp||0), xk=clamp(xp/Math.max(1,need),0,1), kl=nx?clamp((lv-RANK_NEED[i].l)/Math.max(1,nx.l-RANK_NEED[i].l),0,1):1;
+  const st=P.stats||{}, top=Math.max(10,...SY3_ST.map(([k])=>st[k]||0)), mn=Math.floor(mana()), mx=manaMax(), D0=typeof payDay==="function"?payDay():{cnt:0}, S=syState(), c=typeof clsActive==="function"?clsActive():null, K=c&&KLS[c]?KLS[c]:null;
+  const days=[]; for(let d=13;d>=0;d--){ const x=new Date(); x.setDate(x.getDate()-d); const k=todayKey(x); days.push({k,n:(P.history||{})[k]||0,t:d===0,w:"ВСПЧПСВ"[x.getDay()],dd:x.getDate()}); }
+  const today=Math.round(D0.mana!=null?D0.mana:(D0.cnt||0)*PAY.manaMin), L=lifeLv(), A=typeof army==="function"?army().length:0, xd=(P.xpd||{})[todayKey()]||{r:0,g:0};
+  return `<div class="s3pf"><i class="s3pf-rk" style="--c:${sy3RkC(R)}">${R}</i><div><small>${S.open?"ИГРОК":"НОСИТЕЛЬ"} · РАНГ ${R} · УР. ${lv}</small><b>${sy3Esc(P.name||"Пробуждённый")}</b><em>${K?`${K.n} · ${K.role}`:"класс ещё не выбран"}</em></div></div>
+    <div class="s3-tiles"><div><small>Уровень</small><b>${lv}</b></div><div><small>Мана</small><b class="mn">✦ ${mn}</b></div><div><small>Монеты</small><b class="cr">◆ ${coinFmt(P.coins||0)}</b></div><div><small>Серия</small><b class="fl">${P.streak||0} ${plural(P.streak||0,"день","дня","дней")}</b></div></div>
+    <h4 class="s3-h">УРОВЕНЬ</h4><div class="s3-kv"><span>Опыт до LV.${lv+1}</span><b>${coinFmt(xp)} / ${coinFmt(need)} · осталось ${coinFmt(Math.max(0,need-xp))}</b></div><div class="s3-bar2" style="--c:#4fa8ff"><u style="width:${(xk*100).toFixed(1)}%"></u></div>
+    <div class="s3-kv"><span>${nx?`Ранг ${nx.r} — с уровня ${nx.l}`:"Ранг S — вершина"}</span><b>${Math.round(kl*100)}%</b></div><div class="s3-bar2" style="--c:${sy3RkC(R)}"><u style="width:${(kl*100).toFixed(1)}%"></u></div>
+    <div class="s3-kv"><span>Опыт сегодня</span><b>+${coinFmt(xd.r)} от дел · +${coinFmt(xd.g)} в игре</b></div>
+    <p class="s3-note">Ранг — это уровень. Главный опыт дают реальные дела: за день их ≈80%, игра — ≈20%.</p>
+    <h4 class="s3-h">МАНА</h4><div class="s3-tiles"><div><small>Мана</small><b class="mn">✦ ${mn}<i>/${mx}</i></b></div><div><small>Сегодня от дел</small><b class="mn">+${today}</b></div><div><small>Монеты</small><b class="cr">◆ ${coinFmt(P.coins||0)}</b></div></div>
+    <div class="s3-src"><div class="s3-kv"><span>Реальные дела — по минутам</span><b>час таймера = <span class="mn">✦ ${Math.round(60*PAY.manaMin)}</span></b></div><div class="s3-kv"><span>Строгий таймер · камера · проверка игрой</span><b>×2</b></div><div class="s3-kv"><span>Запись вручную</span><b>в зачёт треть</b></div>
+      <div class="s3-kv"><span>Квест Системы (ранг E → S)</span><b><span class="mn">+${SY3_QB.E} … +${SY3_QB.S}</span></b></div><div class="s3-kv"><span>Все дела дня закрыты</span><b><span class="mn">+${SY3_DAYB}</span></b></div><div class="s3-kv"><span>Потолок наград в день</span><b>${PAY.dayMax/60} ч дел</b></div></div>
+    <p class="s3-note">Мана — только от реальной жизни. Тратится в мире Врат: навык класса и армия теней. Монеты — за победы во Вратах и сундуки.</p>
+    <h4 class="s3-h">СЕРИЯ · ${P.streak||0} ${plural(P.streak||0,"ДЕНЬ","ДНЯ","ДНЕЙ")}</h4><div class="s3-days">${days.map(d=>`<span class="${d.n?"on":""}${d.t?" t":""}" title="${d.k}: ${d.n}"><small>${d.w}</small><i>${d.n?sy3Flame():""}</i><b>${d.dd}</b></span>`).join("")}</div>
+    <h4 class="s3-h">ХАРАКТЕРИСТИКИ</h4>${SY3_ST.map(([k,n,col,sp])=>`<div class="s3-st2" style="--c:${col}"><span>${n}<small>${sp}</small></span><i><u style="width:${((st[k]||0)/top*100).toFixed(1)}%"></u></i><b>${st[k]||0}</b></div>`).join("")}
+    <p class="s3-note">Каждый час дел сферы — +1 к её характеристике. В мире Врат это сила удара, запас здоровья и маны.</p>
+    <h4 class="s3-h">КЛАСС</h4>${K?`<div class="s3-cls" style="--c:${K.col}"><b>${K.n}</b><small>${K.role} · ${K.wpn}</small><p>${K.play}</p></div><div class="s3-row2"><button class="btn small" data-pf="tree">Путь класса</button><button class="btn small ghost" data-pf="cls">Класс подробно</button></div>`:`<p class="s3-note">${S.open?"Класс выбирается в обучении боя — попробуй все три.":"Класс откроется, когда ты станешь Игроком."}</p>`}
+    <h4 class="s3-h">ЖИЗНЬ</h4><div class="s3-kv"><span>Уровень жизни ${L.n} · ${lifeTitle(L.n)}</span><b>${fmtHM(lifeTotal())} дел</b></div><div class="s3-kv"><span>День в Системе</span><b>${sysDay()}</b></div><div class="s3-kv"><span>Коллекция теней</span><b>${A} ${plural(A,"тень","тени","теней")} · вкладка сверху</b></div>
+    <div class="s3-row2"><button class="btn small" data-pf="path">Путь и сила</button><button class="btn small" data-pf="ladder">Лестница рангов</button>${S.open&&!syLocked()?`<button class="btn small" data-pf="gear">Снаряжение</button>`:""}<button class="btn small ghost" data-pf="set">Настройки</button></div>`; }
+function sy3StatusWire(el){ const F={ tree:()=>{ const c=clsActive(); if(c) treeWindow(c); }, cls:()=>clsWindow(), path:()=>pathWindow(), ladder:()=>ladderWindow(true), gear:()=>gearWindow(), set:()=>setWindow({back:null}) };
+  el.querySelectorAll("[data-pf]").forEach(b=>b.onclick=()=>{ const f=F[b.dataset.pf]; if(!f) return; closeModal("s3w_status",true); try{ f(); }catch(e){ console.warn(e); } }); }
+function sy3StatusWin(){ sy3Snd("select"); sy3TabClose("prof"); return sy3Win("status","ПРОФИЛЬ",sy3StatusHTML(),{accent:"#4fa8ff",icon:"◆",wide:true,onMount:sy3StatusWire}); }
+
+/* ================= THE JOURNAL OF DEEDS ================= */
+const dvKey=n=>{ const d=new Date(); d.setDate(d.getDate()+n); return todayKey(d); };
+function djAdd(g,o){ try{ o=o||{}; const L=P.dj||(P.dj=[]), D=(typeof DEEDS!=="undefined"&&DEEDS[g.deed])||{}; const sp=SPHERES[g.sp]?g.sp:SPHERES[D.sp]?D.sp:"will";
+    L.push({d:todayKey(),ts:Date.now(),n:String(g.name||D.n||"Дело").slice(0,60),sp,min:Math.max(0,Math.round(o.min||0)),cnt:Math.round((o.cnt||0)*10)/10,xp:Math.round(o.xp||0),mana:Math.round(o.mana||0),st:o.stat?o.stat[0]:null,sa:o.stat?(o.stat[1]||0):0,sk:o.sk||null,k:o.kind||""});
+    const cut=dvKey(-92); while(L.length&&(L.length>700||L[0].d<cut)) L.shift(); saveP(); }catch(e){ console.warn("dj",e); } }
+function djBonus(m){ try{ const B=P.djb||(P.djb={}), td=todayKey(); B[td]=(B[td]||0)+Math.round(m); const ks=Object.keys(B).sort(); while(ks.length>92) delete B[ks.shift()]; saveP(); }catch(e){} }
+/* one day: the deeds, the minutes, the spheres, the experience (deeds / game), the mana */
+function dvDay(k){ const E=(P.dj||[]).filter(e=>e.d===k), old=!E.length; const min=old?((P.lifeDay||{})[k]||0):E.reduce((a,e)=>a+e.min,0);
+  const sp={}; E.forEach(e=>{ sp[e.sp]=(sp[e.sp]||0)+e.min; }); if(old&&min) sp._=min;
+  const x=(P.xpd||{})[k]; const xr=x?x.r:E.reduce((a,e)=>a+e.xp,0), xg=x?x.g:0;
+  return { k, E, old, min, sp, xr, xg, mana:E.reduce((a,e)=>a+e.mana,0)+((P.djb||{})[k]||0), n:Math.max((P.history||{})[k]||0,E.length) }; }
+function dvRange(n,off){ const L=[]; for(let i=n-1;i>=0;i--) L.push(dvDay(dvKey(-(i+(off||0))))); return L; }
+const DV_SPH=["body","focus","read","calm","will"];
+/* the colours of the spheres in the charts — the reference dark slots, validated as one set on the window's surface (dataviz validator: CVD ≥ 8.4, normal ≥ 19.8, ≥ 3:1);
+   every row is labelled by name, so the colour is never the only sign */
+const DV_SP={ body:"#e66767", focus:"#3987e5", read:"#c98500", calm:"#199e70", will:"#9085e9", _:"#6b7c99" };
+const DV_RG={ r:"#3987e5", g:"#d95926" }; /* deeds · the game (validated pair) */
+const DV_W=["ВС","ПН","ВТ","СР","ЧТ","ПТ","СБ"];
+const dvD=k=>{ const d=new Date(k+"T12:00:00"); return d; };
+const dvDM=k=>k.slice(8,10)+"."+k.slice(5,7);
+const dvMin=m=>m>0?fmtHM(Math.round(m)):"0 мин";
+function dvNice(v){ const S=[15,30,45,60,90,120,180,240,300,360,480,600]; for(const s of S) if(v<=s) return s; return Math.ceil(v/120)*120; }
+/* minutes per day: one series, thin bars with a rounded data end on the baseline, a recessive grid, labels only on the best day and today; hover / tap — the readout */
+const dvNarrow=()=>innerWidth<560; /* a phone held upright: a narrower drawing, so its text stays readable */
+function dvBars(days,id){ const n=days.length, W=dvNarrow()?380:640, H=dvNarrow()?150:176, L=40, Rp=8, T=18, B=24, iw=W-L-Rp, ih=H-T-B, max=dvNice(Math.max(1,...days.map(d=>d.min))), step=iw/n, bw=Math.max(4,Math.min(34,step*.62)), r=Math.min(4,bw/2);
+  const y=v=>T+ih-(v/max)*ih, best=days.reduce((a,d,i)=>d.min>days[a].min?i:a,0), td=todayKey();
+  const grid=[0,max/2,max].map(v=>`<line x1="${L}" x2="${W-Rp}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" class="${v?"g":"b"}"/><text x="${L-6}" y="${(y(v)+3.5).toFixed(1)}" class="ya">${v?(v>=60&&v%60===0?v/60+" ч":Math.round(v)):0}</text>`).join("");
+  const bars=days.map((d,i)=>{ const x=L+step*i+(step-bw)/2, h=Math.max(0,(d.min/max)*ih), y0=T+ih, t=d.k===td;
+    const shape=h<1.5?`<rect x="${x.toFixed(1)}" y="${(y0-2).toFixed(1)}" width="${bw.toFixed(1)}" height="2" class="z"/>`:`<path d="M${x.toFixed(1)} ${y0}V${(y0-h+r).toFixed(1)}q0 ${-r} ${r} ${-r}h${(bw-2*r).toFixed(1)}q${r} 0 ${r} ${r}V${y0}z" class="${t?"t":""}"/>`;
+    const lab=(i===best&&d.min>0)||(t&&d.min>0)?`<text x="${(x+bw/2).toFixed(1)}" y="${(y0-h-5).toFixed(1)}" class="v">${Math.round(d.min)}</text>`:"";
+    const xl=n<=7?DV_W[dvD(d.k).getDay()]:(t||i%5===0?String(dvD(d.k).getDate()):"");
+    return `<g class="dv-b" data-dv="${id}:${i}">${shape}${lab}${xl?`<text x="${(x+bw/2).toFixed(1)}" y="${H-7}" class="xa${t?" t":""}">${xl}</text>`:""}<rect x="${(L+step*i).toFixed(1)}" y="${T}" width="${step.toFixed(1)}" height="${ih+B}" class="hit"/></g>`; }).join("");
+  return `<svg class="dv-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Минуты дел по дням">${grid}${bars}</svg>`; }
+/* the spheres: one row each, the name and the value written beside the bar */
+const SPH_N=k=>k==="_"?"До дневника":(SPHERES[k]||{}).n||k;
+function dvSph(sp){ const keys=[...DV_SPH,"_"].filter(k=>sp[k]>0); if(!keys.length) return `<p class="s3-note">Пока ни одной минуты дел за этот срок.</p>`;
+  const nw=dvNarrow(), tot=keys.reduce((a,k)=>a+sp[k],0), max=Math.max(...keys.map(k=>sp[k])), W=nw?380:640, rh=30, H=keys.length*rh+4, L=nw?118:196, Rr=nw?112:128, iw=W-L-Rr;
+  return `<svg class="dv-svg sph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Минуты по сферам">${keys.map((k,i)=>{ const w=Math.max(3,sp[k]/max*iw), y=i*rh+6, r=Math.min(4,w/2);
+    return `<g class="dv-s"><title>${SPH_N(k)}: ${dvMin(sp[k])}</title><text x="0" y="${y+13}" class="sl">${SPH_N(k)}</text><rect x="${L}" y="${y+3}" width="${iw}" height="12" class="tr"/><path d="M${L} ${y+3}h${(w-r).toFixed(1)}q${r} 0 ${r} ${r}v${(12-2*r).toFixed(1)}q0 ${r} ${-r} ${r}H${L}z" fill="${DV_SP[k]}"/><text x="${W}" y="${y+13}" class="sv">${dvMin(sp[k])} · ${Math.round(sp[k]/tot*100)}%</text></g>`; }).join("")}</svg>`; }
+/* experience: deeds vs the game, one bar split in two with a 2 px gap, both parts named */
+function dvXp(xr,xg){ const t=xr+xg; if(t<=0) return `<p class="s3-note">Опыта за этот срок ещё нет.</p>`; const W=dvNarrow()?380:640, a=Math.round(xr/t*100), wa=xr/t*W, gap=xr&&xg?2:0;
+  return `<svg class="dv-svg xp" viewBox="0 0 ${W} 14" role="img" aria-label="Опыт: дела и игра"><rect x="0" y="1" width="${Math.max(0,wa-gap/2).toFixed(1)}" height="12" rx="3" fill="${DV_RG.r}"/><rect x="${Math.min(W,wa+gap/2).toFixed(1)}" y="1" width="${Math.max(0,W-wa-gap/2).toFixed(1)}" height="12" rx="3" fill="${DV_RG.g}"/></svg>
+    <div class="dv-lg"><span><i style="background:${DV_RG.r}"></i>Реальные дела · ${a}% · ${coinFmt(xr)}</span><span><i style="background:${DV_RG.g}"></i>Игра · ${100-a}% · ${coinFmt(xg)}</span></div>`; }
+
+/* ================= ДНЕВНИК ДЕЛ: the summaries ================= */
+function sy3DiaryWin(tab){ const S=SY3.dv||(SY3.dv={tab:"day",off:0}); if(tab) S.tab=tab; return sy3Win("log","ДНЕВНИК ДЕЛ",`<div class="s3-tabs in" role="tablist" style="--c:#5fd0ff">${[["day","Итог дня"],["week","Итог недели"],["month","Итог месяца"]].map(([k,n])=>`<button role="tab" data-dv-t="${k}" class="${S.tab===k?"on":""}" aria-selected="${S.tab===k}"><i></i>${n}</button>`).join("")}</div><div id="s3Dv"></div>
+    <div class="actions"><button class="btn primary" id="s3LgGo">${sy3I("timer")} Начать дело</button><button class="btn" id="s3LgOwn">Своё дело</button></div>`,{accent:"#5fd0ff",wide:true,icon:"◆",onMount:el=>{
+    el.querySelectorAll("[data-dv-t]").forEach(b=>b.onclick=()=>{ S.tab=b.dataset.dvT; S.off=0; el.querySelectorAll("[data-dv-t]").forEach(x=>{ x.classList.toggle("on",x===b); x.setAttribute("aria-selected",x===b?"true":"false"); }); sy3Snd("tick"); sy3DvDraw(el); });
+    el.querySelector("#s3LgGo").onclick=()=>{ closeModal("s3w_log",true); if(typeof sysQuick==="function") sysQuick(); };
+    el.querySelector("#s3LgOwn").onclick=async()=>{ closeModal("s3w_log",true); const id=await customDeedWindow(); if(id){ const i=P.day?P.day.gates.findIndex(g=>!g.done):-1; if(i>=0){ customGate(i,id); toast("Твоё дело стало делом дня","#6fd6ff"); } else toast("Сохранил. Появится в плане завтра"); sy3Refresh(); } };
+    sy3DvDraw(el); }}); }
+function sy3DvDraw(el){ const S=SY3.dv, box=el.querySelector("#s3Dv"); if(!box) return; box.innerHTML=S.tab==="day"?sy3DvDayHTML(S.off||0):sy3DvSpanHTML(S.tab==="week"?7:30); box.dataset.tab=S.tab;
+  const rd=box.querySelector(".dv-rd"), D=box._days=S.tab==="day"?null:dvRange(S.tab==="week"?7:30);
+  box.querySelectorAll("[data-dv]").forEach(g=>{ const show=()=>{ const i=+g.dataset.dv.split(":")[1], d=D&&D[i]; if(!d||!rd) return; box.querySelectorAll(".dv-b.on").forEach(x=>x.classList.remove("on")); g.classList.add("on");
+      rd.innerHTML=`<b>${DV_W[dvD(d.k).getDay()]} ${dvDM(d.k)}${d.k===todayKey()?" · сегодня":""}</b> · ${dvMin(d.min)} · ${d.n} ${plural(d.n,"дело","дела","дел")}${d.xr?` · ⚡ +${coinFmt(d.xr)} опыта от дел`:""}`; };
+    g.addEventListener("pointerenter",show); g.addEventListener("click",show); });
+  const nav=box.querySelectorAll("[data-dv-o]"); nav.forEach(b=>b.onclick=()=>{ S.off=clamp((S.off||0)+(+b.dataset.dvO),0,29); sy3Snd("tick"); sy3DvDraw(el); }); }
+/* the day */
+function sy3DvDayHTML(off){ const k=dvKey(-off), d=dvDay(k), td=todayKey(), isT=k===td, sk={}, st={};
+  d.E.forEach(e=>{ if(e.sk){ sk[e.sk]=(sk[e.sk]||0)+e.cnt; } if(e.st&&e.sa) st[e.st]=(st[e.st]||0)+e.sa; });
+  const legacyLog=d.old?(P.log||[]).filter(r=>r.d===k):[], gates=isT&&P.day&&P.day.d===td?P.day.gates:[], left=gates.filter(g=>!g.done).length;
+  const skills=Object.keys(sk).map(id=>{ const s=typeof allSkills==="function"?allSkills().find(x=>x.id===id):null; return s?`<div class="s3-lg ok"><span><b>Навык «${sy3Esc(s.n)}»</b><small>в зачёт ${dvMin(sk[id])} · всего ${fmtHM(skMin(id))}</small></span><em>ранг ${skRank(skMin(id))}</em></div>`:""; }).join("");
+  const stats=SY3_ST.filter(([s])=>st[s]).map(([s,n,col])=>`<div class="s3-lg ok"><span><b style="color:${col}">${n}</b><small>характеристика · сейчас ${(P.stats||{})[s]||0}</small></span><em>+${st[s]}</em></div>`).join("");
+  const kindW=k=>({proof:"проверено",strict:"строгий таймер",free:"таймер",manual:"вручную",habit:"привычка"})[k]||"";
+  const word=d.n?`${d.n} ${plural(d.n,"дело","дела","дел")} · ${dvMin(d.min)}${isT&&left?` · осталось дел дня: ${left}`:isT&&gates.length?" · все дела дня закрыты":""}.`:isT?"Сегодня ещё ни одного дела. Начни — Система подведёт итог.":"В этот день дел не было.";
+  return `<div class="dv-nav"><button class="dv-a" data-dv-o="1" aria-label="Предыдущий день" ${off>=29?"disabled":""}>‹</button><b>${isT?"СЕГОДНЯ":DV_W[dvD(k).getDay()]} · ${dvDM(k)}</b><button class="dv-a" data-dv-o="-1" aria-label="Следующий день" ${off<=0?"disabled":""}>›</button></div>
+    <p class="s3-cold dv-word">${word}</p>
+    <div class="s3-tiles"><div><small>Минут дел</small><b>${Math.round(d.min)}</b></div><div><small>Дел</small><b>${d.n}</b></div><div><small>Опыт от дел</small><b class="xp">+${coinFmt(d.xr)}</b></div><div><small>Мана</small><b class="mn">+${coinFmt(d.mana)}</b></div></div>
+    <h4 class="s3-h">ЧТО СДЕЛАНО</h4>${d.E.length?d.E.slice().reverse().map(e=>`<div class="s3-lg ok"><span><b>${sy3Esc(e.n)}</b><small>${SPH_N(e.sp)} · ${dvMin(e.min)}${kindW(e.k)?" · "+kindW(e.k):""}</small></span><em>${e.xp?`⚡ +${e.xp}`:""}${e.mana?` ✦ +${e.mana}`:""}</em></div>`).join("")
+      :legacyLog.length?legacyLog.map(r=>`<div class="s3-lg ok"><span><b>${sy3Esc(r.t)}</b></span><em>✓</em></div>`).join(""):`<p class="s3-note">Пусто.</p>`}
+    ${isT&&left?`${gates.filter(g=>!g.done).slice(0,4).map(g=>`<div class="s3-lg"><span><b>${sy3Esc(g.name)}</b><small>${amtText(g)} · ранг ${g.rank} · ждёт</small></span><em>—</em></div>`).join("")}`:""}
+    <h4 class="s3-h">ЧТО ВЫРОСЛО</h4>${skills}${stats}
+    <div class="s3-kv"><span>Опыт</span><b>+${coinFmt(d.xr)} от дел · +${coinFmt(d.xg)} в игре</b></div>${d.xr+d.xg>0?dvXp(d.xr,d.xg):""}<div class="s3-kv"><span>Мана</span><b class="mn">+${coinFmt(d.mana)}</b></div>
+    ${Object.keys(d.sp).length?`<h4 class="s3-h">СФЕРЫ ДНЯ</h4>${dvSph(d.sp)}`:""}`; }
+/* the week / the month */
+function sy3DvSpanHTML(n){ const D=dvRange(n), prev=dvRange(n,n), sum=(L,f)=>L.reduce((a,d)=>a+f(d),0), td=todayKey();
+  const min=sum(D,d=>d.min), pm=sum(prev,d=>d.min), cnt=sum(D,d=>d.n), on=D.filter(d=>d.n>0||d.min>0).length, xr=sum(D,d=>d.xr), xg=sum(D,d=>d.xg), mn=sum(D,d=>d.mana);
+  const sp={}; D.forEach(d=>Object.keys(d.sp).forEach(k=>{ sp[k]=(sp[k]||0)+d.sp[k]; })); const best=D.reduce((a,d)=>d.min>a.min?d:a,D[0]);
+  const top=[...DV_SPH].filter(k=>sp[k]>0).sort((a,b)=>sp[b]-sp[a])[0], dl=pm>0?Math.round((min-pm)/pm*100):null;
+  const W=n===7?"НЕДЕЛЯ":"30 ДНЕЙ", vs=n===7?"прошлой неделе":"прошлым 30 дням";
+  const word=min>0?`${W==="НЕДЕЛЯ"?"За неделю":"За 30 дней"}: ${dvMin(min)} дел, ${on} ${plural(on,"день","дня","дней")} из ${n}.${top?` Больше всего — ${SPH_N(top).toLowerCase()}.`:""}${dl!=null?` ${dl>=0?"+":"−"}${Math.abs(dl)}% к ${vs}.`:""}`:"За этот срок дел нет. Одно дело сегодня — и график оживёт.";
+  return `<p class="s3-cold dv-word">${word}</p>
+    <div class="s3-tiles"><div><small>Минут дел</small><b>${Math.round(min)}</b></div><div><small>Дел</small><b>${cnt}</b></div><div><small>Дней с делами</small><b>${on}<i>/${n}</i></b></div><div><small>Мана</small><b class="mn">+${coinFmt(mn)}</b></div></div>
+    <h4 class="s3-h">МИНУТЫ ПО ДНЯМ</h4><div class="dv-ch">${dvBars(D,n)}</div><div class="dv-rd">${best&&best.min>0?`Лучший день — <b>${DV_W[dvD(best.k).getDay()]} ${dvDM(best.k)}</b>: ${dvMin(best.min)}. Наведи или нажми на столбец.`:"Наведи или нажми на столбец."}</div>
+    <h4 class="s3-h">ПО СФЕРАМ</h4>${dvSph(sp)}
+    <h4 class="s3-h">ОПЫТ · ДЕЛА И ИГРА</h4>${dvXp(xr,xg)}
+    <p class="s3-note">Главный рост — реальные дела. Система держит долю дел в опыте около 80%.</p>`; }
 
 /* ===== sysstart.js ===== */
 /* ================= THE NEW START (19.10): «сначала Система, потом мир» =================
@@ -43684,9 +43900,9 @@ async function syLearn(){ const S=syState(); if(S.learned) return;
   /* q2: a habit */
   if(!S.q2) S.q2={k:"habit",st:"offer"}; if(S.q2.st!=="done") await syQ2();
   await syTour([[sy3NavEl("skills"),"Навыки. Каждое дело растит навык — ранги от E до S по часам. Без дела навык тускнеет."],
-    [sy3NavEl("log"),"Дневник дел. Каждое твоё дело записано — ничего не теряется."],
-    [sy3NavEl("squad"),"Отряд — до четырёх друзей: общая серия, лента дел, общий босс недели."],
-    [sy3NavEl("prof"),"Профиль: твой ранг E–S, характеристики и класс."]]);
+    [sy3NavEl("raid"),"Рейд — до трёх Игроков против одного босса. Внутри — вкладки «Отряд» и «Рейтинг»."],
+    [sy3NavEl("log"),"Дневник дел — итоги: что сделал за день, неделю и месяц, сколько минут и что выросло."],
+    ["#s3Bar","Нажми на панель внизу — профиль: ранг E–S, характеристики, класс и коллекция теней."]]);
   /* q3: one more short quest — a minute of quiet */
   if(!S.q3) S.q3={k:"calm",st:"offer"}; if(S.q3.st!=="done"){ const r=await syOffer("q3"); if(r!=="done"){ S.q3.st="wait"; saveP(); } }
   await syTour([[SY3.pCore.el,S.q1&&S.q1.st==="done"?"Ядро. Скоро ты узнаешь, что за ним.":"Ядро. Оно откроется, когда будет выполнен первый квест."]]);
@@ -43716,7 +43932,7 @@ function syHabitDo(first){ return new Promise(res=>{ const S=syState(), h=S.habi
     <div class="actions"><button class="btn ghost" id="syHdL">Позже</button><button class="btn primary big" id="syHdOk">✓ Сделал</button></div></div>`,{blocking:true,closable:false,accent:"#ffd166",onMount:el=>{
     el.querySelector("#syHdL").onclick=()=>{ closeModal("s3w_hdo"); if(S.q2&&S.q2.st!=="done"){ S.q2.st="wait"; saveP(); } sy3Refresh(); res(false); };
     el.querySelector("#syHdOk").onclick=()=>{ closeModal("s3w_hdo"); const td=todayKey(), y=new Date(); y.setDate(y.getDate()-1); h.days=h.d===todayKey(y)?(h.days||0)+1:1; h.best=Math.max(h.best||0,h.days); h.d=td;
-      P.history[td]=(P.history[td]||0)+1; P.log=P.log||[]; P.log.unshift({d:td,t:`Привычка: ${h.n}`}); P.log=P.log.slice(0,80); if(typeof streakOnDeed==="function") streakOnDeed(); if(S.q2) S.q2.st="done"; saveP(); sy3QuestDone(SY3_QB.E,"Привычка"); res(true); };
+      P.history[td]=(P.history[td]||0)+1; P.log=P.log||[]; P.log.unshift({d:td,t:`Привычка: ${h.n}`}); P.log=P.log.slice(0,80); if(typeof djAdd==="function") djAdd({name:`Привычка: ${h.n}`,sp:"will",deed:"habit"},{min:0,cnt:0,xp:0,mana:0,kind:"habit"}); if(typeof streakOnDeed==="function") streakOnDeed(); if(S.q2) S.q2.st="done"; saveP(); sy3QuestDone(SY3_QB.E,"Привычка"); res(true); };
     if(TEST&&!window.__noSolve) setTimeout(()=>el.querySelector("#syHdOk").click(),120); }}); }); }
 
 /* ================= THE TRUTH ================= */
@@ -43783,7 +43999,7 @@ async function welcomeBack(fresh){ if(typeof syLocked==="function"&&syLocked()) 
   await storyIntro(); await storySide(); await maybeNetInvite(); await maybeTwinBirth(); await eveningReport(); await maybeInstallNudge(); hubHud(); }
 /* ---------- boot ---------- */
 loadP(); if(typeof syMigrate==="function") syMigrate(); /* 19.10: an old save goes straight to the System */ P.xpNext=xpNeed(P.level); if(typeof gfxBoot==="function") gfxBoot(); hud(); document.body.classList.toggle("touch",isTouch);
-apiReady.then(()=>{ if(API&&P.netToken) netRefresh(); }); buildHub(); if(P.perf||LOWQ) perfApply(Math.max(P.perf||0,LOWQ?2:0),false); if(P.onboarded){ planToday(); hubGatesRebuild(); } showHub(); resize();
+apiReady.then(()=>{ if(API&&P.netToken) netRefresh(); }); buildHub(); if((P.perf&&P.gfx==="auto")||LOWQ) perfApply(Math.max(P.perf||0,LOWQ?2:0),false); if(P.onboarded){ planToday(); hubGatesRebuild(); } showHub(); resize();
 $("bMenu").onclick=()=>{ if(!anyBlocking()) menuWindow(); }; $("bArmy").onclick=()=>{ if(!anyBlocking()&&!hubBusy) armyWindow(); }; $("bPath").onclick=()=>{ if(!anyBlocking()&&!hubBusy) pathWindow(); }; $("bCity").onclick=()=>{ if(!anyBlocking()&&!hubBusy) enterCity(); };
 $("bWorld").onclick=()=>{ if(!anyBlocking()&&!hubBusy) enterWorld(); }; $("chipWeek").onclick=$("bWeek").onclick=()=>{ if(!anyBlocking()) weekWindow(); }; $("hubStory").onclick=()=>{ if(!anyBlocking()) storyWindow(); }; $("meChip").onclick=()=>{ if(!anyBlocking()&&!hubBusy) pathWindow(); }; $("chipStreak").onclick=$("meChip").onclick;
 requestAnimationFrame(frame);
@@ -43828,6 +44044,7 @@ Object.assign(window.__g,{ TZ_R, TZ_RUN, tutLeave, tutNext, tutLend, tutArmy, tz
 Object.assign(window.__g,{ rangedTick, castBolt, elemSwitch, elemNow, mkAlly, near, inCone, efx, clsHit, dotEnemy, hitEnemy, fpPress, fpHurt, blockHit, treeDmgK, mkZone, bossPose, unfreeze, freezeLook, mgFrost, mgRime, mgFreeze, mgChillK, mgFocus, mgStorm, mgGround, MGS, MGX, mobBolt, plStats, treeSpent, treeOf }); /* mage 06.10: tice.py, tmeas.py */
 Object.assign(window.__g,{ rankGap, rkIdx, rkOf, rankDK, RK_OUT, RK_IN, RANK_ON, landRank, LAND_RK_MIX, rkShiftLvl, dgRamp, dgLessonOf, DG_RAMP, DG_LESSON, dgLessonWave, caveNow, caveRuns, caveRank, caveDone, caveGate, caveEnter, CAVE_DONE, ISL_SECRET, islFound, islHid, islBreak, islDive, islBack, rgState, setGet, mkEnemy, gateLvl, RG_CAVES, wTravel, W_OBELISKS, rgRankBand }); /* 12.10 world-fix: ranks, the gentle start, dungeons again, the Isles */
 Object.assign(window.__g,{ sy3SetWin, musPhase2, setWindow, SY3_QB, sy3StatusWin, sy3Miss, sy3MissWin, sy3XQ, sy3Load, sy3PR, sy3Skin, sy3Win, sy3PixelRatio, get renderer(){ return renderer; }, get ambEl(){ return ambEl; }, get raidEl(){ return raidEl; }, SY3, SY, sy3Show, sy3Hide, sy3Open, sy3Lay, sy3Refresh, sy3QuestList, sy3QuestWin, sy3CoreTap, sy3Feed, sy3FeedLocal, sy3Note, sy3Mode, sy3Set, syState, syLocked, syMigrate, syFlow, syResume, syTruth, syPlayerQuest, syTrial, syWordsDo, syReadDo, syHabitDo, syTip, syTipOff, sySpeak, syDetect, syOffer, SY_PHRASES, SY_TRUTH, sysAwaken, TZ_TRIAL }); /* the 3D System and the new start 19.10: test/sysui.py */
+Object.assign(window.__g,{ sy3Tab, sy3TabsOn, sy3RaidWin, sy3DiaryWin, sy3DvDraw, dvDay, dvRange, djAdd, djBonus, sy3Decline, sy3CanNo, sy3DayQuest, XPG, gameXp, gameXpN, xpG, GFX, GFX_T, gfxSet, setGfx, get PR(){ return PR; }, SY3_NAV, wideFpCard, WD, addXp }); /* 20.10 «Система v3»: test/sys3.py */
 Object.assign(window.__g,{ PRO, PRO_PATHS, PRO_PLAY, proBeatSkip, proSkipPrologue, proStage, proWorldPump }); /* the opening «Это ты сам»: tpro.py */
 
 Object.assign(window.__g,{ ECON:{ ECON, econ, spendWindow, spendList, reforgeWindow, temperWindow, looksWindow, shLookWindow, merchantWindow, stallWindow, MER, MER_POT, merSpots, merHarnStock, giftPrepare, giftCancel, TEMPER, COS_W, COS_D, COS_F, SH_LOOK, econBuff, cosWeaponCol, forgeCost, rerankCost, ULT, ultCdNow, powCost, armyCap, ariseRoom, ARMY_ROOM },
