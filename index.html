@@ -38088,9 +38088,8 @@ function squadFromUrl(){ const j=location.search.match(/[?&]sq=([A-Za-z0-9]{6})/
     /* 20.10 (Anton: «друг сразу попадает в отряд»): with an account he is in at once — no question; the ref tells the server who brought him */
     P.sqJoin={code,ref,at:Date.now()}; saveP();
     const ask=()=>{ if(!P.onboarded||!started||anyBlocking()) return setTimeout(ask,1500); apiReady.then(()=>{ if(!API){ toast("Живой отряд появится, когда подключат сервер игры","#7fe9ff"); return; }
-      if(ACC.t){ sqJoinNow(code,ref); return; }
-      modal({id:"sqj",title:"Приглашение в отряд",icon:"☗",accent:"#7fe9ff",body:`<div class="holo-text"><p>Тебя зовут в отряд <b>${code}</b>.</p><p>Отряд — 2–4 друга. У вас общая серия: день засчитан, когда <b>каждый</b> сделал реальное дело. Друзья видят твои дела и могут их подтвердить.</p><p class="dim">Друзьям видны только ник, класс, ранг и названия дел.</p></div><div class="actions"><button class="btn ghost" id="sqjNo">Не сейчас</button><button class="btn primary" id="sqjYes">${ACC.t?"Вступить":"Войти и вступить"}</button></div>`,
-        onMount:el=>{ el.querySelector("#sqjNo").onclick=()=>closeModal("sqj"); el.querySelector("#sqjYes").onclick=()=>{ closeModal("sqj",true); const join=()=>sqJoinNow(code,ref); if(ACC.t) join(); else accLogin(join); }; }}); }); };
+      /* 21.10: no login — the device account (cloud.js accEnsure) is made right here if it is not there yet */
+      accEnsure().then(ok=>{ if(ok) sqJoinNow(code,ref); else toast("Нет связи с сервером игры — вступлю в отряд, когда она появится","#ffd166"); }); }); };
     setTimeout(ask,2500); return; }
   const m=location.search.match(/[?&]squad=([^&]+)/); if(!m) return; const F=cardRead(m[1]); if(!F) return; if(F.id&&F.id===P.sqId) return; history.replaceState(null,"",location.pathname+location.search.replace(/[?&]squad=[^&]+/,"").replace(/^&/,"?"));
   const ask=()=>{ if(!P.onboarded||!started||anyBlocking()) return setTimeout(ask,1500);
@@ -38135,14 +38134,14 @@ async function sqInvite(code){ const url=sqUrl(code), text=`${P.name||"Проб�
   try{ if(navigator.share){ await navigator.share({title:"Отряд · LevelUp",text,url}); return; } }catch(e){ if(e&&e.name==="AbortError") return; }
   try{ await navigator.clipboard.writeText(text+"\n"+url); toast("Приглашение скопировано — отправь его другу","#7fe9ff"); }catch(e){ toast(`Код отряда: <b>${code}</b> — продиктуй его другу`,"#7fe9ff"); } }
 async function squadWindow(){ await apiReady; if(!API) return squadWindowLink();
-  if(!ACC.t) return modal({id:"squad",title:"Отряд",icon:"☗",accent:"#7fe9ff",cls:"wide",closable:true,body:`
-    <div class="holo-text"><p>Отряд — <b>2–4 друга</b>. Общая серия: день засчитан, когда <b>каждый</b> сделал реальное дело. Лента дел, подтверждение друга, общий босс недели — и тени друзей у манокамней.</p><p class="dim">Для отряда нужен вход — он же сохраняет прогресс в облаке.</p></div>
-    <div class="actions"><button class="btn primary big" id="sqIn">☁ Войти</button></div><div class="dim" style="margin-top:10px"><a href="#" id="sqLink">Без входа: карточка-ссылка</a></div>`,
-    onMount:el=>{ el.querySelector("#sqIn").onclick=()=>{ closeModal("squad",true); accLogin(()=>squadWindow()); }; el.querySelector("#sqLink").onclick=e=>{ e.preventDefault(); closeModal("squad",true); squadWindowLink(); }; }});
+  if(!ACC.t&&!(await accEnsure())) return modal({id:"squad",title:"Отряд",icon:"☗",accent:"#7fe9ff",cls:"wide",closable:true,body:`
+    <div class="holo-text"><p>Отряд — <b>2–4 друга</b>. Общая серия: день засчитан, когда <b>каждый</b> сделал реальное дело. Лента дел, подтверждение друга, общий босс недели — и тени друзей у манокамней.</p><p class="dim">Нет связи с сервером игры. Прогресс хранится на телефоне.</p></div>
+    <div class="actions"><button class="btn primary big" id="sqIn">Повторить</button></div><div class="dim" style="margin-top:10px"><a href="#" id="sqLink">Без сервера: карточка-ссылка</a></div>`,
+    onMount:el=>{ el.querySelector("#sqIn").onclick=()=>{ closeModal("squad",true); squadWindow(); }; el.querySelector("#sqLink").onclick=e=>{ e.preventDefault(); closeModal("squad",true); squadWindowLink(); }; }});
   let st=SQN.st; try{ st=await sqCall("/v1/squad"); }catch(e){ if(!ACC.t) return; if(!st){ toast(e.message+" — покажу карточки-ссылки","#ff8aa0"); return squadWindowLink(); } }
   accMe(false); if(!st.code) return squadEmpty(); squadShow(st); }
 function squadEmpty(){ modal({id:"squad",title:"Отряд",icon:"☗",accent:"#7fe9ff",cls:"wide",closable:true,body:`
-    <div class="holo-text"><p>Собери отряд из <b>2–4 друзей</b>. Каждый день, когда <b>все</b> сделали реальное дело, — +1 к общей серии. Пропустил один — серия у всех сгорает.</p><p>Друзья видят твои дела и подтверждают их. Каждое дело — удар по общему боссу недели.</p><p class="dim">Друзьям видны ник, класс, ранг и названия дел. Почта — никому.</p></div>
+    <div class="holo-text"><p>Собери отряд из <b>2–4 друзей</b>. Каждый день, когда <b>все</b> сделали реальное дело, — +1 к общей серии. Пропустил один — серия у всех сгорает.</p><p>Друзья видят твои дела и подтверждают их. Каждое дело — удар по общему боссу недели.</p><p class="dim">Друзьям видны ник, класс, ранг и названия дел.</p></div>
     <div class="actions"><button class="btn primary big" id="sqNew">Создать отряд</button></div>
     <div class="actions"><button class="btn ghost" id="sqRaid0">☗ Рейд: код лобби или подбор</button></div><div class="sec">Есть код друга?</div><div class="sq-join"><input class="field" id="sqCode" maxlength="6" placeholder="K7M2QX" autocapitalize="characters" autocomplete="off" spellcheck="false"><button class="btn" id="sqGo">Вступить</button></div>`,
     onMount:el=>{ const r0=el.querySelector("#sqRaid0"); if(r0) r0.onclick=()=>{ closeModal("squad",true); if(typeof raidWindow==="function") raidWindow(); }; el.querySelector("#sqNew").onclick=async e=>{ e.target.disabled=true; try{ const st=await sqCall("/v1/squad/create",{}); closeModal("squad",true); squadShow(st); sqInvite(st.code); }catch(er){ toast(er.message,"#ff8aa0"); e.target.disabled=false; } };
@@ -41775,7 +41774,7 @@ function arsenalWindow(){ P.skins=P.skins||["ice"]; const own=id=>P.skins.includ
 
 /* ===== tools.js ===== */
 /* ================= TOOLS: app on the home screen, offline, share card, feedback, backup, first-time hints, weak-phone mode ================= */
-const BUILD="1021-v22a01";
+const BUILD="1022-v23a01";
 let CFG={};   /* filled from config.json by net.js: feedback (tester chat link), shareUrl */
 /* errors of this session — go into the feedback diagnostics, nothing is sent anywhere by itself */
 const ERRS=[]; const errPush=m=>{ ERRS.push(String(m).slice(0,160)); if(ERRS.length>8) ERRS.shift(); };
@@ -42338,7 +42337,11 @@ setTimeout(()=>{ try{ setApply(); titleBoot(); }catch(err){ console.warn("title"
 /* ===== cloud.js ===== */
 /* ================= ACCOUNT & CLOUD SAVE (game server, server/) =================
    Without a server (no config.json → api, no ?api=) nothing here does anything: the game stays offline, as before.
-   With it: sign in by a code sent to the e-mail (Apple / Google — «скоро»), the save P goes to the cloud, the transfer code from levelupp.ru.
+   21.10 (easyraid, Anton: «письмо, почта — это всё слишком жёстко»): with a server the game makes a DEVICE ACCOUNT by itself on the first start
+   (POST /v1/auth/device) — friends, raids, the squad and the cloud save work at once, nobody is asked for anything. To keep the progress:
+   the RECOVERY CODE (12 signs, shown once in Аккаунт) and «Вернуть прогресс» on a new phone; the e-mail stays only as an optional
+   «Привязать почту» in Аккаунт (the old e-mail accounts keep signing in as before).
+   With it: the save P goes to the cloud, the transfer code from levelupp.ru.
    The session token lives in its own key (ACC_KEY), never inside P: P goes to the cloud and into the backup code. */
 const ACC_KEY="levelup_gates_acc";
 const ACC=(()=>{ try{ const o=JSON.parse(localStorage.getItem(ACC_KEY)||"{}"); return o&&typeof o==="object"?o:{}; }catch(e){ return {}; } })();
@@ -42361,13 +42364,26 @@ async function acApi(method,path,body,opt={}){ await apiReady; if(!API) throw Ob
     return j; }
   catch(e){ if(e.name==="AbortError") throw Object.assign(new Error("Сервер не отвечает"),{code:0}); if(e.code==null){ e.code=0; e.message="Нет связи с сервером"; } throw e; }
   finally{ clearTimeout(to); } }
-/* the session ended on the server (logged out elsewhere, the account was deleted) */
-function accLost(){ if(!ACC.t) return; const keep={ q:ACC.q }; for(const k of Object.keys(ACC)) delete ACC[k]; Object.assign(ACC,keep); accSave(); CLOUD.hold=false; cloudBadge(); toast("☁ Вход в аккаунт закончился — войди снова (Меню → Аккаунт)","#ff8aa0"); }
+/* the session ended on the server (logged out elsewhere, the account was deleted). 21.10: a device account is simply made again — the progress is on the phone */
+function accLost(){ if(!ACC.t) return; const dev=!ACC.email; const keep={ q:ACC.q }; for(const k of Object.keys(ACC)) delete ACC[k]; Object.assign(ACC,keep); accSave(); CLOUD.hold=false; cloudBadge();
+  if(dev){ setTimeout(()=>accDevice(),1500); return; } toast("☁ Вход в аккаунт закончился — Меню → Аккаунт","#ff8aa0"); }
+/* ---------- 21.10: the device account — made silently on the first start with a server ---------- */
+function accDevice(){ if(ACC.t) return Promise.resolve(true); if(CLOUD.devP) return CLOUD.devP;
+  CLOUD.devP=(async()=>{ try{ await apiReady; if(!API) return false; if(ACC.t) return true;
+      const r=await acApi("POST","/v1/auth/device",{name:String(P.name||"").slice(0,20),card:accCard()},{noAuth:true,ms:12000});
+      if(ACC.t) return true; ACC.t=r.token; ACC.id=r.account.id; ACC.email=""; ACC.me=accMeOf(r.account); accSave(); CLOUD.meT=0; CLOUD.devFail=0; cloudBadge();
+      setTimeout(async()=>{ try{ await cloudSync(); }catch(e){} migPending(); if(typeof rnAuto==="function") rnAuto(); },50); return true; }
+    catch(e){ CLOUD.devFail=Date.now(); return false; } finally{ CLOUD.devP=null; } })(); return CLOUD.devP; }
+/* «is there an account (or can one be made right now)?» — what every social window asks instead of a login */
+async function accEnsure(){ try{ await apiReady; }catch(e){} if(!API) return false; if(ACC.t) return true; return accDevice(); }
+function accMeOf(me){ return {id:me.id,email:me.email,name:me.name,old:me.old,gift:me.gift,squad:me.squad,pass:me.pass||null,fcode:me.fcode||null,rec:me.rec||null,device:!!me.device}; }
+/* no account yet (the server was down at the start): try again from time to time */
+setInterval(()=>{ if(API&&!ACC.t&&!document.hidden&&Date.now()-(CLOUD.devFail||0)>60e3) accDevice(); },20e3);
 async function accProviders(){ if(CLOUD.prov) return CLOUD.prov; try{ const h=await acApi("GET","/v1/hello",null,{noAuth:true,ms:6000}); CLOUD.prov=h.providers||{email:true}; }catch(e){ CLOUD.prov=null; } return CLOUD.prov||{email:true}; }
 /* what a friend sees of you (and what his game needs to put your shadow next to him) */
 function accCard(){ const m=typeof myCard==="function"?myCard():{c:"",r:"E",l:P.level||1,w:0,t:0}; return { c:m.c||"", r:m.r||"E", l:m.l||1, w:m.w||0, t:m.t||0, sk:typeof P.skin==="string"&&/^[a-z0-9_-]{1,20}$/i.test(P.skin)?P.skin:"" }; }
 async function accMe(force){ if(!accOn()) return null; if(!force&&Date.now()-CLOUD.meT<10*60e3) return ACC.me||null; CLOUD.meT=Date.now();
-  try{ const me=await acApi("POST","/v1/me",{name:String(P.name||"").slice(0,20),card:accCard()}); ACC.me={id:me.id,email:me.email,name:me.name,old:me.old,gift:me.gift,squad:me.squad,pass:me.pass||null}; ACC.id=me.id; ACC.email=me.email; accSave(); migGiftCheck(); return ACC.me; }catch(e){ return ACC.me||null; } }
+  try{ const me=await acApi("POST","/v1/me",{name:String(P.name||"").slice(0,20),card:accCard()}); ACC.me=accMeOf(me); ACC.id=me.id; ACC.email=me.email||""; accSave(); migGiftCheck(); return ACC.me; }catch(e){ return ACC.me||null; } }
 
 /* ================= the cloud save =================
    ACC.rev — the version of the server this device last agreed with; ACC.lh — the fingerprint of that save; ACC.la — when this device last changed it.
@@ -42420,14 +42436,15 @@ async function cloudSync(){ if(!accOn()||CLOUD.busy) return; let m; try{ m=await
   if(!dirty) return cloudPull(true);   /* another device moved on, here nothing changed */
   return cloudPush(s,h);               /* both changed: the server takes the newer one (409 → the window «Два устройства») */ }
 function cloudBadge(){ const el=document.getElementById("accLine"); if(el) el.innerHTML=accLineHtml(); }
-function cloudState(){ if(!API) return "нет сервера"; if(!ACC.t) return "не выполнен"; return {sync:"сохраняю…",ok:ACC.at?`в облаке · ${agoTxt(ACC.at)}`:"в облаке",off:"нет связи — сохраню позже",hold:"ждёт выбора",big:"слишком большое"}[CLOUD.st]||(ACC.at?`в облаке · ${agoTxt(ACC.at)}`:"…"); }
-function accLineHtml(){ return ACC.t?`<span>☁ <b>${escA(ACC.email||"Аккаунт")}</b></span><small>${cloudState()}</small>`:`<span>☁ <b>Войти</b></span><small>прогресс в облаке · отряд друзей</small>`; }
+function cloudState(){ if(!API) return "нет сервера"; if(!ACC.t) return "нет связи — прогресс на телефоне"; return {sync:"сохраняю…",ok:ACC.at?`в облаке · ${agoTxt(ACC.at)}`:"в облаке",off:"нет связи — сохраню позже",hold:"ждёт выбора",big:"слишком большое"}[CLOUD.st]||(ACC.at?`в облаке · ${agoTxt(ACC.at)}`:"…"); }
+function accLineHtml(){ return ACC.t?`<span>☁ <b>${escA(ACC.email||"Аккаунт")}</b>${ACC.me&&ACC.me.fcode?` · код друга <b>${escA(ACC.me.fcode)}</b>`:""}</span><small>${cloudState()}${ACC.email||ACC.me&&ACC.me.rec?"":" · запиши код восстановления"}</small>`:`<span>☁ <b>Аккаунт</b></span><small>${CLOUD.devP?"подключаюсь…":"нет связи с сервером — прогресс на телефоне"}</small>`; }
 
 /* ================= signing in ================= */
-function accLogin(after){ apiReady.then(async()=>{ if(!API){ toast("Облако появится, когда подключат сервер игры. Пока прогресс хранится на этом устройстве","#7fe9ff"); return; }
-  const pv=await accProviders(); let mail=ACC.lastMail||"";
-  modal({id:"acc",title:"Вход",icon:"☁",accent:"#7fe9ff",closable:true,body:`
-    <div class="holo-text"><p>Войди — и прогресс будет в облаке: играй с телефона и с компьютера, ничего не потеряешь. Откроется и <b>отряд друзей</b>.</p></div>
+/* the e-mail: 21.10 only an OPTION — «Привязать почту» in Аккаунт (o.bind: this account takes the address) or the old e-mail account on a new phone */
+function accLogin(after,o={}){ apiReady.then(async()=>{ if(!API){ toast("Облако появится, когда подключат сервер игры. Пока прогресс хранится на этом устройстве","#7fe9ff"); return; }
+  const pv=await accProviders(); let mail=ACC.lastMail||""; const bind=!!(o.bind&&ACC.t&&!ACC.email);
+  modal({id:"acc",title:bind?"Привязать почту":"Вход по почте",icon:"☁",accent:"#7fe9ff",closable:true,body:`
+    <div class="holo-text"><p>${bind?"Почта — запасной ключ к прогрессу: с ней вернёшь его на любом телефоне. Друзья и прогресс останутся как есть.":"Был аккаунт с почтой? Войди — прогресс вернётся из облака."}</p></div>
     <div class="acc-prov"><button class="btn acc-soon" id="aApple" disabled>Apple<small>скоро</small></button><button class="btn acc-soon" id="aGoogle" disabled>G Google<small>скоро</small></button></div>
     <div class="sec">По почте — без пароля</div>
     <div id="aS1"><input class="field acc-in" id="aMail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" placeholder="твоя@почта.ру" value="${escA(mail)}">
@@ -42441,7 +42458,7 @@ function accLogin(after){ apiReady.then(async()=>{ if(!API){ toast("Облако
         busy($e("#aSend"),true,"Отправляю…"); try{ await acApi("POST","/v1/auth/email/start",{email:v},{noAuth:true}); mail=v; ACC.lastMail=v; accSave(); $e("#aTo").textContent=v; $e("#aS1").hidden=true; $e("#aS2").hidden=false; setTimeout(()=>$e("#aCode").focus(),50); }
         catch(e){ toast(e.message,"#ff8aa0"); } busy($e("#aSend"),false,"Прислать код"); };
       const go=async()=>{ const c=$e("#aCode").value.replace(/\D/g,""); if(c.length!==6){ toast("Код — 6 цифр","#ff8aa0"); return; } busy($e("#aGo"),true,"Вхожу…");
-        try{ const r=await acApi("POST","/v1/auth/email/verify",{email:mail,code:c,name:String(P.name||"").slice(0,20),guest:P.netToken||undefined},{noAuth:true}); closeModal("acc",true); await accSignedIn(r); if(after) after(); }
+        try{ const r=await acApi("POST","/v1/auth/email/verify",{email:mail,code:c,name:String(P.name||"").slice(0,20),guest:P.netToken||undefined,...(bind?{bind:true}:{})},{noAuth:!bind}); closeModal("acc",true); await accSignedIn(r,bind?"bind":"mail"); if(after) after(); }
         catch(e){ toast(e.message,"#ff8aa0"); $e("#aCode").select(); } busy($e("#aGo"),false,"Войти"); };
       $e("#aSend").onclick=send; $e("#aMail").onkeydown=e=>{ if(e.key==="Enter") send(); }; $e("#aGo").onclick=go;
       $e("#aCode").oninput=e=>{ const v=e.target.value.replace(/\D/g,"").slice(0,6); e.target.value=v; if(v.length===6) go(); };
@@ -42449,32 +42466,68 @@ function accLogin(after){ apiReady.then(async()=>{ if(!API){ toast("Облако
       if(pv.google) $e("#aGoogle").querySelector("small").textContent="скоро в приложении"; if(pv.apple) $e("#aApple").querySelector("small").textContent="скоро в приложении"; }}); }); }
 /* Apple / Google: the app (not the web page) gets an id_token from the system window and gives it here. Ready for the store build */
 async function accOAuth(provider,idToken){ const r=await acApi("POST","/v1/auth/"+(provider==="apple"?"apple":"google"),{idToken,name:String(P.name||"").slice(0,20),guest:P.netToken||undefined},{noAuth:true}); return accSignedIn(r); }
-async function accSignedIn(r){ ACC.t=r.token; ACC.id=r.account.id; ACC.email=r.account.email||""; ACC.me=r.account; delete ACC.rev; ACC.lh=null; ACC.lh2=null; accSave();
+async function accSignedIn(r,how){ const same=r.account.id===ACC.id;
+  /* 21.10: «Привязать почту» kept the same account — nothing to agree with the cloud again */
+  if(r.bound&&same){ ACC.t=r.token; ACC.email=r.account.email||""; ACC.me=accMeOf(r.account); accSave(); sfx.chest&&sfx.chest(); toast(`☁ Почта привязана · ${escA(ACC.email)}`,"#6dffb0"); cloudBadge(); return; }
+  if(same&&ACC.t){ ACC.t=r.token; ACC.email=r.account.email||""; ACC.me=accMeOf(r.account); accSave(); toast("☁ Это и есть твой аккаунт","#6dffb0"); cloudBadge(); return; }
+  if(typeof raidNet!=="undefined"&&raidNet.state!=="off") try{ raidNet.close(); }catch(e){} /* the socket of the old account */
+  ACC.t=r.token; ACC.id=r.account.id; ACC.email=r.account.email||""; ACC.me=accMeOf(r.account); delete ACC.rev; ACC.lh=null; ACC.lh2=null; delete ACC.sq; accSave();
   if(P.netToken){ P.netToken=null; } P.netId=r.account.id; /* the district of net.js now goes with the account */
-  saveP(); sfx.chest&&sfx.chest(); toast(`☁ Вход выполнен · ${escA(ACC.email)}`,"#6dffb0"); CLOUD.meT=0;
-  await cloudSync(); accMe(true); if(typeof squadRefresh==="function") squadRefresh(true); migPending(); }
+  saveP(); sfx.chest&&sfx.chest(); toast(how==="rec"?"☁ Прогресс найден":`☁ Вход выполнен${ACC.email?" · "+escA(ACC.email):""}`,"#6dffb0"); CLOUD.meT=0;
+  await cloudSync(); accMe(true); if(typeof squadRefresh==="function") squadRefresh(true); migPending(); if(typeof rnAuto==="function") setTimeout(rnAuto,1500); }
+
+/* ================= 21.10: the recovery code — «Запиши код — с ним вернёшь прогресс на новом телефоне» ================= */
+function accRecFmt(v){ const c=String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,12); return c.match(/.{1,4}/g)?c.match(/.{1,4}/g).join("-"):""; }
+async function accRecNew(box){ try{ const r=await acApi("POST","/v1/me/recovery",{}); ACC.me=Object.assign(ACC.me||{},{rec:r.at}); accSave();
+    box.innerHTML=`<div class="acc-rec"><span>Твой код восстановления</span><b id="aRecV">${escA(r.code)}</b><small>Запиши его или сделай скриншот. Он показывается один раз — с ним вернёшь прогресс на новом телефоне.</small><button class="btn" id="aRecCp">Копировать</button></div>`;
+    const cp=box.querySelector("#aRecCp"); cp.onclick=async()=>{ try{ await navigator.clipboard.writeText(r.code); toast("Код скопирован","#7fe9ff"); }catch(e){ toast(`Код: <b>${escA(r.code)}</b>`,"#7fe9ff"); } }; cloudBadge(); return r.code; }
+  catch(e){ toast(escA(e.message),"#ff8aa0"); return null; } }
+/* «Вернуть прогресс» on a new phone: the recovery code (or, for an old account, the e-mail) */
+function accRestore(after){ apiReady.then(()=>{ if(!API){ toast("Нет связи с сервером игры","#ff8aa0"); return; }
+  modal({id:"acc",title:"Вернуть прогресс",icon:"☁",accent:"#7fe9ff",closable:true,body:`
+    <div class="holo-text"><p>Введи код восстановления — прогресс, друзья и отряд вернутся на этот телефон.</p></div>
+    <input class="field acc-in acc-rcode" id="aRec" maxlength="14" placeholder="K7MP-2QXA-9RTB" autocapitalize="characters" autocomplete="off" spellcheck="false">
+    <button class="btn primary big acc-wide" id="aRecGo">Войти по коду восстановления</button>
+    <div class="dim acc-note">Код — в Меню → Аккаунт на старом телефоне.</div>
+    <details class="mn-more"><summary>Привязывал почту?</summary><button class="btn ghost acc-wide" id="aRecMail">Войти по почте</button></details>`,
+    onMount:el=>{ const i=el.querySelector("#aRec"), go=el.querySelector("#aRecGo");
+      i.oninput=()=>{ const v=accRecFmt(i.value); if(i.value!==v) i.value=v; };
+      const send=async()=>{ const c=i.value.replace(/[^A-Za-z0-9]/g,""); if(c.length!==12){ toast("Код — 12 знаков, например K7MP-2QXA-9RTB","#ff8aa0"); i.focus(); return; }
+        go.disabled=true; go.textContent="Ищу…"; try{ const r=await acApi("POST","/v1/auth/recover",{code:c,name:String(P.name||"").slice(0,20)},{noAuth:true}); closeModal("acc",true); await accSignedIn(r,"rec"); if(after) after(); }
+        catch(e){ toast(escA(e.message),"#ff8aa0"); } go.disabled=false; go.textContent="Войти по коду восстановления"; };
+      go.onclick=send; i.onkeydown=e=>{ if(e.key==="Enter") send(); }; el.querySelector("#aRecMail").onclick=()=>{ closeModal("acc",true); accLogin(after); }; setTimeout(()=>i.focus(),60); }}); }); }
 
 /* ================= the account window ================= */
-function accWindow(){ apiReady.then(()=>{ if(!API){ toast("Облако появится, когда подключат сервер игры. Пока прогресс хранится на этом устройстве — сделай резервную копию","#7fe9ff"); return; }
-  if(!ACC.t) return accLogin(()=>accWindow());
+function accWindow(){ apiReady.then(async()=>{ if(!API){ toast("Облако появится, когда подключат сервер игры. Пока прогресс хранится на этом устройстве — сделай резервную копию","#7fe9ff"); return; }
+  if(!ACC.t){ if(!(await accEnsure())){ toast("Нет связи с сервером игры — прогресс хранится на телефоне. Попробуй чуть позже","#ff8aa0"); return; } }
+  if(!(ACC.me&&ACC.me.fcode)) await accMe(true);
   const me=ACC.me||{}, old=me.old;
   modal({id:"acc",title:"Аккаунт",icon:"☁",accent:"#7fe9ff",closable:true,body:`
-    <div class="kv"><span>Почта</span><b>${escA(ACC.email||"—")}</b></div>
+    <div class="kv"><span>Имя для друзей</span><b>${escA(me.name||P.name||"Пробуждённый")}</b></div>
+    ${me.fcode?`<div class="kv"><span>Код друга</span><b class="acc-fc">${escA(me.fcode)}</b></div>`:""}
     <div class="kv"><span>Прогресс</span><b id="aSt">${cloudState()}</b></div>
     <div class="actions acc-row"><button class="btn primary" id="aSync">☁ Сохранить сейчас</button><button class="btn" id="aHist">Прошлые версии</button></div>
+    <div class="sec">Не потерять прогресс</div>
+    <div id="aRecBox">${me.rec?`<div class="dim acc-note">Код восстановления выдан ${agoTxt(me.rec)}. Потерял — сделай новый: старый перестанет работать.</div><button class="btn acc-wide" id="aRecNew">Новый код восстановления</button>`
+      :`<div class="acc-warn">Запиши код — с ним вернёшь прогресс на новом телефоне.</div><button class="btn primary acc-wide" id="aRecNew">Показать код восстановления</button>`}</div>
+    ${ACC.email?`<div class="kv"><span>Почта</span><b>${escA(ACC.email)}</b></div>`:`<details class="mn-more"><summary>Привязать почту, чтобы не потерять прогресс</summary><div class="dim acc-note">Необязательно. Почта — второй ключ, если код потеряется.</div><button class="btn acc-wide" id="aBind">Привязать почту</button></details>`}
+    <div class="actions acc-row"><button class="btn ghost" id="aRest">Вернуть прогресс с другого телефона</button></div>
     <div class="sec">Прогресс с levelupp.ru</div>
     ${old?`<div class="acc-old">★ Старожил levelupp.ru${old.nick?` · <b>${escA(old.nick)}</b>`:""}${old.level?` · ур. ${old.level}`:""}<small>прогресс перенесён, подарок получен</small></div>`
       :`<div class="dim acc-note">Был аккаунт на levelupp.ru? Бот в Telegram пришлёт тебе код — введи его здесь, и прогресс сохранится, а ещё будет подарок.</div>
       <div class="sq-join"><input class="field" id="aMig" maxlength="9" placeholder="K7MP-2QXA" autocapitalize="characters" autocomplete="off" spellcheck="false" value="${escA(ACC.mig||"")}"><button class="btn" id="aMigGo">Перенести</button></div>`}
-    <details class="mn-more"><summary>Выход и удаление</summary><div class="actions acc-row"><button class="btn ghost" id="aOut">Выйти на этом устройстве</button><button class="btn ghost" id="aDel">Удалить аккаунт</button></div>
-      <div class="dim acc-note">Выход не трогает прогресс на устройстве. Удаление стирает с сервера почту, облачные сохранения и место в отряде — навсегда.</div></details>`,
+    <details class="mn-more"><summary>Выход и удаление</summary><div class="actions acc-row">${ACC.email||me.rec?`<button class="btn ghost" id="aOut">Выйти на этом устройстве</button>`:""}<button class="btn ghost" id="aDel">Удалить аккаунт</button></div>
+      <div class="dim acc-note">Выход не трогает прогресс на устройстве. Удаление стирает с сервера облачные сохранения, друзей и место в отряде — навсегда.</div></details>`,
     onMount:el=>{ const $e=s=>el.querySelector(s);
       $e("#aSync").onclick=async()=>{ $e("#aSync").disabled=true; CLOUD.hold=false; await cloudSync(); if(!CLOUD.hold) await cloudNow(); const st=$e("#aSt"); if(st) st.textContent=cloudState(); $e("#aSync").disabled=false; };
       $e("#aHist").onclick=()=>{ closeModal("acc",true); accHistory(); };
+      const rn=$e("#aRecNew"); if(rn) rn.onclick=async()=>{ if(me.rec&&!rn.dataset.sure){ rn.dataset.sure=1; rn.textContent="Точно? Старый код перестанет работать"; return; } rn.disabled=true; await accRecNew($e("#aRecBox")); };
+      const bd=$e("#aBind"); if(bd) bd.onclick=()=>{ closeModal("acc",true); accLogin(()=>accWindow(),{bind:true}); };
+      $e("#aRest").onclick=()=>{ closeModal("acc",true); accRestore(); };
       const mg=$e("#aMigGo"); if(mg) mg.onclick=()=>migSubmit($e("#aMig").value,mg);
-      const o=$e("#aOut"); o.onclick=async()=>{ if(!o.dataset.sure){ o.dataset.sure=1; o.textContent="Точно выйти?"; return; } await cloudNow().catch(()=>{}); try{ await acApi("POST","/v1/auth/logout",{}); }catch(e){} const q=ACC.q; for(const k of Object.keys(ACC)) delete ACC[k]; ACC.q=q; accSave(); closeModal("acc"); toast("Вышел. Прогресс остался на устройстве","#7fe9ff"); cloudBadge(); };
-      const d=$e("#aDel"); d.onclick=()=>{ closeModal("acc",true); cloudAsk({title:"Удалить аккаунт?",text:"С сервера сотрутся почта, облачные сохранения, дела в ленте и место в отряде. Прогресс на этом устройстве останется. Вернуть аккаунт будет нельзя.",yes:"Удалить навсегда",no:"Отмена",
-        onYes:async()=>{ try{ await acApi("POST","/v1/me/delete",{confirm:"УДАЛИТЬ"}); for(const k of Object.keys(ACC)) delete ACC[k]; accSave(); toast("Аккаунт удалён","#7fe9ff"); cloudBadge(); }catch(e){ toast(e.message,"#ff8aa0"); } }}); }; }}); }); }
+      const o=$e("#aOut"); if(o) o.onclick=async()=>{ if(!o.dataset.sure){ o.dataset.sure=1; o.textContent="Точно выйти?"; return; } await cloudNow().catch(()=>{}); try{ await acApi("POST","/v1/auth/logout",{}); }catch(e){} const q=ACC.q; for(const k of Object.keys(ACC)) delete ACC[k]; ACC.q=q; accSave(); closeModal("acc"); try{ if(typeof raidNet!=="undefined") raidNet.close(); }catch(e){} toast("Вышел. Прогресс остался на устройстве","#7fe9ff"); cloudBadge(); };
+      const d=$e("#aDel"); d.onclick=()=>{ closeModal("acc",true); cloudAsk({title:"Удалить аккаунт?",text:"С сервера сотрутся облачные сохранения, друзья, дела в ленте и место в отряде. Прогресс на этом устройстве останется. Вернуть аккаунт будет нельзя.",yes:"Удалить навсегда",no:"Отмена",
+        onYes:async()=>{ try{ await acApi("POST","/v1/me/delete",{confirm:"УДАЛИТЬ"}); try{ if(typeof raidNet!=="undefined") raidNet.close(); }catch(e){} for(const k of Object.keys(ACC)) delete ACC[k]; accSave(); toast("Аккаунт удалён","#7fe9ff"); cloudBadge(); }catch(e){ toast(e.message,"#ff8aa0"); } }}); }; }}); }); }
 async function accHistory(){ let L; try{ L=(await acApi("GET","/v1/save/history")).items||[]; }catch(e){ toast(e.message,"#ff8aa0"); return; }
   modal({id:"acch",title:"Прошлые версии",icon:"☁",accent:"#7fe9ff",closable:true,body:`<div class="holo-sub">Сервер хранит 5 последних версий прогресса. Можно вернуть любую — нынешняя тоже ляжет в историю.</div>
     <div class="sq-list">${L.length?L.map(x=>`<div class="sq-row"><div style="flex:1"><b>ур. ${x.level??"?"}</b><small> · ${agoTxt(x.savedAt||x.storedAt)}${x.why?` · ${escA(x.why)}`:""}</small></div><button class="btn small" data-rest="${+x.id}">Вернуть</button></div>`).join(""):`<div class="dim">Пока пусто</div>`}</div>`,
@@ -42484,7 +42537,7 @@ async function accHistory(){ let L; try{ L=(await acApi("GET","/v1/save/history"
 /* ================= the transfer from levelupp.ru: a one-time code from the Telegram bot ================= */
 COIN_WHY.oldgift="подарок старожилу";
 async function migSubmit(v,btn){ const code=String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,""); if(code.length!==8){ toast("Код — 8 знаков, например K7MP-2QXA","#ff8aa0"); return; }
-  if(!ACC.t){ ACC.mig=code; accSave(); return accLogin(()=>migPending()); }
+  if(!ACC.t){ ACC.mig=code; accSave(); if(!(await accEnsure())){ toast("Нет связи с сервером игры — код сохранён, перенесу, когда связь появится","#ffd166"); return; } }
   if(btn) btn.disabled=true;
   try{ const r=await acApi("POST","/v1/migrate",{code}); delete ACC.mig; ACC.me=Object.assign(ACC.me||{},{old:r.old,gift:r.gift,pass:r.pass||null}); accSave(); closeModal("acc",true); migGiftCheck(true); }
   catch(e){ toast(e.message,"#ff8aa0"); if(e.j&&(e.j.code==="used"||e.j.code==="already")){ delete ACC.mig; accSave(); } }
@@ -42510,8 +42563,9 @@ function migGiftCheck(fresh){ if(typeof migApply==="function"){ migApply(fresh);
    The title of fp-menu.js (or, in tests without it, the old #loading block) gets one more wide button — fp-menu.js itself is not edited */
 function accLoadBtn(n=0){ if(document.getElementById("tlAcc")||document.getElementById("lAcc")||n>150) return; if(P.onboarded&&!ACC.mig) return;
   /* no game server configured (config.json / ?api=) — no button that cannot work */ if(!API){ if(n===0&&typeof apiReady!=="undefined") apiReady.then(()=>{ if(API) accLoadBtn(1); }); return; }
-  const label=ACC.mig?"★ Перенести прогресс с levelupp.ru":ACC.t?"☁ Аккаунт":"☁ Уже играл? Войти", sub=ACC.mig?"код из Telegram":ACC.t?escA(ACC.email||""):"прогресс с другого устройства";
-  const act=()=>{ if(ACC.t) accWindow(); else accLogin(ACC.mig?()=>migPending():null); };
+  /* 21.10: a new phone gets a device account by itself; this button brings the OLD progress back (the recovery code, or the e-mail of an old account) */
+  const label=ACC.mig?"★ Перенести прогресс с levelupp.ru":ACC.email?"☁ Аккаунт":"☁ Уже играл? Вернуть прогресс", sub=ACC.mig?"код из Telegram":ACC.email?escA(ACC.email):"по коду восстановления";
+  const act=()=>{ if(ACC.mig){ accEnsure().then(()=>migPending()); return; } if(ACC.email) accWindow(); else accRestore(); };
   /* 13.10: the new door keeps a place for it (#tlAccSlot) — a quiet line under «Начать дело» / «Начать» */
   const slot=document.querySelector("#title #tlAccSlot"), nav=slot||document.querySelector("#title .tl-menu");
   if(nav){ const b=document.createElement("button"); b.className="tl-b tl-acc"; b.id="tlAcc"; b.innerHTML=`<svg class="tl-bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.2 9.1 4.5 4.5 0 0 0 7 18z"/></svg><span class="tl-bt"><b>${label.replace(/^[☁★]\s*/,"")}</b><small>${sub}</small></span><i class="tl-ch"></i>`;
@@ -42526,7 +42580,7 @@ function accLoadBtn(n=0){ if(document.getElementById("tlAcc")||document.getEleme
 setTimeout(async()=>{ await apiReady; if(!API) return; accLoadBtn();
   if(ACC.applied){ delete ACC.applied; ACC.lh=strHash(cloudStr()); ACC.lh2=ACC.lh; accSave(); }   /* just loaded from the cloud: this is the cloud save */
   if(ACC.t){ await cloudSync(); accMe(true); migPending(); }
-  else if(ACC.mig){ const ask=()=>{ if(!started||anyBlocking()) return setTimeout(ask,1500); accLogin(()=>migPending()); }; setTimeout(ask,1500); } },0);
+  else accDevice(); /* 21.10: the first start with a server — a device account, silently (the transfer code waits in ACC.mig and goes right after) */ },0);
 setInterval(()=>{ if(accOn()&&!document.hidden&&!CLOUD.busy) accMe(false); },10*60e3);
 /* the look of the new windows: kept here so app.css is not touched */
 (()=>{ const st=document.createElement("style"); st.id="cloudCss"; st.textContent=`
@@ -42538,7 +42592,13 @@ setInterval(()=>{ if(accOn()&&!document.hidden&&!CLOUD.busy) accMe(false); },10*
 .acc-old{padding:10px 12px;border-radius:10px;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.35);color:#ffe3a3}.acc-old small{display:block;color:#c9b27a;font-size:12px;margin-top:2px}
 .acc-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.acc-opt{display:flex;flex-direction:column;gap:3px;align-items:flex-start;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#fff;font:600 13px "Exo 2",system-ui,sans-serif;text-align:left;min-height:96px;cursor:pointer}
 .acc-opt span{font-size:20px;font-weight:800}.acc-opt small{color:#9fb3c8}.acc-opt.best{border-color:#6dffb0;box-shadow:0 0 0 1px #6dffb0 inset;background:rgba(109,255,176,.08)}.acc-opt.best b::after{content:" · советую";color:#6dffb0;font-size:11px}
-#lAcc{margin-top:10px}`; document.head.appendChild(st); })();
+#lAcc{margin-top:10px}
+.acc-fc{font:800 20px "Exo 2",monospace!important;letter-spacing:.24em;color:#fff;text-shadow:0 0 10px #7fe9ff}
+.acc-warn{padding:9px 12px;border-radius:10px;border:1px solid rgba(255,209,102,.45);background:rgba(255,209,102,.08);color:#ffe3a3;font:600 13.5px/1.35 "Exo 2",system-ui,sans-serif;margin:4px 0 8px}
+.acc-rec{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px;border-radius:12px;border:1px solid #6dffb0;background:rgba(109,255,176,.07);text-align:center}
+.acc-rec span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9fd8e6}.acc-rec b{font:800 26px "Exo 2",monospace;letter-spacing:.14em;color:#fff;text-shadow:0 0 12px #6dffb0;user-select:all;-webkit-user-select:all}
+.acc-rec small{color:#bfe;font-size:12.5px;line-height:1.35}.acc-rec .btn{min-height:44px;min-width:160px}
+.acc-rcode{text-align:center;text-transform:uppercase!important;letter-spacing:.18em!important;font-weight:800!important;font-size:20px!important}`; document.head.appendChild(st); })();
 
 /* ===== fp-friend.js ===== */
 /* ================= THE SHADOW OF A FRIEND (squad, fp-squad.js) =================
@@ -42607,15 +42667,15 @@ function rnReq(t,body){ return new Promise((res,rej)=>{ const rid=++RAIDN.rid; i
   const to=setTimeout(()=>{ RAIDN.pend.delete(rid); rej(Object.assign(new Error("Сервер не отвечает"),{code:"timeout"})); },10000); RAIDN.pend.set(rid,{res,rej,to}); }); }
 /* connect (once; a second call waits for the same) and say hello with the session token. Keeps reconnecting while «wanted» (in a room: the place is kept 2 minutes) */
 let rnConnP=null;
-function rnConnect(){ if(!rnOk()) return Promise.reject(Object.assign(new Error("Нужен вход в аккаунт и сервер игры"),{code:"off"})); RAIDN.want=true;
+function rnConnect(){ if(!rnOk()) return Promise.reject(Object.assign(new Error("Нет связи с сервером игры"),{code:"off"})); RAIDN.want=true;
   if(RAIDN.st==="on") return Promise.resolve(RAIDN.me); if(rnConnP) return rnConnP;
   rnConnP=new Promise((res,rej)=>{ let w; try{ w=new WebSocket(rnUrl(),"gates.v1"); }catch(e){ rnConnP=null; return rej(e); } RAIDN.ws=w; RAIDN.st="conn";
-    w.onopen=async()=>{ try{ const card=typeof accCard==="function"?accCard():undefined; const h=await rnReq("hello",{token:ACC.t,card}); RAIDN.st="on"; RAIDN.back=0; RAIDN.me=h.me; rnConnP=null;
+    w.onopen=async()=>{ try{ const card=typeof accCard==="function"?accCard():undefined; const nm=typeof P!=="undefined"&&P&&P.onboarded&&P.name?String(P.name).slice(0,20):undefined; const h=await rnReq("hello",{token:ACC.t,card,...(nm?{name:nm}:{})}); RAIDN.st="on"; RAIDN.back=0; RAIDN.me=h.me; rnConnP=null;
       if(h.room) rnRoom(h.room); rnEmit("open",h); res(h.me); setTimeout(rnRewardsCheck,1500); }catch(e){ rnConnP=null; rej(e); if(e.code==="auth"&&typeof accLost==="function") accLost(); } };
     w.onmessage=ev=>{ let m; try{ m=JSON.parse(ev.data); }catch(e){ return; } rnMsg(m); };
     w.onclose=ev=>{ const was=RAIDN.st; RAIDN.st="off"; RAIDN.ws=null; rnConnP=null; for(const p of RAIDN.pend.values()){ clearTimeout(p.to); p.rej(Object.assign(new Error("Связь прервалась"),{code:"offline"})); } RAIDN.pend.clear();
       rnVoiceDrop(); rnEmit("close",{code:ev.code,was}); if(was==="conn") rej(Object.assign(new Error("Нет связи с сервером"),{code:"offline"}));
-      if(ev.code===4000||ev.code===4001||ev.code===4003) RAIDN.want=false; /* replaced by another device / signed out: do not fight back */
+      if(ev.code===4000||ev.code===4001||ev.code===4003) RAIDN.want=false; if(ev.code===4000) RAIDN.replaced=true; /* 21.10: the other device keeps it — no auto-reconnect fight */ /* replaced by another device / signed out: do not fight back */
       if(RAIDN.want&&!RAIDN.rT){ const d=Math.min(15000,1000*Math.pow(2,RAIDN.back++)); RAIDN.rT=setTimeout(()=>{ RAIDN.rT=null; if(RAIDN.want) rnConnect().catch(()=>{}); },d); } };
   }); return rnConnP; }
 function rnClose(){ RAIDN.want=false; if(RAIDN.rT){ clearTimeout(RAIDN.rT); RAIDN.rT=null; } try{ RAIDN.ws&&RAIDN.ws.close(1000); }catch(e){} }
@@ -42696,10 +42756,17 @@ const raidNet={ connect:rnConnect, close:rnClose, on:rnOn, req:rnReq,
   async find(o={}){ await rnConnect(); return rnReq("mm.join",o); }, unfind:()=>rnReq("mm.leave"),
   voice:rnVoice, mic:rnMic, mute:rnMute, get voiceOn(){ return RAIDN.vc.on; }, get peers(){ return [...RAIDN.vc.pcs.entries()].map(([id,pc])=>({id,state:pc.connectionState,muted:RAIDN.vc.muted.has(id)})); },
   report:(who,why,text,block)=>acApi("POST","/v1/report",{who,why,text,raid:RAIDN.start&&RAIDN.start.raid,block:!!block}), block:(who,on=true)=>acApi("POST","/v1/block",{who,on}),
-  limits:()=>acApi("GET","/v1/raid/limits"), rewards:rnRewardsCheck };
+  limits:()=>acApi("GET","/v1/raid/limits"), rewards:rnRewardsCheck,
+  /* 21.10 (easyraid): the urgent invite of friends; the leader fixes the raid's rank (a lower raid Gate for a friend below) */
+  async invite(to){ await rnConnect(); const r=await rnReq("raid.invite",to==="all"?{all:true,cls:typeof rdCls==="function"?rdCls():undefined}:{to:Array.isArray(to)?to:[to],cls:typeof rdCls==="function"?rdCls():undefined}); if(r.room) rnRoom(r.room); return r; },
+  invSeen:id=>rnReq("raid.inv.seen",{id}), async invAns(id,ans){ const r=await rnReq("raid.inv.ans",{id,ans,cls:typeof rdCls==="function"?rdCls():undefined}); if(r.room) rnRoom(r.room); return r; },
+  rank:rank=>rnReq("room.rank",{rank}) };
 window.__raid=raidNet;
-/* a player in a squad stays reachable (an invite to a raid, the world's news) while the game is on screen */
-setTimeout(async()=>{ try{ if(typeof apiReady!=="undefined") await apiReady; if(rnOk()&&typeof sqIn==="function"&&sqIn()) rnConnect().catch(()=>{}); }catch(e){} },8000);
+/* 21.10 (easyraid): every player with an account stays reachable while the game is on screen — a friend's urgent invite to a raid comes at once
+   (a waiting one comes with the hello), friend requests too. Not before the path has begun (the prologue) */
+function rnAuto(){ try{ if(!rnOk()||RAIDN.replaced||RAIDN.st!=="off"||rnConnP||(typeof P!=="undefined"&&!P.onboarded)||document.hidden) return; rnConnect().catch(()=>{}); }catch(e){} }
+setTimeout(async()=>{ try{ if(typeof apiReady!=="undefined") await apiReady; rnAuto(); }catch(e){} },6000);
+setInterval(()=>{ if(!RAIDN.want||RAIDN.st==="off") rnAuto(); },30000);
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&RAIDN.want&&RAIDN.st==="off"&&rnOk()) rnConnect().catch(()=>{}); });
 
 /* ===== fp-raid-sync.js ===== */
@@ -43331,8 +43398,9 @@ const rdMe=()=>typeof raidNet!=="undefined"&&raidNet.me?raidNet.me.id:"";
 function rdClockHM(ms){ const d=new Date(ms); return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); }
 function rdCanNet(){ try{ return typeof API!=="undefined"&&!!API&&typeof ACC!=="undefined"&&!!ACC.t; }catch(e){ return false; } }
 async function raidWindow(o){ try{ if(typeof apiReady!=="undefined") await apiReady; }catch(e){} rdCss(); RAID.lobby=true; RAID.gateWant=o&&o.gate||null; /* 20.10: from a raid Gate in the world */
-  if(!rdCanNet()){ modal({id:"raid",title:"Рейд",icon:"☗",accent:"#7fe9ff",cls:"wide rdL",closable:true,body:`<div class="holo-text"><p>Рейд — до <b>трёх Пробуждённых</b> в одном подземелье: босс с <b>свитой</b>, лут — поровну. Вход — <b>Печать рейда</b>: общая копилка реальных дел отряда.</p><p class="dim">Нужен вход в аккаунт и связь с сервером игры.</p></div>
-      <div class="actions"><button class="btn primary" id="rdIn">☁ Войти</button></div>`,onMount:el=>{ const b=el.querySelector("#rdIn"); b.onclick=()=>{ closeModal("raid"); if(typeof accWindow==="function") accWindow(); }; }}); return; }
+  if(!rdCanNet()&&typeof accEnsure==="function") await accEnsure(); /* 21.10: no login — the device account is made here if it is not there yet */
+  if(!rdCanNet()){ modal({id:"raid",title:"Рейд",icon:"☗",accent:"#7fe9ff",cls:"wide rdL",closable:true,body:`<div class="holo-text"><p>Рейд — до <b>трёх Пробуждённых</b> в одном подземелье: босс с <b>свитой</b>, лут — поровну. Вход — <b>Печать рейда</b>: общая копилка реальных дел отряда.</p><p class="dim">Нет связи с сервером игры.</p></div>
+      <div class="actions"><button class="btn primary" id="rdIn">Повторить</button></div>`,onMount:el=>{ const b=el.querySelector("#rdIn"); b.onclick=()=>{ closeModal("raid",true); raidWindow(o); }; }}); return; }
   try{ await raidNet.connect(); }catch(e){ toast(rdEsc(e.message||"Нет связи"),"#ff8aa0"); }
   rdLimits(true); rdRender(); }
 function rdLimits(force){ if(!force&&Date.now()-RAID.limT<20000) return; RAID.limT=Date.now(); raidNet.limits().then(L=>{ RAID.limits=L; rdRender(); }).catch(()=>{}); }
@@ -43342,15 +43410,16 @@ function rdRenderNow(){ if(!RAID.lobby||RAID.on) return; const R=raidNet.room;
   const title=R?`Рейд · ранг ${rdEsc(rkTxt(R.rank))}`:"Рейд"; const el0=RAID.mEl;
   /* the window is already open: only its content changes (no flash, the scroll and the typed code stay) */
   if(el0&&el0.isConnected&&typeof open!=="undefined"&&open.has("raid")){ const B=el0.querySelector(".rd-body"); const code=B.querySelector("#rdCode")?B.querySelector("#rdCode").value:""; const foc=document.activeElement&&document.activeElement.id==="rdCode";
-    B.innerHTML=body; const t=el0.querySelector(".holo-title"); if(t) t.textContent=title.replace(/&[^;]+;/g,""); const ci=B.querySelector("#rdCode"); if(ci&&code){ ci.value=code; if(foc) ci.focus(); } rdBind(el0,R); return; }
+    B.innerHTML=body; const t=el0.querySelector(".holo-title"); if(t){ const tt=t.querySelector(".s3w-t")||t; tt.textContent=title.replace(/&[^;]+;/g,""); } /* 21.10: the System's frame keeps its «СИСТЕМА» line */ const ci=B.querySelector("#rdCode"); if(ci&&code){ ci.value=code; if(foc) ci.focus(); } rdBind(el0,R); return; }
   RAID.mEl=modal({id:"raid",title,icon:"☗",accent:"#7fe9ff",cls:"wide rdL",closable:true,body:`<div class="rd-body">${body}</div>`,onMount:el=>{ rdBind(el,R); const x=el.querySelector(".x"); if(x) x.onclick=()=>{ RAID.lobby=false; closeModal("raid"); }; }}); }
 function rdLimitLine(){ const L=RAID.limits; if(!L) return `<div class="rd-lim dim">Лимиты: 2 рейда в день, между ними 3 часа. Рейды на прорыв — не в счёт.</div>`;
   const left=Math.max(0,(L.perDay||2)-(L.today||0)); const wait=!L.ok&&L.until?` · следующий — с ${rdClockHM(L.until)}`:"";
-  return `<div class="rd-lim ${L.ok?"":"bad"}">Сегодня: <b>${L.today||0} из ${L.perDay||2}</b> рейдов · между стартами 3 ч${wait}${L.breach?` · на прорыв: ${L.breach.today||0} из ${L.breach.max||6} (не в счёт)`:""}</div>`; }
+  return `<div class="rd-lim ${L.ok?"":"bad"}">Сегодня: <b>${L.today||0} из ${L.perDay||2}</b> рейдов · между стартами 3 ч${wait}${L.ok?"":" · <b>можно идти помогать</b>: без награды, попытка не тратится"}${L.breach?` · на прорыв: ${L.breach.today||0} из ${L.breach.max||6} (не в счёт)`:""}</div>`; }
 function rdHomeHtml(){ const inSq=typeof sqIn==="function"&&sqIn(); const inv=RAID.invite&&Date.now()-RAID.invite.at<3*3600e3?RAID.invite:null; const F=RAID.finding;
   return `<div class="holo-sub">[Система] Рейд — 2–3 Пробуждённых. Ранг рейда — по старшему. Каждый жмёт «Готов», лидер начинает. Бой считает телефон лидера (бета).</div>
     ${typeof rdGatesHtml==="function"?rdGatesHtml():""}
     ${inv?`<div class="rd-inv">☗ <b>${rdEsc(inv.from)}</b> собирает рейд ранга <b>${rdEsc(rkTxt(inv.rank))}</b> · код <b>${rdEsc(inv.code)}</b> <button class="btn small primary" id="rdInvGo">Войти</button></div>`:""}
+    <button class="rd-way rd-fr" id="rdFr"><i>⚔</i><b>Позвать друзей</b><small>друг получит срочный зов · вы в одной комнате</small></button>
     <div class="rd-ways">
       <button class="rd-way" id="rdSq" ${inSq?"":"disabled"}><i>☗</i><b>Собрать из отряда</b><small>${inSq?"друзья онлайн получат приглашение":"нужен отряд (Отряд → создать)"}</small></button>
       <div class="rd-way rd-code"><i>⌗</i><b>Войти по коду</b><div class="rd-row"><input class="field" id="rdCode" maxlength="6" placeholder="K7M2QX" autocapitalize="characters" autocomplete="off" spellcheck="false"><button class="btn primary" id="rdJoin">Войти</button></div></div>
@@ -43388,16 +43457,28 @@ function rdRoomHtml(R){ const me=rdMe(), lead=R.leader===me; const mine=R.member
       <span class="rd-rd ${m.ready?"on":""}">${m.ready?"✓ готов":"не готов"}</span>
       ${isMe?"":`<span class="rd-acts">${typeof voiceMuteBtn==="function"?voiceMuteBtn(m):""}<button class="icon" data-rep="${rdEsc(m.id)}" title="Пожаловаться">⚑</button><button class="icon" data-blk="${rdEsc(m.id)}" title="${m.blocked?"Разблокировать":"Заблокировать"}">${m.blocked?"⊘":"⦸"}</button>${lead?`<button class="icon" data-kick="${rdEsc(m.id)}" title="Убрать из лобби">×</button>`:""}</span>`}</div>`; }).join("");
   const free=Math.max(0,(R.max||3)-R.members.length);
+  /* 21.10 (easyraid): the shared waiting room — who is here (big avatars, ready marks), the calls to friends and their state, the leader picks the raid Gate's rank */
+  const party=`<div class="rd-party">${R.members.map(m=>{ const K=(typeof KLS!=="undefined"&&KLS[m.cls])||null; const isMe=m.me||m.id===me;
+      return `<div class="rd-pm ${m.ready?"ready":""} ${m.online?"":"off"} ${isMe?"mine":""}" style="--c:${K?K.col:"#7fe9ff"}"><i class="rd-pav">${K&&typeof ico==="function"?ico(K.ic):"◆"}${m.id===R.leader?`<em class="rd-crown">♛</em>`:""}</i><b>${rdEsc(m.name)}</b><small>${RAID_CLS_N[m.cls]||"—"} · ${rdEsc(rkTxt(m.rank))}</small><span class="rd-pr">${m.ready?"✓ готов":m.online?"ждём":"нет связи"}</span>${m.helper?`<span class="rd-help">помогает</span>`:""}</div>`; }).join("")}
+    ${Array.from({length:free},()=>`<button class="rd-pm empty" data-invopen="1"><i class="rd-pav">＋</i><b>Позвать</b><small>друга</small></button>`).join("")}</div>`;
+  const IV=(R.invites||[]).filter(i=>!R.members.some(m=>m.id===i.to)&&(["wait","sent","seen","rank"].includes(i.state)||(["declined","expired"].includes(i.state)&&i.end&&Math.abs(Date.now()-i.end)<90e3)));
+  const ivTxt=i=>i.state==="wait"?"не в игре — зов ждёт его":i.state==="sent"?"зов отправлен…":i.state==="seen"?"увидел зов…":i.state==="rank"?`ниже рангом — просит рейд ранга ${rdEsc(rkTxt(i.need||""))}`:i.state==="declined"?"не сейчас":"зов истёк";
+  const invs=IV.length?`<div class="rd-ivs">${IV.map(i=>`<div class="rd-iv ${i.state}"><b>${rdEsc(i.name)}</b><span>${ivTxt(i)}</span>${lead&&i.need&&(R.ranks||[]).includes(i.need)&&i.need!==R.rank?`<button class="btn small primary" data-rank="${rdEsc(i.need)}">Рейд ранга ${rdEsc(rkTxt(i.need))}</button>`:""}</div>`).join("")}</div>`:"";
+  const rkPick=lead&&R.kind==="normal"&&(R.ranks||[]).length>1?`<div class="rd-rk"><span>Ранг рейда</span>${R.ranks.map(k=>`<button class="rd-rkb ${k===R.rank?"on":""}" data-rank="${k}">${rdEsc(rkTxt(k))}</button>`).join("")}<small>друг ниже тебя на 2 ранга? Выбери рейд пониже</small></div>`:"";
   const G=R.gate; const gate=G?`<div class="rd-gate" id="rdGate"><i>☗</i><div><b>${rdEsc(G.name)}</b><small>Рейдовые Врата ранга ${rdEsc(rkTxt(G.rank))} · ${rdEsc(G.regionName||"")} · закроются в ${rdClockHM(G.expireAt)}</small></div></div>`:"";
-  return `${gate}<div class="rd-code-big"><span>Код лобби</span><b id="rdCodeV">${rdEsc(R.code)}</b><button class="btn small" id="rdCopy">Копировать</button>${R.kind==="breach"?`<em class="rd-br">прорыв · не в лимите</em>`:""}</div>
+  return `${party}${invs}${gate}${rkPick}<div class="rd-code-big"><span>Код лобби</span><b id="rdCodeV">${rdEsc(R.code)}</b><button class="btn small" id="rdCopy">Копировать</button>${R.kind==="breach"?`<em class="rd-br">прорыв · не в лимите</em>`:""}</div>
     <div class="rd-ms">${rows}${free?`<div class="rd-m empty">${free===1?"Свободно одно место":`Свободно ${free} места`}${R.open?" · подбор ищет игроков":""}</div>`:""}</div>
     <div class="rd-rdy" id="rdRdy">Готовы: <b>${nReady} из ${R.members.length}</b>${enough?"":` · рейд — от ${min} игроков`}${lead?(allReady?" · можно начинать":" · начнёшь, когда все нажмут «Готов»"):" · начнёт лидер, когда все готовы"}</div>
-    <div class="actions rd-myacts"><button class="btn" id="rdCls">✦ Класс: ${RAID_CLS_N[mine.cls]||"—"}</button><button class="btn ${mine.ready?"":"primary"}" id="rdReady">${mine.ready?"Не готов":"Готов"}</button>${lead?`<button class="btn primary" id="rdStart" ${allReady?"":"disabled"}>☗ Начать рейд</button>`:""}<button class="btn ghost" id="rdLeave">Выйти</button></div>
+    ${mine.helper?`<div class="rd-helpnote">Попыток на сегодня нет — ты идёшь помочь: без награды, попытка не тратится.</div>`:""}
+    <div class="actions rd-myacts"><button class="btn ${mine.ready?"":"primary"} big" id="rdReady">${mine.ready?"Не готов":"✓ Готов"}</button>${lead?`<button class="btn primary big" id="rdStart" ${allReady?"":"disabled"}>☗ Начать рейд</button>`:""}<button class="btn" id="rdCls">✦ Класс: ${RAID_CLS_N[mine.cls]||"—"}</button><button class="btn ghost" id="rdLeave">Выйти</button></div>
     ${typeof voicePanelHtml==="function"?voicePanelHtml(R):""}
     ${rdSealHtml(R)}${rdLimitLine()}`; }
 function rdBind(el,R){ const q=s=>el.querySelector(s), on=(s,f)=>{ const b=q(s); if(b) b.onclick=f; };
   const err=e=>{ const d=e&&e.data||{}; let t=e&&e.message||"Ошибка"; if(e&&e.code==="limit"&&d.until) t+=` · можно с ${rdClockHM(d.until)}`; toast(rdEsc(t),"#ff8aa0"); };
   on("#rdBack",()=>{ RAID.lobby=false; closeModal("raid"); });
+  on("#rdFr",()=>{ if(typeof friendsWindow==="function") friendsWindow(); });
+  el.querySelectorAll("[data-invopen]").forEach(b=>b.onclick=()=>{ if(typeof friendsWindow==="function") friendsWindow({pick:true}); });
+  el.querySelectorAll("[data-rank]").forEach(b=>b.onclick=async()=>{ if(b.classList.contains("on")) return; try{ const r=await raidNet.rank(b.dataset.rank); toast(`Рейд ранга ${rdEsc(rkTxt(r.rank))}${r.gate&&r.gate.name?` · ${rdEsc(r.gate.name)}`:""} — зов друзьям ушёл снова`,"#7fe9ff"); }catch(e){ err(e); } });
   on("#rdSq",async()=>{ try{ await raidNet.create({squad:true,cls:rdCls(),...(RAID.gateWant?{gate:RAID.gateWant}:{})}); if(typeof voiceAuto==="function") voiceAuto(); rdRender(); }catch(e){ err(e); } });
   on("#rdOpen",async()=>{ try{ await raidNet.create({open:true,cls:rdCls(),...(RAID.gateWant?{gate:RAID.gateWant}:{})}); if(typeof voiceAuto==="function") voiceAuto(); rdRender(); }catch(e){ err(e); } });
   on("#rdJoin",async()=>{ const c=(q("#rdCode").value||"").trim().toUpperCase(); if(c.length<4) return toast("Введи код лобби","#ff8aa0"); try{ await raidNet.join(c); if(typeof voiceAuto==="function") voiceAuto(); rdRender(); }catch(e){ err(e); } });
@@ -43518,7 +43599,7 @@ function raidResults(m,rw){ const R=raidNet.room, names={}; (R&&R.members||[]).f
       <div class="rd-resh"><b>${m.result==="win"?"ПОБЕДА":m.result==="too_fast"?"НЕ ЗАСЧИТАНО":"ПОРАЖЕНИЕ"}</b><span>ранг ${rdEsc(rkTxt(m.rank||RAID.rank))} · ${Math.floor(dur/60)}:${String(dur%60).padStart(2,"0")}</span></div>
       ${m.result==="too_fast"?`<div class="holo-text"><p>Система не поверила: рейд быстрее 5 минут не засчитывается.</p></div>`:""}
       ${m.burned?`<div class="rd-burn"><b>Печать сгорела</b><span>${m.wipe?"Отряд пал целиком.":"Рейд не закончен."} Дела этой печати потрачены${m.sealLost?` (${m.sealLost} очк.)`:""} — копите новую.</span></div>`:""}
-      ${rw?`<div class="sec">Твоя доля — поровну со всеми, кто дошёл${rw.mvp?" · бонус MVP":""}</div><div class="rd-rw"><div><i>◉</i><b>${coinFmt(rw.coins)}</b><small>монет</small></div><div><i>✦</i><b>${rw.xp}</b><small>опыта</small></div><div><i>◈</i><b>${rw.mana}</b><small>маны</small></div>${rw.chest?`<div><i>♛</i><b>${rw.chest.items||""} · ${rdEsc(rw.chest.rank)}</b><small>вещи ранга рейда</small></div>`:""}</div>`:m.result==="win"?`<div class="holo-text"><p class="dim">Ты ушёл до конца — доли нет.</p></div>`:`<div class="holo-text"><p>Тень оказалась сильнее. Заполни печать делами — и попробуйте снова.</p></div>`}
+      ${rw?`<div class="sec">Твоя доля — поровну со всеми, кто дошёл${rw.mvp?" · бонус MVP":""}</div><div class="rd-rw"><div><i>◉</i><b>${coinFmt(rw.coins)}</b><small>монет</small></div><div><i>✦</i><b>${rw.xp}</b><small>опыта</small></div><div><i>◈</i><b>${rw.mana}</b><small>маны</small></div>${rw.chest?`<div><i>♛</i><b>${rw.chest.items||""} · ${rdEsc(rw.chest.rank)}</b><small>вещи ранга рейда</small></div>`:""}</div>`:m.result==="win"?`<div class="holo-text"><p class="dim">${R&&R.members&&(R.members.find(x=>x.id===me)||{}).helper?"Ты помогал другу — награды сегодня нет, попытка не потрачена.":"Ты ушёл до конца — доли нет."}</p></div>`:`<div class="holo-text"><p>Тень оказалась сильнее. Заполни печать делами — и попробуйте снова.</p></div>`}
       ${mvp?`<div class="rd-mvpl">MVP — <b>${rdEsc((names[mvp]||{}).name||"игрок")}</b>: урон, лечение, удержание босса и задачи. Бонус MVP — сверху равной доли.</div>`:""}
       ${m.breach?`<div class="kv"><span>Прорыв</span><b>−${m.breach.dealt} · осталось ${m.breach.hp}/${m.breach.max}${m.breach.done?" · закрыт!":""}</b></div>`:""}
       <div class="sec">Отряд</div><div class="rd-ms">${rows}</div>
@@ -43588,6 +43669,21 @@ function rdCss(){ if(document.getElementById("rdCss")) return; const s=document.
 .rd-way:disabled{opacity:.45;cursor:default}.rd-way i{font-style:normal;font-size:20px;color:#7fe9ff;text-shadow:0 0 10px #7fe9ff}.rd-way b{font-size:13px;letter-spacing:.1em;text-transform:uppercase}.rd-way small{font-size:11.5px;color:var(--dim)}
 .rd-way.ghost{background:rgba(6,14,30,.5)}.rd-row{display:flex;gap:6px;margin-top:4px}.rd-row .field{flex:1;min-width:0;text-transform:uppercase;letter-spacing:.2em}
 .rd-lim{font-size:12px;color:var(--dim);margin:8px 0 2px;padding:6px 8px;border-left:2px solid rgba(127,233,255,.5);background:rgba(127,233,255,.05)}.rd-lim.bad{border-color:#ff8aa0;color:#ffc0cb}
+.rd-fr{width:100%;margin:6px 0 2px;border-color:#ff6a3c!important;background:linear-gradient(90deg,rgba(255,106,60,.22),rgba(6,16,40,.6))!important;min-height:64px}.rd-fr i{color:#ff8a5a!important;text-shadow:0 0 10px #ff6a3c!important}.rd-fr b{font-size:15px!important}
+.rd-party{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:2px 0 10px}
+.rd-pm{appearance:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border:1px solid color-mix(in srgb,var(--c,#7fe9ff) 50%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--c,#7fe9ff) 16%,transparent),rgba(4,10,26,.7));color:var(--ink);font:inherit;min-width:0;text-align:center;position:relative}
+.rd-pm.mine{box-shadow:inset 0 0 0 1px var(--c,#7fe9ff)}.rd-pm.off{opacity:.55}.rd-pm.empty{border-style:dashed;border-color:rgba(127,233,255,.35);background:rgba(6,14,30,.45);cursor:pointer;color:#9fd8e6}
+.rd-pav{position:relative;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--c,#7fe9ff);color:var(--c,#7fe9ff);background:rgba(4,10,26,.85);font-style:normal;font-size:26px}.rd-pav svg{width:28px;height:28px}
+.rd-pm.ready .rd-pav{box-shadow:0 0 0 3px rgba(109,255,176,.35),0 0 16px rgba(109,255,176,.45)}.rd-pm.empty .rd-pav{border-style:dashed;border-color:rgba(127,233,255,.5);color:#7fe9ff}
+.rd-crown{position:absolute;top:-10px;right:-8px;font-style:normal;font-size:16px;color:#ffd166;text-shadow:0 0 8px #ffb13b}
+.rd-pm b{font-size:13.5px;color:#fff;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}.rd-pm small{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.rd-pr{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}.rd-pm.ready .rd-pr{color:#6dffb0;text-shadow:0 0 8px #6dffb0}.rd-help{font-size:10px;color:#ffd166;border:1px solid rgba(255,209,102,.5);padding:0 5px}
+.rd-ivs{display:flex;flex-direction:column;gap:5px;margin:-2px 0 10px}.rd-iv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 10px;border-left:3px solid #7fe9ff;background:rgba(127,233,255,.07);font-size:13px}
+.rd-iv b{color:#fff}.rd-iv span{color:var(--dim);flex:1}.rd-iv.seen{border-color:#ffd166}.rd-iv.seen span{color:#ffd166}.rd-iv.rank{border-color:#ff8a5a}.rd-iv.rank span{color:#ffb08a}.rd-iv.declined,.rd-iv.expired{opacity:.6;border-color:#8a93a8}
+.rd-rk{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:-4px 0 10px;font-size:12px;color:var(--dim)}.rd-rk span{letter-spacing:.14em;text-transform:uppercase;font-size:11px}.rd-rk small{flex-basis:100%;font-size:11px}
+.rd-rkb{appearance:none;min-width:44px;min-height:40px;border:1px solid rgba(255,106,60,.45);background:rgba(255,106,60,.08);color:#ffd2c2;font:800 15px "Exo 2",sans-serif;cursor:pointer}.rd-rkb.on{border-color:#ff6a3c;background:rgba(255,106,60,.3);color:#fff;box-shadow:0 0 12px rgba(255,106,60,.4)}
+.rd-helpnote{margin:6px 0;padding:7px 10px;border-left:3px solid #ffd166;background:rgba(255,209,102,.08);color:#ffe3a3;font-size:12.5px}
+.rd-myacts .btn.big{min-height:52px;flex:1 1 140px}
 .rd-inv{padding:8px 10px;margin:4px 0 8px;border:1px solid #7fe9ff;background:rgba(127,233,255,.08);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .rd-code-big{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}.rd-code-big span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}.rd-code-big b{font:800 24px "Exo 2",monospace;letter-spacing:.32em;color:#fff;text-shadow:0 0 12px #7fe9ff}
 .rd-br{font-style:normal;font-size:11px;color:#ffd166;border:1px solid #ffd166;padding:2px 6px}
@@ -43728,6 +43824,211 @@ function vcHudSync(){ const el=document.getElementById("vcHud"); if(!el) return;
 #vcHPtt{min-width:84px}
 @media (orientation:portrait){ #vcHud{top:calc(208px + var(--st,0px))} }`; document.head.appendChild(s); }
 window.__voice={ VC, voiceStart, voiceOff, voiceLevel, vcSet, get ice(){ const V=vcV(); return V?V.ice:null; } };
+
+/* ===== fp-friends.js ===== */
+/* ================= FRIENDS AND THE URGENT RAID INVITE (21.10, sandbox easyraid) =================
+   Anton: «Вы добавляетесь в друзья, друг другу кидаете плюсик, тебе приходит срочное уведомление, что друг зовёт тебя в рейд — как срочный квест,
+   только модальное окно. Если да — вы в совместную комнату попадаете, и оттуда уже ждёте. Письмо, почта — это всё слишком жёстко».
+   · friendsWindow() — my friend code (6 letters, no 0/O/1/I/L; copy / share), «Добавить друга» by code → the other side gets a request with «＋»
+     (both added each other — friends at once); the list: online now / in a raid / last seen, rank and class; «⚔ Позвать в рейд», «Позвать всех онлайн»;
+   · the call (raidNet.invite) makes the inviter's raid room on the first invite and opens it (fp-raid.js lobby = the shared waiting room);
+   · the friend gets the URGENT modal (the urgent quest's look: red, «!»): «⚔ <Имя> зовёт тебя в рейд», rank and class, a 60-s ring, «Иду!» / «Не сейчас»,
+     a horn and a buzz; two ranks below — the modal says it BEFORE the answer and offers «Попросить рейд ниже» (the leader fixes a lower raid Gate);
+     out of attempts — «Награды сегодня уже не будет — пойдёшь помочь». Not in the game — the invite waits 10 min on the server (the hello brings it);
+   · the inviter sees: sent → seen → accepted / declined / expired, in toasts and in the room.
+   Server: /v1/friends*, WS raid.invite / raid.inv / raid.inv.seen / raid.inv.ans / room.rank (docs/protocol-raid-world.md §11). */
+const FRN={ st:null, t:0, inv:null, invIv:null, invQ:[], poll:null, reqShown:{}, pick:false };
+const frEsc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const frK=c=>(typeof KLS!=="undefined"&&KLS[c])||null;
+const frClsN=c=>(typeof RAID_CLS_N!=="undefined"&&RAID_CLS_N[c])||(frK(c)?frK(c).n:"Пробуждённый");
+const frIcon=c=>{ const K=frK(c); return K&&typeof ico==="function"?ico(K.ic):"◆"; };
+const frRk=r=>typeof rkTxt==="function"?rkTxt(r||"E"):(r||"E");
+function frAgo(f){ if(f.raid==="run") return "в рейде"; if(f.raid==="lobby") return f.online?"в комнате рейда":"в комнате рейда, нет связи"; if(f.online) return "в игре";
+  const m=f.ago||0; return m<2?"был только что":m<60?`был ${m} мин назад`:m<1440?`был ${Math.round(m/60)} ч назад`:`был ${Math.round(m/1440)} дн назад`; }
+const frState=f=>f.raid==="run"?"run":f.online?"on":"off";
+async function frLoad(){ if(typeof accEnsure!=="function"||!(await accEnsure())) return null; try{ FRN.st=await acApi("GET","/v1/friends"); FRN.t=Date.now(); frBadge(); return FRN.st; }catch(e){ return FRN.st; } }
+function frBadge(){ const n=FRN.st&&FRN.st.inc?FRN.st.inc.length:0; document.querySelectorAll(".fr-badge").forEach(b=>{ b.textContent=n?String(n):""; b.classList.toggle("on",!!n); }); }
+const frBadgeN=()=>FRN.st&&FRN.st.inc?FRN.st.inc.length:0;
+/* the status of my call to this friend in my room (the room carries the invites) */
+function frInvOf(id){ const R=typeof raidNet!=="undefined"&&raidNet.room; if(!R||!R.invites) return null; const L=R.invites.filter(i=>i.to===id); return L.length?L[L.length-1]:null; }
+const FR_INV_TXT={ wait:"зов ждёт — друг не в игре", sent:"зов отправлен…", seen:"увидел зов…", rank:"просит рейд ниже", accepted:"идёт!", declined:"не сейчас", expired:"зов истёк", gone:"—" };
+
+/* ================= the friends window ================= */
+async function friendsWindow(o={}){ try{ await apiReady; }catch(e){} frCss();
+  if(!API){ toast("Друзья появятся, когда подключат сервер игры","#7fe9ff"); return; }
+  if(!(await accEnsure())) return modal({id:"friends",title:"Друзья",icon:"⚔",accent:"#7fe9ff",cls:"wide frL",closable:true,body:`<div class="holo-text"><p>Нет связи с сервером игры. Прогресс хранится на телефоне.</p></div><div class="actions"><button class="btn primary big" id="frRetry">Повторить</button></div>`,
+    onMount:el=>{ el.querySelector("#frRetry").onclick=()=>{ closeModal("friends",true); friendsWindow(o); }; }});
+  FRN.pick=!!o.pick; if(typeof accMe==="function") accMe(true); if(typeof raidNet!=="undefined") raidNet.connect().catch(()=>{});
+  const st=await frLoad(); if(!st){ toast("Нет связи с сервером игры","#ff8aa0"); return; }
+  frRender(true);
+  clearInterval(FRN.poll); FRN.poll=setInterval(()=>{ if(!open.has("friends")){ clearInterval(FRN.poll); FRN.poll=null; return; } if(!document.hidden) frLoad().then(()=>frRender()); },10000); }
+function frRowF(f){ const K=frK(f.cls), iv=frInvOf(f.id), live=iv&&!["gone"].includes(iv.state)&&!(iv.state==="accepted"&&!(raidNet.room&&raidNet.room.members.some(m=>m.id===f.id)));
+  const inRoom=raidNet.room&&raidNet.room.members&&raidNet.room.members.some(m=>m.id===f.id);
+  const act=inRoom?`<span class="fr-chip ok">в твоей комнате</span>`:live&&["wait","sent","seen","rank"].includes(iv.state)?`<span class="fr-chip ${iv.state}">${FR_INV_TXT[iv.state]}</span>`
+    :f.online&&f.raid!=="run"?`<button class="btn primary fr-call" data-call="${frEsc(f.id)}">⚔ Позвать в рейд</button>`:f.raid!=="run"?`<button class="btn fr-call ghost" data-call="${frEsc(f.id)}" title="Увидит, когда зайдёт (10 мин)">⚔ Позвать</button>`:"";
+  return `<div class="fr-row ${frState(f)}" style="--c:${K?K.col:"#7fe9ff"}"><i class="fr-av">${frIcon(f.cls)}<s class="fr-dot"></s></i>
+    <div class="fr-mn"><b>${frEsc(f.name)}</b><small>${frAgo(f)} · ранг ${frEsc(frRk(f.rank))} · ${frEsc(frClsN(f.cls))}</small></div>
+    <div class="fr-act">${act}${FRN.pick?"":`<button class="icon fr-x" data-del="${frEsc(f.id)}" title="Убрать из друзей">×</button>`}</div></div>`; }
+function frRowReq(f){ const K=frK(f.cls); return `<div class="fr-row req" style="--c:${K?K.col:"#7fe9ff"}"><i class="fr-av">${frIcon(f.cls)}</i>
+    <div class="fr-mn"><b>${frEsc(f.name)}</b><small>хочет в друзья · ранг ${frEsc(frRk(f.rank))} · ${frEsc(frClsN(f.cls))}</small></div>
+    <div class="fr-act"><button class="btn primary fr-plus" data-acc="${frEsc(f.id)}" aria-label="Принять">＋</button><button class="icon fr-x" data-dec="${frEsc(f.id)}" title="Отклонить">×</button></div></div>`; }
+function frRowOut(f){ return `<div class="fr-row out"><i class="fr-av">${frIcon(f.cls)}</i><div class="fr-mn"><b>${frEsc(f.name)}</b><small>ждёт его «＋»</small></div><div class="fr-act"><button class="icon fr-x" data-del="${frEsc(f.id)}" title="Отменить заявку">×</button></div></div>`; }
+function frHtml(st){ const on=st.items.filter(f=>f.online&&f.raid!=="run"&&!(raidNet.room&&raidNet.room.members.some(m=>m.id===f.id)));
+  const room=raidNet.room&&raidNet.room.state==="lobby"?raidNet.room:null;
+  return `${FRN.pick?"":`<div class="fr-me"><div><span>Твой код друга</span><b id="frCode">${frEsc(st.code||"——")}</b><small>Дай его другу — он добавит тебя</small></div><button class="btn" id="frCopy">${navigator.share?"Поделиться":"Копировать"}</button></div>
+    <div class="fr-add"><input class="field" id="frIn" maxlength="7" placeholder="КОД ДРУГА" autocapitalize="characters" autocomplete="off" spellcheck="false" inputmode="text"><button class="btn primary" id="frAddGo">Добавить</button></div>`}
+    ${st.inc.length?`<div class="sec">Хотят дружить · жми «＋»</div><div class="fr-list">${st.inc.map(frRowReq).join("")}</div>`:""}
+    ${room?`<div class="fr-roomline">☗ Ты в комнате рейда · ${room.members.length} из ${room.max||3} <button class="btn small" id="frRoom">Открыть комнату</button></div>`:""}
+    <div class="sec">Друзья · ${st.items.length} из ${st.max}</div>
+    ${on.length>1?`<button class="btn primary big fr-all" id="frAll">⚔ Позвать всех онлайн · ${on.length}</button>`:""}
+    <div class="fr-list">${st.items.length?st.items.map(frRowF).join(""):`<div class="fr-empty">Пока никого. Обменяйтесь кодами друзей — и зовите друг друга в рейд.</div>`}</div>
+    ${st.out.length&&!FRN.pick?`<div class="sec">Ждут ответа</div><div class="fr-list">${st.out.map(frRowOut).join("")}</div>`:""}`; }
+function frRender(first){ const st=FRN.st; if(!st) return; const m=open.get("friends");
+  if(!first&&m&&m.el.isConnected){ const B=m.el.querySelector(".fr-body"); if(!B) return; const inp=B.querySelector("#frIn"), v=inp?inp.value:"", foc=document.activeElement===inp;
+    B.innerHTML=frHtml(st); const i2=B.querySelector("#frIn"); if(i2&&v){ i2.value=v; if(foc) i2.focus(); } frBind(m.el); return; }
+  if(!first) return;
+  modal({id:"friends",title:FRN.pick?"Позвать в рейд":"Друзья",icon:"⚔",accent:"#7fe9ff",cls:"wide frL",closable:true,body:`<div class="fr-body">${frHtml(st)}</div>`,onMount:el=>frBind(el)}); }
+function frBind(el){ const q=s=>el.querySelector(s);
+  const cp=q("#frCopy"); if(cp) cp.onclick=async()=>{ const c=FRN.st.code, text=`Добавь меня в друзья в LevelUp · Врата: код ${c}`;
+    try{ if(navigator.share){ await navigator.share({title:"LevelUp · Врата",text}); return; } }catch(e){ if(e&&e.name==="AbortError") return; }
+    try{ await navigator.clipboard.writeText(c); toast(`Код скопирован: <b>${frEsc(c)}</b>`,"#7fe9ff"); }catch(e){ toast(`Твой код: <b>${frEsc(c)}</b> — продиктуй другу`,"#7fe9ff"); } };
+  const inp=q("#frIn"), go=q("#frAddGo");
+  if(inp){ inp.oninput=()=>{ const v=inp.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,6); if(inp.value!==v) inp.value=v; }; inp.onkeydown=e=>{ if(e.key==="Enter") go.click(); }; }
+  if(go) go.onclick=async()=>{ const c=(inp.value||"").toUpperCase().replace(/[^A-Z0-9]/g,""); if(c.length!==6){ toast("Код друга — 6 знаков","#ff8aa0"); inp.focus(); return; }
+    go.disabled=true; try{ const r=await acApi("POST","/v1/friends/add",{code:c}); inp.value="";
+      if(r.state==="friends"){ sfx.chest&&sfx.chest(); toast(`🤝 ${frEsc(r.friend.name)} — теперь твой друг`,"#6dffb0"); } else toast(`Заявка ушла: ${frEsc(r.friend.name)} увидит её и нажмёт «＋»`,"#7fe9ff");
+      await frLoad(); frRender(); }catch(e){ toast(frEsc(e.message),"#ff8aa0"); } go.disabled=false; };
+  el.querySelectorAll("[data-acc]").forEach(b=>b.onclick=async()=>{ b.disabled=true; try{ const r=await acApi("POST","/v1/friends/accept",{id:b.dataset.acc}); sfx.chest&&sfx.chest(); toast(`🤝 ${frEsc(r.friend.name)} — теперь твой друг`,"#6dffb0"); await frLoad(); frRender(); }catch(e){ toast(frEsc(e.message),"#ff8aa0"); b.disabled=false; } });
+  el.querySelectorAll("[data-dec]").forEach(b=>b.onclick=async()=>{ try{ await acApi("POST","/v1/friends/decline",{id:b.dataset.dec}); await frLoad(); frRender(); }catch(e){ toast(frEsc(e.message),"#ff8aa0"); } });
+  el.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{ if(!b.dataset.sure){ b.dataset.sure=1; b.textContent="?"; b.title="Нажми ещё раз — убрать"; b.classList.add("sure"); setTimeout(()=>{ if(b.isConnected){ delete b.dataset.sure; b.textContent="×"; b.classList.remove("sure"); } },3000); return; }
+    try{ await acApi("POST","/v1/friends/remove",{id:b.dataset.del}); await frLoad(); frRender(); }catch(e){ toast(frEsc(e.message),"#ff8aa0"); } });
+  el.querySelectorAll("[data-call]").forEach(b=>b.onclick=()=>frCall(b.dataset.call,b));
+  const all=q("#frAll"); if(all) all.onclick=()=>frCall("all",all);
+  const rm=q("#frRoom"); if(rm) rm.onclick=()=>{ closeModal("friends",true); RAID.lobby=true; raidWindow(); }; }
+/* «⚔ Позвать в рейд»: the room is made on the first call; the inviter goes into it and waits there */
+async function frCall(to,btn){ if(btn) btn.disabled=true;
+  try{ const r=await raidNet.invite(to); const S=r.sent||[], R=r.room, nm=id=>{ const f=FRN.st&&FRN.st.items.find(x=>x.id===id); return f?f.name:"Друг"; };
+    const low=S.filter(x=>x.need), ok=S.filter(x=>x.state==="sent"||x.state==="wait"), rate=S.filter(x=>x.state==="rate"), busy=S.filter(x=>x.state==="busy");
+    sfx.select&&sfx.select();
+    if(ok.length) toast(`⚔ Зов ушёл: ${ok.map(x=>frEsc(nm(x.to))).join(", ")}${ok.some(x=>x.state==="wait")?" · кто не в игре — увидит, когда зайдёт (10 мин)":""}`,"#7fe9ff");
+    if(low.length) toast(`${low.map(x=>frEsc(nm(x.to))).join(", ")}: ниже на ${low[0].under} ${plural(low[0].under,"ранг","ранга","рангов")} — в рейд ранга ${frEsc(frRk(R.rank))} не пустит. В комнате выбери рейд ранга ${frEsc(frRk(low[0].need))}`,"#ffd166");
+    if(rate.length) toast(`${rate.map(x=>frEsc(nm(x.to))).join(", ")}: звали недавно — подожди пару минут`,"#ff8aa0");
+    if(busy.length) toast(`${busy.map(x=>frEsc(nm(x.to))).join(", ")} уже в рейде`,"#ff8aa0");
+    closeModal("friends",true); RAID.lobby=true; if(typeof voiceAuto==="function") voiceAuto(); raidWindow(); }
+  catch(e){ toast(frEsc(e.message||"Не вышло"),"#ff8aa0"); if(btn) btn.disabled=false; } }
+
+/* ================= the urgent invite (the friend's side) ================= */
+function frHorn(){ try{ if(typeof tone==="function"&&!muted){ [0,.34,.68].forEach(t=>{ tone(392,t,.24,"sawtooth",.07,523); tone(784,t+.12,.18,"square",.03); }); tone(196,1.05,.8,"sawtooth",.06,392); tone(523,1.1,.6,"triangle",.05); } }catch(e){}
+  try{ if(navigator.vibrate&&!(typeof P!=="undefined"&&P.noBuzz)) navigator.vibrate([220,90,220,90,420]); }catch(e){} }
+const FR_INV_S=60;
+function frInvHtml(inv){ const f=inv.from||{}, R=inv.room||{}, G=R.gate, K=frK(f.cls), need=inv.need;
+  const warn=!inv.canJoin&&inv.under>1?`<div class="ri-warn">Ты на ${inv.under} ${plural(inv.under,"ранг","ранга","рангов")} ниже — в этот рейд не пустит.${need?` Нажми «Попросить рейд ниже» — друг выберет рейд ранга ${frEsc(frRk(need))}.`:""}</div>`
+    :R.n>=R.max?`<div class="ri-warn">Комната уже полна.</div>`:"";
+  const notes=[inv.over>0?"Рейд ниже твоего ранга — пойдёшь помочь другу.":"", inv.helper?"Награды сегодня уже не будет — пойдёшь помочь.":"", inv.under===1?"Рейд на ранг выше: урон по тебе чуть больше.":""].filter(Boolean);
+  return `<div class="notif-text ri-head">⚔ ${frEsc(f.name||"Друг")} зовёт тебя в рейд<small><i class="ri-cls" style="--c:${K?K.col:"#ff8aa0"}">${frIcon(f.cls)}</i>${frEsc(frClsN(f.cls))} · ранг ${frEsc(frRk(f.rank))} · ур. ${f.level||1}</small></div>
+    <div class="ri-mid"><div class="ri-ring" id="riRing" style="--p:100"><b id="riS">${FR_INV_S}</b><small>сек</small></div>
+      <div class="ri-info"><div><span>Рейд</span><b>ранг ${frEsc(frRk(R.rank))}${G&&G.name?` · ${frEsc(G.name)}`:""}</b></div><div><span>В комнате</span><b>${R.n||1} из ${R.max||3}</b></div><div><span>Ты</span><b>ранг ${frEsc(frRk(inv.me&&inv.me.rank))}</b></div></div></div>
+    ${warn}${notes.map(t=>`<div class="ri-note">${t}</div>`).join("")}
+    <div class="actions ri-acts"><button class="btn ghost big" id="riNo">Не сейчас</button>${inv.canJoin?`<button class="btn primary big" id="riGo">Иду!</button>`:inv.under>1&&need?`<button class="btn primary big" id="riRank">Попросить рейд ниже</button>`:""}</div>`; }
+function frInvClose(id,why){ if(id&&FRN.inv&&FRN.inv.id!==id) return; clearInterval(FRN.invIv); FRN.invIv=null; const was=FRN.inv; FRN.inv=null; if(open.has("rdInv")) closeModal("rdInv");
+  if(why&&was) toast(why,"#ff8aa0"); setTimeout(frInvNext,400); }
+function frInvNext(){ if(FRN.inv||!FRN.invQ.length) return; const inv=FRN.invQ.shift(); if(inv.exp>Date.now()+3000) frInvShow(inv); else frInvNext(); }
+function frInvShow(inv){ if(!inv||!inv.room) return; frCss();
+  if(typeof P!=="undefined"&&!P.onboarded){ const w=()=>{ if(P.onboarded) frInvShow(inv); else if(inv.exp>Date.now()) setTimeout(w,2000); }; setTimeout(w,2000); return; } /* the path has not begun yet: it waits */
+  if(typeof RAID!=="undefined"&&RAID.on){ raidNet.invAns(inv.id,"no").catch(()=>{}); return; } /* already fighting in a raid */
+  if(FRN.inv&&FRN.inv.id!==inv.id&&open.has("rdInv")){ if(!FRN.invQ.some(x=>x.id===inv.id)) FRN.invQ.push(inv); return; }
+  const again=FRN.inv&&FRN.inv.id===inv.id&&open.has("rdInv"); FRN.inv=inv;
+  if(!again){ frHorn(); if(typeof flash==="function") flash(true); }
+  const t0=Date.now(), end=Math.min(inv.exp||t0+FR_INV_S*1000,t0+FR_INV_S*1000);
+  const el=modal({id:"rdInv",title:"Срочно · рейд",icon:"!",accent:"#ff4f6a",cls:"rdInvM",body:`<div class="ri-body">${frInvHtml(inv)}</div>`,onMount:el=>frInvBind(el,inv)});
+  raidNet.invSeen(inv.id).catch(()=>{});
+  clearInterval(FRN.invIv); FRN.invIv=setInterval(()=>{ if(!open.has("rdInv")||!FRN.inv||FRN.inv.id!==inv.id){ clearInterval(FRN.invIv); FRN.invIv=null; return; }
+    const left=Math.max(0,end-Date.now()), s=Math.ceil(left/1000), b=el.querySelector("#riS"), r=el.querySelector("#riRing"); if(b) b.textContent=s; if(r) r.style.setProperty("--p",(left/(FR_INV_S*1000)*100).toFixed(1)); if(r) r.classList.toggle("low",s<=10);
+    if(left<=0){ raidNet.invAns(inv.id,"late").catch(()=>{}); frInvClose(inv.id); } },250); }
+function frInvBind(el,inv){ const q=s=>el.querySelector(s);
+  q("#riNo").onclick=()=>{ raidNet.invAns(inv.id,"no").catch(()=>{}); frInvClose(inv.id); };
+  const rk=q("#riRank"); if(rk) rk.onclick=async()=>{ rk.disabled=true; try{ await raidNet.invAns(inv.id,"rank"); toast(`Попросил рейд ранга ${frEsc(frRk(inv.need))} — зов придёт снова, когда ${frEsc(inv.from.name)} его выберет`,"#7fe9ff"); frInvClose(inv.id); }catch(e){ frInvClose(inv.id,frEsc(e.message)); } };
+  const go=q("#riGo"); if(go) go.onclick=async()=>{ go.disabled=true; go.textContent="Иду…";
+    try{ await raidNet.invAns(inv.id,"yes"); clearInterval(FRN.invIv); FRN.invIv=null; FRN.inv=null; closeModal("rdInv",true); sfx.chest&&sfx.chest();
+      toast(`⚔ Ты в комнате рейда · ${frEsc(inv.from.name)} ждёт`,"#6dffb0"); RAID.lobby=true; if(typeof voiceAuto==="function") voiceAuto(); raidWindow(); }
+    catch(e){ if(e.code==="rank"){ inv.canJoin=false; inv.need=e.data&&e.data.need||inv.need; const B=el.querySelector(".ri-body"); if(B){ B.innerHTML=frInvHtml(inv); frInvBind(el,inv); } }
+      else frInvClose(inv.id,frEsc(e.message||"Не вышло")); } }; }
+
+/* ================= the socket: invites, their statuses, friend requests ================= */
+if(typeof raidNet!=="undefined"){
+  raidNet.on("raid.inv",m=>{ if(m&&m.inv) frInvShow(m.inv); });
+  raidNet.on("raid.inv.gone",m=>{ FRN.invQ=FRN.invQ.filter(x=>x.id!==m.id); if(FRN.inv&&FRN.inv.id===m.id) frInvClose(m.id,m.state==="expired"?"Зов истёк":"Рейд ушёл без тебя"); });
+  raidNet.on("raid.inv.st",m=>{ const n=frEsc(m.name||"Друг");
+    if(m.state==="seen") toast(`👁 ${n} увидел зов…`,"#7fe9ff");
+    else if(m.state==="accepted"){ sfx.chest&&sfx.chest(); toast(`⚔ ${n} идёт!`,"#6dffb0"); if(!RAID.on){ RAID.lobby=true; if(!open.has("raid")) raidWindow(); else rdRender(); } }
+    else if(m.state==="declined") toast(`${n}: не сейчас`,"#ffd166");
+    else if(m.state==="expired") toast(`Зов для ${n} истёк`,"#ff8aa0");
+    else if(m.state==="rank"){ toast(`${n} ниже рангом — выбери в комнате рейд ранга ${frEsc(frRk(m.need))}`,"#ffd166"); if(!RAID.on){ RAID.lobby=true; if(!open.has("raid")) raidWindow(); else rdRender(); } }
+    if(open.has("friends")) frRender(); });
+  raidNet.on("friend.req",m=>{ const f=m.from; if(!f) return; if(FRN.st){ FRN.st.inc=[f,...(FRN.st.inc||[]).filter(x=>x.id!==f.id)]; frBadge(); } if(open.has("friends")) frRender(); else frReqCard(f); });
+  raidNet.on("friend.ok",m=>{ const f=m.who; if(f) toast(`🤝 ${frEsc(f.name)} — теперь твой друг`,"#6dffb0"); frLoad().then(()=>frRender()); });
+  raidNet.on("friend.gone",()=>{ frLoad().then(()=>frRender()); });
+  raidNet.on("room",()=>{ if(open.has("friends")) frRender(); });
+  raidNet.on("open",()=>{ if(!FRN.st||Date.now()-FRN.t>60e3) frLoad().then(st=>{ if(st&&st.inc&&st.inc.length&&!open.has("friends")) frReqCard(st.inc[0],st.inc.length); }); }); }
+/* a friend request while playing: a small card, not a window (the fight goes on) — «＋» right on it */
+function frReqCard(f,n){ if(!f||FRN.reqShown[f.id]) return; FRN.reqShown[f.id]=1; frCss(); let el=document.getElementById("frReq"); if(el) el.remove();
+  el=document.createElement("div"); el.id="frReq"; el.innerHTML=`<i class="fr-av" style="--c:${(frK(f.cls)||{}).col||"#7fe9ff"}">${frIcon(f.cls)}</i><div><b>${frEsc(f.name)}</b><small>хочет в друзья${n>1?` · заявок: ${n}`:""}</small></div><button class="btn primary fr-plus" id="frReqOk" aria-label="Принять">＋</button><button class="icon fr-x" id="frReqNo" aria-label="Закрыть">×</button>`;
+  document.body.appendChild(el); sfx.open&&sfx.open();
+  const done=()=>{ el.classList.add("out"); setTimeout(()=>el.remove(),300); };
+  el.querySelector("#frReqOk").onclick=async()=>{ try{ const r=await acApi("POST","/v1/friends/accept",{id:f.id}); sfx.chest&&sfx.chest(); toast(`🤝 ${frEsc(r.friend.name)} — теперь твой друг`,"#6dffb0"); frLoad(); }catch(e){ toast(frEsc(e.message),"#ff8aa0"); } done(); };
+  el.querySelector("#frReqNo").onclick=done; setTimeout(()=>{ if(el.isConnected) done(); },20000); }
+
+/* ================= where «Друзья» shows up: the menu, the pause menu of the world, the raid window ================= */
+{ const mw0=menuWindow; menuWindow=function(){ const r=mw0.apply(this,arguments); try{ if(!API) return r; const m=open.get("menu"); if(!m) return r; const inner=m.el.querySelector(".holo-inner"); if(!inner||inner.querySelector("#frLine")) return r;
+    const b=document.createElement("button"); b.className="acc-line fr-line"; b.id="frLine"; b.innerHTML=`<span>⚔ <b>Друзья</b> · позвать в рейд <i class="fr-badge"></i></span><small>добавить по коду · кто в игре</small>`; b.onclick=()=>{ closeModal("menu",true); friendsWindow(); };
+    const acc=inner.querySelector("#accLine")||inner.querySelector(".mn-hero"); if(acc) acc.after(b); else inner.appendChild(b); frCss(); frBadge(); }catch(e){} return r; }; }
+if(typeof fpMenu==="function"){ const fm0=fpMenu; fpMenu=function(){ const r=fm0.apply(this,arguments); try{ if(!API) return r; const m=open.get("fpm"); if(!m) return r; const g=m.el.querySelector(".menu-grid"); if(!g||g.querySelector("#fmFr")) return r;
+    const b=document.createElement("button"); b.className="btn"; b.id="fmFr"; b.innerHTML=`⚔ Друзья <i class="fr-badge"></i>`; b.onclick=()=>{ closeModal("fpm",true); setTimeout(()=>friendsWindow(),60); }; g.appendChild(b); frCss(); frBadge(); }catch(e){} return r; }; }
+/* after the start: who wants to be friends (once), so a request sent while I was away is not missed */
+setTimeout(async()=>{ try{ await apiReady; if(!API) return; for(let i=0;i<20&&!(typeof ACC!=="undefined"&&ACC.t);i++) await new Promise(r=>setTimeout(r,1500)); const st=await frLoad(); if(st&&st.inc&&st.inc.length){ const w=()=>{ if(!started||!P.onboarded||anyBlocking()) return setTimeout(w,3000); frReqCard(st.inc[0],st.inc.length); }; w(); } }catch(e){} },9000);
+window.friendsWindow=friendsWindow;
+window.__friends={ FRN, friendsWindow, frLoad, frCall, frInvShow, frRender };
+
+function frCss(){ if(document.getElementById("frCss")) return; const s=document.createElement("style"); s.id="frCss"; s.textContent=`
+.frL .holo-inner{background:radial-gradient(120% 80% at 50% 0%,rgba(18,52,110,.55),rgba(4,10,26,.97) 60%),linear-gradient(160deg,rgba(6,14,34,.98),rgba(3,7,18,.98))}
+.fr-me{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid rgba(127,233,255,.45);background:linear-gradient(90deg,rgba(127,233,255,.14),rgba(4,10,26,.5));border-radius:12px}
+.fr-me span{display:block;font:700 11px "Exo 2",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#9fd8e6}.fr-me b{display:block;font:800 30px "Exo 2",monospace;letter-spacing:.28em;color:#fff;text-shadow:0 0 14px #7fe9ff;user-select:all;-webkit-user-select:all}
+.fr-me small{display:block;font:600 12px "Exo 2",sans-serif;color:#9fb3c8}.fr-me .btn{min-height:48px;min-width:120px}
+.fr-add{display:flex;gap:8px;margin:10px 0 4px}.fr-add .field{flex:1;min-width:0;min-height:50px;text-align:center;text-transform:uppercase;letter-spacing:.3em;font:800 20px "Exo 2",monospace}.fr-add .btn{min-height:50px;min-width:118px}
+.fr-list{display:flex;flex-direction:column;gap:6px}.fr-empty{padding:14px;border:1px dashed rgba(127,233,255,.3);border-radius:12px;color:#9fb3c8;font:600 13.5px/1.4 "Exo 2",sans-serif;text-align:center}
+.fr-row{display:flex;align-items:center;gap:10px;padding:8px 10px;min-height:60px;border-radius:12px;border:1px solid color-mix(in srgb,var(--c,#7fe9ff) 35%,transparent);background:linear-gradient(90deg,color-mix(in srgb,var(--c,#7fe9ff) 12%,transparent),rgba(4,10,26,.55))}
+.fr-row.off{opacity:.78}.fr-row.req{border-color:#6dffb0;box-shadow:0 0 14px rgba(109,255,176,.15)}
+.fr-av{position:relative;flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--c,#7fe9ff);color:var(--c,#7fe9ff);background:rgba(4,10,26,.8);font-style:normal}.fr-av svg{width:22px;height:22px}
+.fr-dot{position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;border-radius:50%;border:2px solid #050b18;background:#5b6577}.fr-row.on .fr-dot{background:#6dffb0;box-shadow:0 0 8px #6dffb0}.fr-row.run .fr-dot{background:#ff8a5a;box-shadow:0 0 8px #ff8a5a}
+.fr-mn{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.fr-mn b{font:800 15px "Exo 2",sans-serif;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fr-mn small{font:600 12px "Exo 2",sans-serif;color:#9fb3c8}
+.fr-row.on .fr-mn small{color:#a9f5cf}.fr-act{display:flex;align-items:center;gap:6px;flex:none}
+.fr-call{min-height:46px;padding:8px 12px;white-space:nowrap}.fr-plus{min-width:52px;min-height:46px;font-size:24px!important;line-height:1;padding:0 10px}
+.fr-x{appearance:none;width:36px;height:36px;border-radius:10px;border:1px solid rgba(127,233,255,.25);background:rgba(4,10,26,.7);color:#9fb3c8;font-size:18px;cursor:pointer}.fr-x.sure{border-color:#ff8aa0;color:#ff8aa0}
+.fr-chip{font:700 12px "Exo 2",sans-serif;padding:6px 10px;border-radius:20px;border:1px solid rgba(127,233,255,.4);color:#bfefff;white-space:nowrap}.fr-chip.seen{border-color:#ffd166;color:#ffd166}.fr-chip.rank{border-color:#ff8a5a;color:#ffb08a}.fr-chip.ok{border-color:#6dffb0;color:#6dffb0}
+.fr-all{width:100%;min-height:52px;margin-bottom:8px}
+.fr-roomline{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:8px 0;padding:8px 12px;border-radius:10px;border:1px solid #ff6a3c;background:rgba(255,106,60,.1);font:700 13px "Exo 2",sans-serif;color:#ffd2c2}
+.fr-line{border-color:rgba(255,106,60,.55)!important;background:linear-gradient(90deg,rgba(255,106,60,.16),rgba(255,106,60,.03))!important}
+.fr-badge{font-style:normal;display:none;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#ff4f6a;color:#fff;font:800 11px/18px "Exo 2",sans-serif;text-align:center;margin-left:4px;vertical-align:middle}.fr-badge.on{display:inline-block}
+#frReq{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 12px;width:min(92vw,420px);border-radius:14px;border:1px solid #6dffb0;background:rgba(4,12,28,.94);box-shadow:0 8px 30px rgba(0,0,0,.5),0 0 18px rgba(109,255,176,.2);font-family:"Exo 2",sans-serif;color:#eafcff;animation:frIn .3s ease-out}
+#frReq>div{flex:1;min-width:0}#frReq b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#frReq small{color:#a9f5cf;font-size:12px}#frReq.out{opacity:0;transition:opacity .3s}
+@keyframes frIn{from{opacity:0;transform:translate(-50%,-14px)}to{opacity:1;transform:translate(-50%,0)}}
+.rdInvM .holo-frame{max-width:min(94vw,460px)}.rdInvM .holo-inner{background:radial-gradient(120% 90% at 50% 0%,rgba(120,10,40,.5),rgba(16,4,12,.97) 62%)}
+.ri-head{color:#ffb3c0!important;text-shadow:0 0 12px #ff2255;font-size:22px!important;line-height:1.2}.ri-head small{display:flex!important;align-items:center;justify-content:center;gap:6px;margin-top:6px;color:#ffd6de!important;text-shadow:none}
+.ri-cls{font-style:normal;display:inline-grid;place-items:center;width:22px;height:22px;color:var(--c)}.ri-cls svg{width:18px;height:18px}
+.ri-mid{display:flex;align-items:center;gap:16px;margin:12px 0 6px}
+.ri-ring{--p:100;flex:none;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;align-content:center;background:radial-gradient(circle,rgba(20,4,12,1) 56%,transparent 57%),conic-gradient(#ff4f6a calc(var(--p)*1%),rgba(255,79,106,.14) 0);box-shadow:0 0 24px rgba(255,79,106,.35)}
+.ri-ring b{font:800 30px "Exo 2",sans-serif;color:#fff;text-shadow:0 0 12px #ff2255;line-height:1}.ri-ring small{font:700 11px "Exo 2",sans-serif;color:#ffb3c0}.ri-ring.low{animation:riPulse .6s ease-in-out infinite alternate}
+@keyframes riPulse{to{box-shadow:0 0 34px rgba(255,79,106,.8)}}
+.ri-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}.ri-info div{display:flex;justify-content:space-between;gap:8px;font:600 13px "Exo 2",sans-serif;color:#ffd6de;border-bottom:1px solid rgba(255,79,106,.2);padding-bottom:4px}.ri-info b{color:#fff;text-align:right}
+.ri-warn{margin:8px 0;padding:9px 12px;border-radius:10px;border:1px solid #ffb13b;background:rgba(255,177,59,.12);color:#ffe0a8;font:700 14px/1.35 "Exo 2",sans-serif}
+.ri-note{margin:6px 0;padding:7px 10px;border-left:3px solid #7fe9ff;background:rgba(127,233,255,.07);color:#d8f6ff;font:600 13px/1.35 "Exo 2",sans-serif}
+.ri-acts{display:grid!important;grid-template-columns:1fr 1.4fr;gap:10px}.ri-acts .btn{min-height:58px;font-size:17px}.ri-acts #riGo{font-size:20px;letter-spacing:.06em}
+.fr-add .field::placeholder{letter-spacing:.12em;font-size:15px}.fr-me .btn,.fr-add .btn,.fr-call{letter-spacing:.06em}
+@media (max-width:560px){ .fr-me{flex-wrap:wrap}.fr-me>div{flex:1 1 100%}.fr-me .btn{flex:1 1 100%;min-height:46px} .fr-me b{font-size:28px}
+  .fr-row{flex-wrap:wrap;row-gap:8px}.fr-mn{flex:1 1 calc(100% - 100px)}.fr-act{flex:1 1 100%;justify-content:flex-end}.fr-call{flex:1;min-height:48px}.fr-row.req .fr-act,.fr-row.out .fr-act{flex:0 0 auto}.fr-row.req .fr-mn,.fr-row.out .fr-mn{flex:1 1 0}
+  .fr-add .btn{min-width:104px} }
+@media (max-width:420px){ .ri-head{font-size:19px!important} .ri-ring{width:84px;height:84px} }
+`; document.head.appendChild(s); }
 
 /* ===== net-world.js ===== */
 /* ================= THE LIVING WORLD — the thin client (server/lib/world.mjs; protocol: docs/protocol-raid-world.md) =================
@@ -44625,7 +44926,7 @@ function sy3Refresh(){ if(!SY3.built) return; const lv=P.level||1, xk=P.xpNext?M
   /* badges on the sections */
   const bn=(k,v)=>{ const b=SY3.el.querySelector("#s3Bn_"+k); if(b){ b.textContent=v||""; b.classList.toggle("on",!!v); } };
   const c=typeof clsActive==="function"?clsActive():null; bn("skills",c&&typeof treeFree==="function"&&treeFree(c)>0?"+"+treeFree(c):""); const L=P.day?P.day.gates:[]; bn("log",L.length?`${L.filter(g=>g.done).length}/${L.length}`:"");
-  bn("shop",""); bn("raid",typeof RAID!=="undefined"&&RAID.invite&&Date.now()-RAID.invite.at<3*3600e3?"!":typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?"●":"");
+  bn("shop",""); bn("raid",typeof RAID!=="undefined"&&RAID.invite&&Date.now()-RAID.invite.at<3*3600e3?"!":typeof frBadgeN==="function"&&frBadgeN()?"+"+frBadgeN():typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?"●":"");
   SY3.pNav.forEach(p=>p.el.classList.toggle("lock",!!SY3.sleep));
   sy3Quests(); }
 const sy3Flame=()=>`<svg class="s3i fl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.4 2.4-5.2 3.6-8.3.5 1.9 1.7 2.9 2.7 3.4.3-2.6 1.6-5 3.6-6.4-.3 2.8 3.1 5.6 3.1 10.4 0 4-2.6 7.1-6.5 7.1z"/></svg>`;
@@ -44859,10 +45160,10 @@ function sy3Amb(on){ SY3A.on=!!on; try{ if(typeof musSysQuiet==="function") musS
 
 /* ================= TABS ================= */
 const SY3_TG={
-  raid:{ n:"РЕЙД", col:"#ff6a3c", tabs:[["raid","Рейд"],["squad","Отряд"],["rate","Рейтинг"]] },
+  raid:{ n:"РЕЙД", col:"#ff6a3c", tabs:[["raid","Рейд"],["friends","Друзья"],["squad","Отряд"],["rate","Рейтинг"]] },
   prof:{ n:"ПРОФИЛЬ", col:"#4fa8ff", tabs:[["prof","Статус"],["army","Коллекция теней"]] } };
 /* the windows (modal ids) that wear the tab bar while the System is on */
-const SY3_TID={ s3w_raid:["raid","raid"], raid:["raid","raid"], squad:["raid","squad"], s3w_rate:["raid","rate"], s3w_status:["prof","prof"], army:["prof","army"] };
+const SY3_TID={ s3w_raid:["raid","raid"], raid:["raid","raid"], friends:["raid","friends"], squad:["raid","squad"], s3w_rate:["raid","rate"], s3w_status:["prof","prof"], army:["prof","army"] };
 function sy3TabsOn(id,el){ try{ if(typeof SY3==="undefined"||!SY3.on||!document.body.classList.contains("s3on")) return; const t=SY3_TID[id]; if(!t||!el||el.querySelector(".s3-tabs")) return;
     const [g,k]=t, G=SY3_TG[g]; (SY3.tabLast||(SY3.tabLast={}))[g]=k;
     const bar=document.createElement("div"); bar.className="s3-tabs"; bar.setAttribute("role","tablist"); bar.setAttribute("aria-label",G.n); bar.style.setProperty("--c",G.col);
@@ -44874,13 +45175,14 @@ function sy3TabClose(g){ Object.keys(SY3_TID).forEach(id=>{ if(SY3_TID[id][0]===
 function sy3Tab(g,k,sw){ if(!SY3.built) sy3Build(); sy3TabClose(g); SY3.tabSw=!!sw; clearTimeout(SY3.tabSwT); SY3.tabSwT=setTimeout(()=>{ SY3.tabSw=false; },1600); if(sw) sy3Snd("tick");
   (SY3.tabLast||(SY3.tabLast={}))[g]=k;
   if(g==="raid"){ if(k==="squad"){ if(typeof squadWindow==="function") squadWindow(); return; }
+    if(k==="friends"){ if(typeof friendsWindow==="function") friendsWindow(); return; } /* 21.10 (easyraid): friends by code, the urgent call to a raid */
     if(k==="rate") return sy3Win("rate","РЕЙТИНГ",`<div id="s3RRate" class="s3-rr"><div class="dim">Загружаю рейтинг рейдов…</div></div><h4 class="s3-h">ИГРОКИ</h4><div id="rlPanel" class="s3-real"></div>`,{accent:"#ff6a3c",wide:true,onMount:el=>{ REAL.tab="people"; REAL.sph=null; REAL.sel=null; realPanel(); sy3RaidRate(el,{}); }});
     return sy3RaidWin(); }
   if(k==="army"){ if(typeof armyWindow==="function") armyWindow(); return; }
   return sy3StatusWin(); }
 
 /* ---------- 20.10 РЕЙТИНГ: the weekly raid rating of squads by the time of a won raid (server: GET /v1/raid/rating) ---------- */
-async function sy3RaidRate(el,o){ const box=el.querySelector("#s3RRate"); if(!box) return; if(typeof raidNet==="undefined"||!(typeof rdCanNet==="function"&&rdCanNet())){ box.innerHTML=`<div class="dim">Рейтинг рейдов — с входом в аккаунт и связью с сервером.</div>`; return; }
+async function sy3RaidRate(el,o){ const box=el.querySelector("#s3RRate"); if(!box) return; if(typeof raidNet==="undefined"||!(typeof rdCanNet==="function"&&rdCanNet())){ box.innerHTML=`<div class="dim">Рейтинг рейдов — когда есть связь с сервером игры.</div>`; return; }
   let R; try{ R=await raidNet.rating(o); }catch(e){ box.innerHTML=`<div class="dim">${sy3Esc(e.message||"Нет связи")}</div>`; return; }
   const fm=ms=>{ const s=Math.round(ms/1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; }, me=RANK_NAME(P.level||1);
   const row=x=>`<div class="s3-rr-r ${x.mine?"me":""}"><em>${x.place}</em><i class="rk rk${x.rank}">${x.rank}</i><div><b>${x.members.map(m=>sy3Esc(m.name)+(m.id===x.mvp?" ★":"")).join(" · ")}</b><small>${x.members.map(m=>(typeof RAID_CLS_N!=="undefined"&&RAID_CLS_N[m.cls])||"").filter(Boolean).join(" · ")}</small></div><span>${fm(x.dur)}</span></div>`;
@@ -44895,12 +45197,12 @@ function sy3RaidWin(){ const net=typeof rdCanNet==="function"&&rdCanNet(), inSq=
       <p>Босс со свитой, добыча — поровну. Вход открывает <b>Печать рейда</b>: общая копилка реальных дел отряда за час до старта.</p>
       ${inv?`<div class="s3-kv hot"><span>Приглашение</span><b>${sy3Esc(inv.from)} · ранг ${sy3Esc(rkTxt(inv.rank))} · код ${sy3Esc(inv.code)}</b></div>`:""}
       <div class="s3-kv"><span>Твой ранг</span><b>${rkTxt(rk)} · рейд — по старшему</b></div><div class="s3-kv"><span>Отряд</span><b>${inSq?`в отряде${typeof SQN!=="undefined"&&SQN.st&&SQN.st.code?" · "+sy3Esc(SQN.st.code):""}`:"нет — вкладка «Отряд»"}</b></div>
-      <div class="s3-kv"><span>Связь с сервером</span><b>${net?"есть":"нужен вход в аккаунт"}</b></div>${lim?`<div class="s3-rdl">${lim}</div>`:""}
+      <div class="s3-kv"><span>Связь с сервером</span><b>${net?"есть":"нет — попробуй позже"}</b></div>${lim?`<div class="s3-rdl">${lim}</div>`:""}
       ${typeof rdGatesHtml==="function"?rdGatesHtml():""}
       <p class="s3-note">2–3 Игрока: Танк, Заклинатель, Ассасин. 8–12 залов, двойные рычаги, решётка Танка, Луч Печати — и Трёхликий Привратник. Каждый жмёт «Готов», лидер начинает. Все пали — печать сгорает.</p>
-      <div class="actions"><button class="btn ghost" id="s3RdSq">Отряд</button><button class="btn primary big" id="s3RdGo">${inv?"Войти по приглашению":"Лобби рейда"}</button></div></div>`,
+      <div class="actions"><button class="btn primary big" id="s3RdFr">⚔ Позвать друзей</button><button class="btn ghost" id="s3RdSq">Отряд</button><button class="btn primary big" id="s3RdGo">${inv?"Войти по приглашению":"Лобби рейда"}</button></div></div>`,
     {accent:"#ff6a3c",wide:true,icon:"☗",onMount:el=>{ el.querySelector("#s3RdGo").onclick=()=>{ sy3Snd("accept"); closeModal("s3w_raid",true); SY3.tabSw=true; clearTimeout(SY3.tabSwT); SY3.tabSwT=setTimeout(()=>{ SY3.tabSw=false; },1600); if(typeof raidWindow==="function") raidWindow(); };
-      el.querySelector("#s3RdSq").onclick=()=>sy3Tab("raid","squad",true); }}); }
+      el.querySelector("#s3RdSq").onclick=()=>sy3Tab("raid","squad",true); const fr=el.querySelector("#s3RdFr"); if(fr) fr.onclick=()=>sy3Tab("raid","friends",true); }}); }
 
 /* ================= ПРОФИЛЬ (the bar): status · stats · class · experience · mana · coins · streak ================= */
 const SY3_ST=[["body","Сила","#ff6b7a","Тело"],["mind","Интеллект","#b58cff","Чтение · Фокус и учёба"],["soul","Дух","#6dffb0","Спокойствие"],["will","Воля","#ffd166","Дисциплина"]];
@@ -45068,9 +45370,9 @@ async function memKeyAsk(o={}){ try{ if(typeof apiReady!=="undefined") await api
           if(r.later){ closeModal("s3w_memkey",true); toast("Ключ сохранён — Система вспомнит путь, когда войдёшь в аккаунт","#ffd166"); done("later"); return; }
           say(r.msg||"Ключ не подошёл",true); };
         setTimeout(()=>{ try{ inp.focus(); }catch(e){} },60); }}); }); }
-/* the key → the server. No account yet: the login window first (the key waits in ACC.mig; migPending() in cloud.js finishes it later too) */
+/* the key → the server. No account yet: a device account first (the key waits in ACC.mig; migPending() in cloud.js finishes it later too) */
 async function memKeyRedeem(code){ ACC.mig=code; accSave();
-  if(!ACC.t){ const logged=await new Promise(r=>{ let ok=false; accLogin(()=>{ ok=true; r(true); }); const w=()=>{ if(ok) return; if(!open.has("acc")&&!ACC.t) setTimeout(()=>{ if(!ok&&!open.has("acc")) r(false); else setTimeout(w,400); },600); else setTimeout(w,400); }; setTimeout(w,1200); });
+  if(!ACC.t){ /* 21.10: no login window — the device account is made right here (cloud.js accEnsure) */ const logged=typeof accEnsure==="function"?await accEnsure():false;
     if(!logged||!ACC.t) return {later:true}; if(P.oldP) return {ok:true}; }
   try{ const r=await acApi("POST","/v1/migrate",{code}); delete ACC.mig; ACC.me=Object.assign(ACC.me||{},{old:r.old,gift:r.gift,pass:r.pass||null}); accSave(); return {ok:true}; }
   catch(e){ if(e.j&&(e.j.code==="used"||e.j.code==="already")){ delete ACC.mig; accSave(); }
