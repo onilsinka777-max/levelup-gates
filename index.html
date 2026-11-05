@@ -2570,6 +2570,12 @@ body.hud-edit #fp::before{content:"";position:absolute;inset:0;background:rgba(2
 .s3.port .s3-b{width:min(calc(100vw - 48px),360px);height:42px}
 .s3.port .s3-b b{font-size:12px}
 @media (max-height:460px){ .s3.land .s3-title b{font-size:20px} .s3.land .s3-title small{display:none} .s3.land .s3-st{font-size:8px} .s3.land .s3-tl{gap:5px;top:calc(8px + var(--st,0px))} .s3.land .s3-tr{top:calc(8px + var(--st,0px))} .s3.land .s3-zoom{top:calc(56px + var(--st,0px));gap:6px} .s3.land .s3-zoom button{width:30px;height:30px} .s3.land .s3-bar{height:40px;min-height:38px;bottom:calc(6px + var(--sb,0px))} }
+/* 05.11 (Anton, iPhone): ⚙, ? и «НАЗАД» у верхнего края почти не нажимались — касание у самого края Safari забирает себе (показывает свою панель).
+   На сенсорном экране: кнопки крупнее (44 px — норма Apple), ниже края и с запасом вокруг для пальца */
+@media (pointer:coarse){ .s3 .s3-tr .s3-btn.sq{width:44px;height:44px} .s3 .s3-tr .s3-btn.sq .s3i{width:20px;height:20px} .s3 .s3-tr{gap:12px} .s3 .s3-back{height:40px;padding:0 16px}
+  .s3 .s3-tr .s3-btn::before,.s3 .s3-back::before{content:"";position:absolute;inset:-10px}
+  .s3.land .s3-tl{top:calc(26px + var(--st,0px))} .s3.land .s3-tr{top:calc(24px + var(--st,0px))} .s3.land .s3-zoom{top:calc(84px + var(--st,0px))}
+  .s3.port .s3-tl{top:calc(18px + var(--st,0px))} .s3.port .s3-tr{top:calc(16px + var(--st,0px))} }
 /* ---------- the voice, tips, notifications ---------- */
 .s3-say{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:40px 24px;pointer-events:auto;z-index:5;background:radial-gradient(80% 60% at 50% 50%,rgba(2,8,22,.15),rgba(2,6,16,.55))}
 .s3-say.on{display:flex;animation:s3fade .5s both}.s3-say.out{opacity:0;transition:opacity .5s}
@@ -44637,7 +44643,7 @@ const SY3={ shT:3, on:false, built:false, el:null, sc:null, cam:null, uT:{value:
   coreXY:[0,0], coreR:60, sleep:false, warp:0, t:0, acc:0, chk:0, day:"", qs:[], fedAt:0, feedP:null, lastCss:"", fovPx:0, lo:0, skip:0, pqT:0, basis:null };
 /* 20.10 (11:20 / 11:30, Anton): exactly four sections on the right — Навыки · Рейд (tabs Рейд · Отряд · Рейтинг) · Магазин · Дневник дел.
    The profile (status, stats, class, the collection of shadows) is the bar at the bottom. Colours: skills violet, raid red-orange, shop orange, the diary cyan */
-const SY3_NAV=[["skills","Навыки","#9d7cff","star"],["raid","Рейд","#ff6a3c","raid"],["shop","Магазин","#ffa53c","bag"],["log","Дневник дел","#5fd0ff","book"]];
+const SY3_NAV=[["skills","Навыки","#9d7cff","star"],["raid","Рейд","#ff6a3c","raid"],["shop","Магазин","#ffa53c","bag"],["log","Дневник дел","#5fd0ff","book"],["pass","Пропуск системы","#ffd166","star"]];
 const SY3_IC={ raid:`<path d="M4.5 4.5l9 9M4.5 4.5h3l7.5 7.5M4.5 4.5v3L12 15M14 15.5l1.5-1.5 3 3-1.5 1.5zM19.5 4.5l-9 9M19.5 4.5h-3L12 9M19.5 4.5v3L15 12M10 15.5L8.5 14l-3 3 1.5 1.5z"/>`, user:`<circle cx="12" cy="8.2" r="3.6"/><path d="M5 20c.8-3.8 3.6-5.6 7-5.6s6.2 1.8 7 5.6"/>`, star:`<path d="M12 3.6l2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>`,
   bag:`<path d="M5.5 8.5h13l-1.1 11.2H6.6z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>`, bars:`<path d="M5 20v-6M10 20V9.5M15 20v-8M20 20V5"/>`,
   group:`<circle cx="9" cy="8.5" r="3"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M3.5 19c.6-3.2 2.8-4.7 5.5-4.7s4.9 1.5 5.5 4.7M14.6 14.6c2.6-.3 4.9.9 5.6 4"/>`,
@@ -45069,6 +45075,8 @@ function sy3Open(k){ if(!SY3.built) sy3Build(); if(SY3.sleep){ sy3Snd("deny"); r
   if(k==="skills"){ const c=clsActive(); return real("skills","НАВЫКИ","#9d7cff",`<button class="s3-path" id="s3Path"><i>${sy3I("star")}</i><span><b>${c?"ПУТЬ КЛАССА · "+KLS[c].n.toUpperCase():"ПУТЬ КЛАССА"}</b><small>${c?(typeof treeFree==="function"&&treeFree(c)>0?`свободных очков: ${treeFree(c)} — вложи их`:"ветки умений твоего класса"):"класс выбирается в обучении боя"}</small></span><em>›</em></button>`); }
   if(k==="daily") return real("deeds","ЕЖЕДНЕВНЫЙ КВЕСТ","#43e08a",`<p class="s3-note top">Закрой все дела дня — Система добавит <b>✦ ${SY3_DAYB} фокуса</b>. ${syLocked()?"":"Каждое дело открывает Врата в мире."}</p>`);
   if(k==="shop") return sy3Win(k,"МАГАЗИН",sy3ShopHTML(),{accent:"#ffb347",wide:true,onMount:sy3ShopWire});
+  /* 05.11 (Anton): «Пропуск системы» — будущий платный пропуск; пока окно «в разработке» */
+  if(k==="pass") return sy3Win("pass","ПРОПУСК СИСТЕМЫ",`<div class="s3-help"><p><b>В разработке.</b></p><p>Пропуск системы откроет особые награды, облики и задания сезона. Система готовит его — следи за обновлениями.</p></div>`,{accent:"#ffd166"});
   if(k==="log") return sy3DiaryWin();
   /* 20.10 (11:30): «Рейд» is one window with the tabs Рейд · Отряд · Рейтинг; the profile (the bar) has the tab «Коллекция теней» (sys3w.js) */
   if(k==="raid"||k==="squad"||k==="rate") return sy3Tab("raid",k==="raid"?(SY3.tabLast&&SY3.tabLast.raid)||"raid":k);
