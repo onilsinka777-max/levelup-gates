@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Скачать — LevelUp: Система</title>
+<meta name="description" content="Скачать игру LevelUp: Система — Android, Windows, Mac, iPhone.">
+<style>
+  :root { --bg:#04050c; --fg:#dce6ff; --dim:#8fa6cc; --acc:#5fd0ff; --line:rgba(95,208,255,.35); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:radial-gradient(90% 60% at 50% 0%, #0b1638, var(--bg)); color:var(--fg); font:16px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; min-height:100vh; }
+  main { max-width:640px; margin:0 auto; padding:48px 16px 64px; }
+  h1 { margin:0; font-size:30px; letter-spacing:.18em; color:#fff; text-shadow:0 0 18px rgba(90,170,255,.8); text-align:center; }
+  .sub { text-align:center; color:var(--dim); margin:6px 0 32px; font-size:14px; letter-spacing:.08em; }
+  .main { display:block; text-align:center; padding:18px; border:1.5px solid var(--acc); background:rgba(20,50,100,.35); color:#fff; text-decoration:none; font-weight:700; font-size:19px; letter-spacing:.06em; box-shadow:0 0 24px rgba(70,150,255,.35); }
+  .main small { display:block; font-weight:400; font-size:13px; color:var(--dim); margin-top:4px; letter-spacing:0; }
+  .main[aria-disabled="true"] { border-color:var(--line); box-shadow:none; color:var(--dim); }
+  h2 { font-size:14px; letter-spacing:.2em; color:var(--dim); margin:36px 0 10px; font-weight:600; }
+  .list a, .list div { display:flex; justify-content:space-between; gap:12px; padding:14px 16px; border:1px solid var(--line); margin-bottom:8px; color:var(--fg); text-decoration:none; background:rgba(6,14,34,.6); }
+  .list span { color:var(--dim); font-size:14px; }
+  ol { padding-left:20px; color:var(--dim); font-size:14px; }
+  ol b { color:var(--fg); }
+  footer { margin-top:40px; text-align:center; font-size:13px; color:var(--dim); }
+  footer a { color:var(--acc); }
+</style>
+</head>
+<body>
+<main>
+  <h1>СИСТЕМА</h1>
+  <div class="sub">LevelUp: Система · бета</div>
+
+  <a class="main" id="main" href="#all">Скачать<small id="mainNote">выбери своё устройство ниже</small></a>
+
+  <h2 id="all">ВСЕ ВЕРСИИ</h2>
+  <div class="list">
+    <a id="lAndroid" href="https://github.com/onilsinka777-max/levelup-gates/releases/latest/download/LevelUp-Sistema.apk"><b>Android</b><span>APK · 142 МБ</span></a>
+    <a id="lWin" href="WINDOWS_URL"><b>Windows</b><span>скоро</span></a>
+    <a id="lMac" href="MAC_URL"><b>Mac</b><span>скоро</span></a>
+    <a id="lIos" href="IOS_URL"><b>iPhone</b><span id="iosNote">скоро — TestFlight</span></a>
+  </div>
+
+  <h2>КАК УСТАНОВИТЬ</h2>
+  <ol>
+    <li><b>Android</b> — открой скачанный файл и разреши установку из этого источника (браузер спросит один раз). Нужен Android 8 или новее.</li>
+    <li><b>Windows</b> — распакуй архив и запусти LevelUp.exe. Если Windows предупредит — «Подробнее» → «Выполнить в любом случае».</li>
+    <li><b>Mac</b> — распакуй архив, затем правый клик по LevelUp.app → «Открыть» → «Открыть».</li>
+    <li><b>iPhone</b> — поставь приложение TestFlight из App Store, затем открой ссылку «iPhone» выше.</li>
+  </ol>
+
+  <h2>ПРОГРЕСС</h2>
+  <ol>
+    <li>Прогресс хранится на сервере игры — переходи между устройствами и потом в версию из магазина без потерь.</li>
+    <li>Войди по почте (Меню → «Войти по почте») — один прогресс на телефоне и компьютере.</li>
+    <li>Играл в веб-версию? На первом экране — «Уже играл? Вернуть прогресс».</li>
+    <li>Играл на levelupp.ru? Бот в Telegram пришлёт код переноса — введи его в «Аккаунт».</li>
+  </ol>
+
+  <footer><a href="privacy.html">Политика конфиденциальности</a></footer>
+</main>
+<script>
+  // Определяем устройство и ставим главную кнопку на нужную версию
+  (function () {
+    [].forEach.call(document.querySelectorAll(".list a"), function (a) { if (/_URL$/.test(a.getAttribute("href"))) { a.removeAttribute("href"); a.style.opacity = ".55"; } });
+    var ua = navigator.userAgent || "", p = (navigator.platform || "");
+    var ios = /iPhone|iPad|iPod/.test(ua) || (p === "MacIntel" && navigator.maxTouchPoints > 1);
+    var android = /Android/i.test(ua);
+    var win = /Windows/i.test(ua);
+    var mac = !ios && /Mac/i.test(p + ua);
+    var pick = ios ? ["lIos", "Скачать для iPhone"] : android ? ["lAndroid", "Скачать для Android"] : win ? ["lWin", "Скачать для Windows"] : mac ? ["lMac", "Скачать для Mac"] : null;
+    if (!pick) return;
+    var src = document.getElementById(pick[0]), m = document.getElementById("main");
+    var href = src.getAttribute("href");
+    if (!href || /_URL$/.test(href)) { m.setAttribute("aria-disabled", "true"); m.firstChild.nodeValue = pick[1].replace("Скачать", "Скоро"); return; }
+    m.href = href; m.firstChild.nodeValue = pick[1];
+    document.getElementById("mainNote").textContent = src.querySelector("span").textContent;
+  })();
+</script>
+</body>
+</html>
