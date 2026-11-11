@@ -34,9 +34,9 @@
   var fill = document.getElementById("fill"), msg = document.getElementById("msg");
   var dpr = Math.min(window.devicePixelRatio || 1, /iPhone|iPad|Android/i.test(navigator.userAgent) ? 2 : 1.5);
   var config = {
-    dataUrl: "Build/WebGL.data.unityweb?v=1701",
-    frameworkUrl: "Build/WebGL.framework.js.unityweb?v=1701",
-    codeUrl: "Build/WebGL.wasm.unityweb?v=1701",
+    dataUrl: "Build/WebGL.data.unityweb?v=1832",
+    frameworkUrl: "Build/WebGL.framework.js.unityweb?v=1832",
+    codeUrl: "Build/WebGL.wasm.unityweb?v=1832",
     streamingAssetsUrl: "StreamingAssets",
     companyName: "LevelUp",
     productName: "LevelUp: Система",
@@ -54,7 +54,7 @@
   });
   // файл данных больше 100 МБ (предел GitHub Pages) лежит частями: Build/parts.json → ["….part0", …]; собираем в один кусок в памяти
   function loadParts() {
-    return fetch("Build/parts.json?v=1701", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+    return fetch("Build/parts.json?v=1832", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
       var list = j && (j.parts || j);
       if (!list || !list.length) return null;
       var got = new Array(list.length), sizes = new Array(list.length).fill(0), total = (j && j.total) || 0;
@@ -71,7 +71,7 @@
     });
   }
   var s = document.createElement("script");
-  s.src = "Build/WebGL.loader.js?v=1701";
+  s.src = "Build/WebGL.loader.js?v=1832";
   s.onload = function () {
     loadParts().then(function (u) { if (u) { config.dataUrl = u; msg.textContent = "Распаковка…"; } return go(); }).catch(function (e) { msg.textContent = "Не скачалось: " + e.message; });
   };
