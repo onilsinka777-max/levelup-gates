@@ -36,7 +36,8 @@
     <a id="lAndroid" href="https://github.com/onilsinka777-max/levelup-gates/releases/latest/download/LevelUp-Sistema.apk"><b>Android</b><span>APK · 142 МБ</span></a>
     <a id="lWin" href="WINDOWS_URL"><b>Windows</b><span>скоро</span></a>
     <a id="lMac" href="MAC_URL"><b>Mac</b><span>скоро</span></a>
-    <a id="lIos" href="IOS_URL"><b>iPhone</b><span id="iosNote">скоро — TestFlight</span></a>
+    <a id="lIos" href="play/"><b>iPhone</b><span id="iosNote">в браузере · «На экран Домой»</span></a>
+    <a id="lWeb" href="play/"><b>Браузер</b><span>играть без установки</span></a>
   </div>
 
   <h2>КАК УСТАНОВИТЬ</h2>
@@ -44,7 +45,7 @@
     <li><b>Android</b> — открой скачанный файл и разреши установку из этого источника (браузер спросит один раз). Нужен Android 8 или новее.</li>
     <li><b>Windows</b> — распакуй архив и запусти LevelUp.exe. Если Windows предупредит — «Подробнее» → «Выполнить в любом случае».</li>
     <li><b>Mac</b> — распакуй архив, затем правый клик по LevelUp.app → «Открыть» → «Открыть».</li>
-    <li><b>iPhone</b> — поставь приложение TestFlight из App Store, затем открой ссылку «iPhone» выше.</li>
+    <li><b>iPhone</b> — открой «iPhone» в Safari, затем «Поделиться» → «На экран «Домой»» — игра откроется во весь экран. Первый запуск — около минуты (скачивается ~120 МБ), дальше быстрее.</li>
   </ol>
 
   <h2>ПРОГРЕСС</h2>
@@ -66,7 +67,7 @@
     var android = /Android/i.test(ua);
     var win = /Windows/i.test(ua);
     var mac = !ios && /Mac/i.test(p + ua);
-    var pick = ios ? ["lIos", "Скачать для iPhone"] : android ? ["lAndroid", "Скачать для Android"] : win ? ["lWin", "Скачать для Windows"] : mac ? ["lMac", "Скачать для Mac"] : null;
+    var pick = ios ? ["lIos", "Играть на iPhone"] : android ? ["lAndroid", "Скачать для Android"] : (win || mac) ? ["lWeb", "Играть в браузере"] : null;
     if (!pick) return;
     var src = document.getElementById(pick[0]), m = document.getElementById("main");
     var href = src.getAttribute("href");
