@@ -34,13 +34,13 @@
   var fill = document.getElementById("fill"), msg = document.getElementById("msg");
   var dpr = Math.min(window.devicePixelRatio || 1, /iPhone|iPad|Android/i.test(navigator.userAgent) ? 2 : 1.5);
   var config = {
-    dataUrl: "Build/WebGL.data.unityweb?v=11130743",
-    frameworkUrl: "Build/WebGL.framework.js.unityweb?v=11130743",
-    codeUrl: "Build/WebGL.wasm.unityweb?v=11130743",
+    dataUrl: "Build/WebGL.data.unityweb?v=11152000",
+    frameworkUrl: "Build/WebGL.framework.js.unityweb?v=11152000",
+    codeUrl: "Build/WebGL.wasm.unityweb?v=11152000",
     streamingAssetsUrl: "StreamingAssets",
     companyName: "LevelUp",
     productName: "LevelUp: Система",
-    productVersion: "2026.11.13",
+    productVersion: "2026.11.15",
     devicePixelRatio: dpr,
     showBanner: function (t, type) { if (type === "error") { msg.textContent = t; } }
   };
@@ -54,7 +54,7 @@
   });
   // файл данных больше 100 МБ (предел GitHub Pages) лежит частями: Build/parts.json → ["….part0", …]; собираем в один кусок в памяти
   function loadParts() {
-    return fetch("Build/parts.json?v=11130743", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+    return fetch("Build/parts.json?v=11152000", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
       var list = j && (j.parts || j);
       if (!list || !list.length) return null;
       var got = new Array(list.length), sizes = new Array(list.length).fill(0), total = (j && j.total) || 0;
@@ -71,14 +71,28 @@
     });
   }
   var s = document.createElement("script");
-  s.src = "Build/WebGL.loader.js?v=11130743";
+  s.src = "Build/WebGL.loader.js?v=11152000";
   s.onload = function () {
     loadParts().then(function (u) { if (u) { config.dataUrl = u; msg.textContent = "Распаковка…"; } return go(); }).catch(function (e) { msg.textContent = "Не скачалось: " + e.message; });
   };
   function go() {
     return createUnityInstance(canvas, config, function (p) { fill.style.width = Math.round(90 + p * 10) + "%"; if (p >= .9) msg.textContent = "Пробуждение Системы…"; })
-      .then(function (u) { game = u; var b = document.getElementById("boot"); b.style.transition = "opacity .5s"; b.style.opacity = 0; setTimeout(function () { b.remove(); }, 600); })
+      .then(function (u) { game = u; watchGl(); var b = document.getElementById("boot"); b.style.transition = "opacity .5s"; b.style.opacity = 0; setTimeout(function () { b.remove(); }, 600); })
       .catch(function (e) { msg.textContent = "Не запустилось: " + e; });
+  }
+  // iPhone (канал 13.11: «прогружает только нижний левый угол на весь экран»): буфер рисования WebGL меньше холста —
+  // Safari урезал его. Снижаем плотность пикселей, пока буфер не совпадёт с холстом; после поворота — пересчёт размера.
+  function watchGl() {
+    var gl = null;
+    try { gl = canvas.getContext("webgl2") || canvas.getContext("webgl"); } catch (e) {}
+    setInterval(function () {
+      if (!game || !gl) return;
+      var M = game.Module || {};
+      var short = gl.drawingBufferWidth + 2 < canvas.width || gl.drawingBufferHeight + 2 < canvas.height;
+      if (short) { var cur = M.devicePixelRatio || dpr; if (cur > 1) { M.devicePixelRatio = Math.max(1, cur * .75); config.devicePixelRatio = M.devicePixelRatio; } }
+    }, 1000);
+    function nudge() { setTimeout(function () { window.dispatchEvent(new Event("resize")); }, 350); }
+    window.addEventListener("orientationchange", nudge);
   }
   document.body.appendChild(s);
 </script>
