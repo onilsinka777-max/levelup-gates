@@ -58,7 +58,13 @@
       var list = j && (j.parts || j);
       if (!list || !list.length) return null;
       var got = new Array(list.length), sizes = new Array(list.length).fill(0), total = (j && j.total) || 0;
-      function prog() { var s = 0; for (var i = 0; i < sizes.length; i++) s += sizes[i]; fill.style.width = Math.round(Math.min(.9, total ? s / total * .9 : 0) * 100) + "%"; }
+      // 16.11: вместо общей фразы — сколько скачано («Скачано 60 из 105 МБ»), чтобы было видно, что загрузка идёт и сколько осталось
+      function mb(n) { return Math.round(n / 1048576); }
+      function prog() {
+        var s = 0; for (var i = 0; i < sizes.length; i++) s += sizes[i];
+        fill.style.width = Math.round(Math.min(.9, total ? s / total * .9 : 0) * 100) + "%";
+        if (total && s < total) msg.textContent = "Скачано " + mb(s) + " из " + mb(total) + " МБ · в первый раз дольше, дальше — быстро";
+      }
       return Promise.all(list.map(function (name, i) {
         return fetch("Build/" + name).then(function (r) {
           if (!r.ok) throw new Error("часть " + name + ": " + r.status);
